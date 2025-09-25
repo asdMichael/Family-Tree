@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Tree</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Family Tree Project</h1>
+</header>
+
+<!-- Toggle -->
+<div class="view-toggle" style="text-align:center; margin:14px 0;">
+  <button id="btnCards" onclick="switchView('cards')" class="toggle-btn active">Cards View</button>
+  <button id="btnTree" onclick="switchView('tree')" class="toggle-btn">Tree View</button>
+</div>
+
+<main class="tree-container cards-view">
+  <!-- Cards view content goes here (placeholder) -->
+  <h2>Cards View Placeholder</h2>
+</main>
+
+<main class="tree-container tree-view" style="display:none;">
+  <section class="family-tree">
+    <ul class="family-root">
+      <li>
+        <div class="node">
+          <img src="images/vaccaro_james.png" alt="James Vaccaro">
+          <div class="label">James Vaccaro</div>
+        </div>
+      </li>
+      <!-- more nodes here -->
+    </ul>
+  </section>
+</main>
+
+<script>
+function switchView(view){
+  const cards = document.querySelector('.tree-container.cards-view');
+  const tree = document.querySelector('.tree-container.tree-view');
+  if(view === 'tree'){
+    cards.style.display = 'none';
+    tree.style.display = 'block';
+    document.getElementById('btnTree').classList.add('active');
+    document.getElementById('btnCards').classList.remove('active');
+  } else {
+    cards.style.display = 'block';
+    tree.style.display = 'none';
+    document.getElementById('btnTree').classList.remove('active');
+    document.getElementById('btnCards').classList.add('active');
+  }
+}
+</script>
+</body>
+</html>
