@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Family Tree — Full</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Family Tree — Full (Top → Down)</h1>
+    <p>Click any person box to open a story card. Upload photos to <code>/images</code> and match filenames shown in each story (placeholders used).</p>
+  </header>
+
+  <!-- Toggle -->
+  <div class="view-toggle" style="text-align:center; margin:14px 0;">
+    <button id="btnCards" onclick="switchView('cards')" class="toggle-btn active">Cards View</button>
+    <button id="btnTree" onclick="switchView('tree')" class="toggle-btn">Tree View</button>
+  </div>
+
+  <!-- CARDS VIEW (original layout) -->
+  <main class="tree-container cards-view">
+    <!-- TOP: Migration & origin stories -->
+    <section class="generation">
+      <h2>Origins & Migration Stories</h2>
+      <ul class="tree">
+        <li>
+          <div class="person" onclick="openStory('immigration')">
+            <div class="name">Sicilian → California branch</div>
+            <div class="meta">Moved from Sicily seeking work; later family reunited in CA</div>
+          </div>
+        </li>
+        <li>
+          <div class="person" onclick="openStory('hungarian')">
+            <div class="name">Hungarian farm family → Ohio</div>
+            <div class="meta">Ellis Island arrivals; small Hungarian community in Ohio</div>
+          </div>
+        </li>
+        <li>
+          <div class="person" onclick="openStory('nwpassage')">
+            <div class="name">Northwest passage & maritime tale</div>
+            <div class="meta">Oral histories of seafaring voyages and Captain Francis Closure</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Grandparents generation -->
+    <section class="generation">
+      <h2>Grandparents & Siblings</h2>
+      <ul class="tree">
+        <li>
+          <div class="person" onclick="openStory('james_vaccaro')">
+            <div class="name">James Vaccaro (1913–1985)</div>
+            <div class="meta">Pennsylvania → Ohio → California</div>
+          </div>
+        </li>
+        <li>
+          <div class="person" onclick="openStory('rose_kirila')">
+            <div class="name">Rose Louise Kirila</div>
+            <div class="meta">Ohio — Hungarian roots & farm life</div>
+          </div>
+        </li>
+        <li>
+          <div class="person" onclick="openStory('william_patton')">
+            <div class="name">William Patton</div>
+            <div class="meta">Northern Ireland → American branch</div>
+          </div>
+        </li>
+        <li>
+          <div class="person" onclick="openStory('beatrice_fisher')">
+            <div class="name">Beatrice Fisher</div>
+            <div class="meta">Fisher / Crozier family connections</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Parents generation -->
+    <section class="generation">
+      <h2>Parents & Their Siblings</h2>
+      <ul class="tree">
+        <li class="parent-column">
+          <div class="person couple">
+            <div class="name" onclick="openStory('william_patton')">William Patton</div>
+            <div class="and">+</div>
+            <div class="name" onclick="openStory('beatrice_fisher')">Beatrice Fisher</div>
+          </div>
+          <ul class="children">
+            <li>
+              <div class="person" onclick="openStory('lynne')">
+                <div class="name">Lynne Patton</div>
+                <div class="meta">Sister of Gary</div>
+              </div>
+            </li>
+            <li>
+              <div class="person" onclick="openStory('gary')">
+                <div class="name">Gary Patton (b. 1956)</div>
+                <div class="meta">Belfast → California</div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+        <li class="parent-column">
+          <div class="person couple">
+            <div class="name" onclick="openStory('james_vaccaro')">James Vaccaro</div>
+            <div class="and">+</div>
+            <div class="name" onclick="openStory('rose_kirila')">Rose Kirila</div>
+          </div>
+          <ul class="children">
+            <li>
+              <div class="person" onclick="openStory('deborah')">
+                <div class="name">Deborah Patton (b. 1959)</div>
+                <div class="meta">Ohio & Hungarian heritage</div>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Kupfer / Step side parents -->
+    <section class="generation">
+      <h2>Kupfer Side (extended)</h2>
+      <ul class="tree">
+        <li>
+          <div class="person couple">
+            <div class="name" onclick="openStory('robert_kupfer')">Robert Kupfer</div>
+            <div class="and">+</div>
+            <div class="name" onclick="openStory('patricia_kupfer')">Patricia Kupfer</div>
+          </div>
+          <ul class="children">
+            <li><div class="person" onclick="openStory('brian')"><div class="name">Brian Kupfer (b. 1981)</div><div class="meta">Father — trades, Lockheed tooling</div></div></li>
+            <li><div class="person" onclick="openStory('cort')"><div class="name">Cort Kupfer</div></div></li>
+            <li><div class="person" onclick="openStory('crystal')"><div class="name">Crystal Kupfer</div><div class="meta">Married to Nate — son Elijah</div></div></li>
+            <li><div class="person" onclick="openStory('april')"><div class="name">April Kupfer</div><div class="meta">Divorced — 2 kids</div></div></li>
+            <li><div class="person" onclick="openStory('everett')"><div class="name">Everett Kupfer</div><div class="meta">Air Force — near Berkeley</div></div></li>
+            <li><div class="person" onclick="openStory('jonathan')"><div class="name">Jonathan Kupfer</div><div class="meta">Step-uncle</div></div></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- You & children -->
+    <section class="generation">
+      <h2>Your Immediate Family</h2>
+      <ul class="tree">
+        <li>
+          <div class="person couple">
+            <div class="name" onclick="openStory('brian')">Brian Kupfer</div>
+            <div class="and">+</div>
+            <div class="name" onclick="openStory('shannen')">Shannen Patton</div>
+          </div>
+          <ul class="children">
+            <li><div class="person" onclick="openStory('breanna')"><div class="name">Breanna Kupfer (b. 10 Nov 2021)</div><div class="meta">Ventura, CA</div></div></li>
+            <li><div class="person" onclick="openStory('alexis')"><div class="name">Alexis Kupfer (b. 8 Jun 2016)</div><div class="meta">Ventura, CA</div></div></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Dean side -->
+    <section class="generation">
+      <h2>Dean Side (father's branch)</h2>
+      <ul class="tree">
+        <li><div class="person" onclick="openStory('mario')"><div class="name">Mario Dean (1985–2014)</div></div></li>
+        <li><div class="person" onclick="openStory('nannete')"><div class="name">Nannete Dean</div><div class="meta">Aunt — raised partly in France</div></div></li>
+        <li><div class="person" onclick="openStory('carlo')"><div class="name">Carlo Dean</div></div></li>
+        <li><div class="person" onclick="openStory('renato')"><div class="name">Renato Dean</div></div></li>
+        <li><div class="person" onclick="openStory('demarco')"><div class="name">Demarco Victoria & family</div></div></li>
+        <li><div class="person" onclick="openStory('gino')"><div class="name">Gino Dean</div></div></li>
+        <li><div class="person" onclick="openStory('giana')"><div class="name">Giana Dean</div></div></li>
+        <li><div class="person" onclick="openStory('demetri')"><div class="name">Demetri Dean</div></div></li>
+      </ul>
+    </section>
+
+    <!-- Extended relatives -->
+    <section class="generation">
+      <h2>Extended relatives & cousins</h2>
+      <ul class="tree">
+        <li><div class="person" onclick="openStory('eugene')"><div class="name">Eugene Edward Kirili (1936–1994)</div></div></li>
+        <li><div class="person" onclick="openStory('ruth_barris')"><div class="name">Ruth Adaline Barris (b. 1939)</div></div></li>
+        <li><div class="person" onclick="openStory('fisher_note')"><div class="name">Fisher / Crozier / Fischer notes</div></div></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- TREE VIEW (literal family tree) -->
+  <main class="tree-container tree-view" style="display:block; max-width:1200px; margin:0 auto 80px;">
+    <section class="family-tree">
+      <!-- Great-grandparents / Grandparents row -->
+      <ul class="family-root">
+        <li>
+          <div class="node" onclick="openStory('james_vaccaro')">
+            <img src="images/vaccaro_james.png" alt="James Vaccaro">
+            <div class="label">James Vaccaro</div>
+          </div>
+        </li>
+        <li>
+          <div class="node" onclick="openStory('rose_kirila')">
+            <img src="images/louis_rose.png" alt="Rose Kirila">
+            <div class="label">Rose Kirila</div>
+          </div>
+        </li>
+        <li>
+          <div class="node" onclick="openStory('william_patton')">
+            <img src="images/patton_william.png" alt="William Patton">
+            <div class="label">William Patton</div>
+          </div>
+        </li>
+        <li>
+          <div class="node" onclick="openStory('beatrice_fisher')">
+            <img src="images/fisher_beatrice.png" alt="Beatrice Fisher">
+            <div class="label">Beatrice Fisher</div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Parents generation (Patton/Vaccaro & Kupfer) -->
+      <ul class="family-generation">
+        <li class="branch">
+          <div class="node couple">
+            <div onclick="openStory('james_vaccaro')" class="node-inline">
+              <img src="images/vaccaro_james.png" alt="James">
+              <div class="label">James</div>
+            </div>
+            <div class="and">+</div>
+            <div onclick="openStory('rose_kirila')" class="node-inline">
+              <img src="images/louis_rose.png" alt="Rose">
+              <div class="label">Rose</div>
+            </div>
+          </div>
+          <ul class="children">
+            <li><div class="node" onclick="openStory('deborah')"><img src="images/patton_child3.png" alt="Deborah"><div class="label">Deborah</div></div></li>
+          </ul>
+        </li>
+
+        <li class="branch">
+          <div class="node couple">
+            <div onclick="openStory('william_patton')" class="node-inline">
+              <img src="images/patton_william.png" alt="William">
+              <div class="label">William</div>
+            </div>
+            <div class="and">+</div>
+            <div onclick="openStory('beatrice_fisher')" class="node-inline">
+              <img src="images/fisher_beatrice.png" alt="Beatrice">
+              <div class="label">Beatrice</div>
+            </div>
+          </div>
+          <ul class="children">
+            <li><div class="node" onclick="openStory('lynne')"><img src="images/patton_child1.png" alt="Lynne"><div class="label">Lynne</div></div></li>
+            <li><div class="node" onclick="openStory('gary')"><img src="images/patton_child2.png" alt="Gary"><div class="label">Gary</div></div></li>
+            <li><div class="node" onclick="openStory('daniel')"><img src="images/kupfer_daniel.png" alt="Daniel"><div class="label">Daniel</div></div></li>
+          </ul>
+        </li>
+
+        <!-- Kupfer side -->
+        <li class="branch">
+          <div class="node couple">
+            <div class="node-inline">
+              <img src="images/patton_child4.png" alt="Robert Kupfer">
+              <div class="label">Robert Kupfer</div>
+            </div>
+            <div class="and">+</div>
+            <div class="node-inline">
+              <img src="images/kupfer_shannon.png" alt="Patricia Kupfer">
+              <div class="label">Patricia Kupfer</div>
+            </div>
+          </div>
+          <ul class="children">
+            <li><div class="node" onclick="openStory('cort')"><img src="images/unknown.png" alt="Cort"><div class="label">Cort</div></div></li>
+            <li><div class="node" onclick="openStory('brian')"><img src="images/kupfer_daniel.png" alt="Brian"><div class="label">Brian</div></div></li>
+            <li><div class="node" onclick="openStory('crystal')"><img src="images/unknown.png" alt="Crystal"><div class="label">Crystal</div></div></li>
+            <li><div class="node" onclick="openStory('april')"><img src="images/unknown.png" alt="April"><div class="label">April</div></div></li>
+            <li><div class="node" onclick="openStory('everett')"><img src="images/unknown.png" alt="Everett"><div class="label">Everett</div></div></li>
+            <li><div class="node" onclick="openStory('jonathan')"><img src="images/unknown.png" alt="Jonathan"><div class="label">Jonathan</div></div></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- You & children row -->
+      <ul class="family-leaf">
+        <li>
+          <div class="node couple">
+            <div class="node-inline" onclick="openStory('brian')">
+              <img src="images/kupfer_daniel.png" alt="Brian Kupfer">
+              <div class="label">Brian Kupfer</div>
+            </div>
+            <div class="and">+</div>
+            <div class="node-inline" onclick="openStory('shannen')">
+              <img src="images/kupfer_shannon.png" alt="Shannen Patton">
+              <div class="label">Shannen Patton</div>
+            </div>
+          </div>
+          <ul class="children">
+            <li><div class="node" onclick="openStory('breanna')"><img src="images/kupfer_breanna.png" alt="Breanna"><div class="label">Breanna</div></div></li>
+            <li><div class="node" onclick="openStory('alexis')"><img src="images/kupfer_alexis.png" alt="Alexis"><div class="label">Alexis</div></div></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Dean side (mapped from top dinner photo) -->
+      <div style="margin-top:26px;">
+        <ul class="family-row dean-row">
+          <li><div class="node" onclick="openStory('mario')"><img src="images/dean_mario.png" alt="Mario"><div class="label">Mario Dean</div></div></li>
+          <li><div class="node" onclick="openStory('nannete')"><img src="images/dean_nannette.png" alt="Nannete"><div class="label">Nannete</div></div></li>
+          <li><div class="node" onclick="openStory('demarco')"><img src="images/victoria.png" alt="Victoria"><div class="label">Victoria</div></div></li>
+          <li><div class="node" onclick="openStory('shannen')"><img src="images/kupfer_shannon.png" alt="Shannon"><div class="label">Shannon</div></div></li>
+          <li><div class="node"><img src="images/unknown.png" alt="Unknown"><div class="label">Unknown</div></div></li>
+          <li><div class="node" onclick="openStory('gino')"><img src="images/dean_gino.png" alt="Gino"><div class="label">Gino</div></div></li>
+        </ul>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- STORY MODAL -->
+  <div id="story-modal" class="modal" style="display:none;">
+    <div class="modal-card">
+      <button id="closeModal" onclick="closeStory()">Close</button>
+      <div id="story-content"></div>
+    </div>
+  </div>
+
+  <script>
+  (function populateStories(){
+    const data = {
+      "immigration": {"title":"Sicilian → California (family migration)","photo":"images/immigration.jpg","text":"A branch of the family left Sicily with little more than hope and a few trunks. They arrived in California because work beckoned — seasonal labor, odd jobs, anything that would give them a foothold. One story describes an elder who sent for his sister and young children to rejoin him after he established a small home; together they raised three children in California. The move left a legacy: a stubborn practicality, an ability to find community quickly, and small rituals — a particular Sunday bread, a way of folding letters — that still survive in family memory."},
+      "hungarian": {"title":"Hungarian farm family → Ohio","photo":"images/hungarian.jpg","text":"On the Ohio side, the family arrived through Ellis Island and took to the land. They bought or worked a small farm and built a life on seasons: planting, harvesting, and bringing neighbors together for meals. Grandmother Rose carried Hungarian phrases in her pockets and recipes scrawled on the backs of envelopes. Those recipes traveled with the family westward — a scent-memory of garlic, paprika, and boiled dumplings that appears at holidays and feels like home."},
+      "nwpassage": {"title":"Northwest Passage & Captain Francis Closure","photo":"images/ship.jpg","text":"An old maritime story that surfaces at family gatherings: an Irish captain named Francis Closure and a voyage with tins of food, cramped quarters, and a few tragic losses. It’s remembered in fragments — an illness from contaminated lead medals, a frozen stretch of ocean, a crew that bonded under hardship. The tale is less about exact facts and more about the family’s inherited respect for the sea and for ancestors who took dangerous routes in search of new lives."},
+      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"images/james.jpg","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look."},
+      "rose_kirila": {"title":"Rose Louise Kirila","photo":"images/rose.jpg","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country."},
+      "william_patton": {"title":"William Patton","photo":"images/william.jpg","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms."},
+      "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","photo":"images/beatrice.jpg","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving."},
+      "lynne": {"title":"Lynne Patton","photo":"images/lynne.jpg","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency."},
+      "gary": {"title":"Gary Patton (b. 1956)","photo":"images/gary.jpg","text":"Gary was born in Belfast into a household where religion and ritual structured daily life. He later moved to California and, like many immigrants, learned to translate old habits into new rhythms. Gary married Deborah in 1984 and built a family that balanced strict expectations with a deep loyalty. He tells stories about Ireland — about fields, stubborn weather, and the odd comfort of a well-steeped cup of tea — and his children remember him as a man who blended sternness with sudden, small acts of generosity: a fixed bike, an unexpected cake, a private grin at a family joke."},
+      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"images/deborah.jpg","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head."},
+      "daniel": {"title":"Daniel Patton (b. 1992)","photo":"images/daniel.jpg","text":"Daniel grew up in Woodland Hills and represents a generational shift: more rooted in California life than in the old stories, but still attentive to them. Friends remember him as easygoing, quick with a grin, and practical: the person who can turn a spare part into a working lamp and who still shows up for family dinners when they matter most."},
+      "robert_kupfer": {"title":"Robert Kupfer","photo":"images/robert.jpg","text":"Robert is the elder presence of the Kupfer side: a man who kept family links strong through phone calls, weekend gatherings, and quiet support. Workmanlike and direct, he valued steady employment and was proud when his children learned a trade. He taught that competence was dignity — a lesson that shows up in Brian’s work mentoring others in technical skills."},
+      "patricia_kupfer": {"title":"Patricia Kupfer","photo":"images/patricia.jpg","text":"Patricia held the family together with small rituals: a shared holiday table, a tidy guest room, a telephone always ready for a check-in. She is remembered for a practical kindness — making the right casserole for visitors, bringing a toolkit to help a neighbor — and for being the one who registered birthdays and anniversaries in a careful calendar."},
+      "brian": {"title":"Brian Kupfer (b. 1981)","photo":"images/brian.jpg","text":"Brian is the kind of practical teacher people remember — patient when explaining a difficult technique, quick to laugh when something goes wrong, and serious when it comes to his responsibilities. He trained people in trades, worked in plastic tooling for Lockheed, and even coached in Ireland for a spell. He married Shannen in 2020 and speaks fondly of ordinary domestic moments: a Saturday project in the garage, late-night pancakes, and quiet conversations about the future. People describe him as reliable and unexpectedly tender."},
+      "cort": {"title":"Cort Kupfer","photo":"images/cort.jpg","text":"Cort is known in family circles as someone who carries on the humor and directness of his parents. He is practical, quick with a story, and remembers neighborhood details that others forget — like which tree used to bloom where the community garden is now."},
+      "crystal": {"title":"Crystal Kupfer","photo":"images/crystal.jpg","text":"Crystal is a mother first and foremost; stories about her often center on her son Elijah and small, fiercely protective instincts. She balances warmth with a clear determination to make sure her child has what he needs. Family remembers her as someone who would drive across town at odd hours for a reprieve or to lend a hand."},
+      "april": {"title":"April Kupfer","photo":"images/april.jpg","text":"April’s life has had its complications — the strain of divorce and raising two children — but she is remembered for her toughness and resourcefulness. Family stories talk about her knack for finding odd jobs and keeping her kids’ routines steady when things were otherwise unsettled."},
+      "everett": {"title":"Everett Kupfer","photo":"images/everett.jpg","text":"Everett served in the Air Force and carried those lessons of discipline and perspective into civilian life. He lives near Berkeley and is remembered for a calm steadiness and a willingness to help with practical tasks, whether that’s moving furniture or offering a listening ear."},
+      "jonathan": {"title":"Jonathan Kupfer","photo":"images/jonathan.jpg","text":"Jonathan is a quieter member of the extended group — a step-uncle who keeps in touch and turns up to help when family plans require extra hands. He’s the sort of relative who prefers steady presence to loud declarations."},
+      "breanna": {"title":"Breanna Kupfer (b. 10 Nov 2021)","photo":"images/breanna.jpg","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow. Birth details: born in Ventura; parents Brian (39) and Shannen (34)."},
+      "alexis": {"title":"Alexis Kupfer (b. 8 Jun 2016)","photo":"images/alexis.jpg","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn. Her early years in Ventura shaped a love for outdoor play and close cousins."},
+      "mario": {"title":"Mario Dean (1985–2014)","photo":"images/mario.jpg","text":"Mario’s life was short and intense — a figure who appears in family memory as both vulnerable and vivid. He died in 2014 but left behind stories, music, or jokes that still surface at gatherings. His loss shaped many family conversations about care, second chances, and how a small life can leave a large mark."},
+      "nannete": {"title":"Nannete Dean","photo":"images/nannete.jpg","text":"Nannete was raised partly in France and brought a worldly patience to family life. She is remembered for quiet generosity — a postcard placed in a drawer, a recipe that smells of markets and Fig trees. Her presence connects the Dean branch to stories beyond the U.S."},
+      "carlo": {"title":"Carlo Dean","photo":"images/carlo.jpg","text":"Carlo’s story includes both complications and fierce family loyalty. He’s had legal troubles and been in and out of difficult circumstances, but also shows moments of tenderness and care during better times. Family members remember him in flashes — laughing at a childhood prank or quietly watching a sports match."},
+      "renato": {"title":"Renato Dean","photo":"images/renato.jpg","text":"Renato served nearly a decade in the military, and that discipline shaped his approach to family and work. After service he faced the civilian world with the same stubbornness that kept him afloat; he’s described as serious, capable, and private about his struggles."},
+      "demarco": {"title":"Demarco Victoria & family","photo":"images/demarco.jpg","text":"Demarco and his three children are part of the wider Dean network. Current details are sparse, but family memory locates them among the many small, ordinary stories of everyday care — school runs, birthday cakes, and the quiet work of keeping a household steady."},
+      "gino": {"title":"Gino Dean","photo":"images/gino.jpg","text":"Gino lives in San Diego and is described as friendly and practical. His daughter Taylor is a bright presence and family stories speak of beach days and backyard barbecues that bring this branch together."},
+      "giana": {"title":"Giana Dean","photo":"images/giana.jpg","text":"Giana’s death by suicide is a deep wound in the family. Remembered in gentle terms, her life prompts quiet conversations about mental health, care, and the need to hold one another closely. The family speaks of her with tenderness and a wish that she had received more help."},
+      "demetri": {"title":"Demetri Dean","photo":"images/demetri.jpg","text":"Possibly a cousin — Demetri appears in family memory as someone who kept to himself but who mattered in small ways: a shared meal, a loan of a tool, a visit that brightened a hard week."},
+      "eugene": {"title":"Eugene Edward Kirili (1936–1994)","photo":"images/eugene.jpg","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He married Ruth Barris in 1962 and raised a family in small towns. Those who remember him recall a straightforward, habit-driven man who loved the land and took comfort in steady routines."},
+      "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","photo":"images/ruth.jpg","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene raised at least one daughter and kept close to the rhythms of Trumbull and West Middlesex."},
+      "fisher_note": {"title":"Fisher / Crozier / Fischer notes","photo":"images/fisher.jpg","text":"Some family lines use Fisher, some Fischer, and a Crozier appears in marriage records and oral recollections. These name-variants point to likely migrations and the way records sometimes split families across different spellings. Further research could clarify whether the Fischer spelling points to a German branch or merely a transcription change."}
+    };
+    Object.assign(window, {stories:data});
+  })();
+
+  function openStory(key){
+    const s = window.stories[key];
+    if(!s) return;
+    const modal = document.getElementById('story-modal');
+    const content = document.getElementById('story-content');
+    content.innerHTML = '<h2>' + s.title + '</h2>' + (s.photo ? ('<img src="' + s.photo + '" class="story-photo" alt="' + s.title + '">') : '') + '<p>' + s.text + '</p>';
+    modal.style.display = 'flex';
+  }
+  function closeStory(){ document.getElementById('story-modal').style.display = 'none'; }
+  window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
+
+  // switch between card & tree view (default shows tree)
+  function switchView(view){
+    const cards = document.querySelector('.tree-container.cards-view');
+    const tree = document.querySelector('.tree-container.tree-view');
+    if(!cards || !tree) return;
+    if(view === 'tree'){
+      cards.style.display = 'none';
+      tree.style.display = 'block';
+      document.getElementById('btnTree').classList.add('active');
+      document.getElementById('btnCards').classList.remove('active');
+    } else {
+      cards.style.display = 'block';
+      tree.style.display = 'none';
+      document.getElementById('btnTree').classList.remove('active');
+      document.getElementById('btnCards').classList.add('active');
+    }
+  }
+  </script>
+
+</body>
+</html>
