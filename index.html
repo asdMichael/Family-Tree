@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Family Tree — Full</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Leaflet JS (loaded at end for better load order) -->
+  <style>
+    /* minimal inline helpers for map popups on small screens */
+    #family-map { min-height: 420px; }
+  </style>
 </head>
 <body>
   <header>
@@ -14,12 +22,13 @@
 
   <!-- Toggle -->
   <div class="view-toggle" style="text-align:center; margin:14px 0;">
-    <button id="btnCards" onclick="switchView('cards')" class="toggle-btn active">Cards View</button>
-    <button id="btnTree" onclick="switchView('tree')" class="toggle-btn">Tree View</button>
+    <button id="btnCards" onclick="switchView('cards')" class="toggle-btn">Cards View</button>
+    <button id="btnTree" onclick="switchView('tree')" class="toggle-btn active">Tree View</button>
+    <button id="btnMap" onclick="switchView('map')" class="toggle-btn">Map View</button>
   </div>
 
   <!-- CARDS VIEW (original layout) -->
-  <main class="tree-container cards-view">
+  <main class="tree-container cards-view" style="display:none;">
     <!-- TOP: Migration & origin stories -->
     <section class="generation">
       <h2>Origins & Migration Stories</h2>
@@ -323,6 +332,16 @@
     </div>
   </div>
 
+  <!-- Map view -->
+  <main class="tree-container map-view" style="display:none; max-width:1200px; margin:0 auto 80px;">
+    <section class="generation">
+      <h2>Family Map</h2>
+      <div id="family-map"></div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
   (function populateStories(){
     const data = {
@@ -373,24 +392,115 @@
   function closeStory(){ document.getElementById('story-modal').style.display = 'none'; }
   window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
 
-  // switch between card & tree view (default shows tree)
+  // switch between cards | tree | map
   function switchView(view){
     const cards = document.querySelector('.tree-container.cards-view');
     const tree = document.querySelector('.tree-container.tree-view');
-    if(!cards || !tree) return;
+    const map = document.querySelector('.tree-container.map-view');
+    if(!cards || !tree || !map) return;
+    cards.style.display = map.style.display = tree.style.display = 'none';
+    document.getElementById('btnCards').classList.remove('active');
+    document.getElementById('btnTree').classList.remove('active');
+    document.getElementById('btnMap').classList.remove('active');
+
     if(view === 'tree'){
-      cards.style.display = 'none';
       tree.style.display = 'block';
       document.getElementById('btnTree').classList.add('active');
-      document.getElementById('btnCards').classList.remove('active');
-    } else {
+    } else if(view === 'cards'){
       cards.style.display = 'block';
-      tree.style.display = 'none';
-      document.getElementById('btnTree').classList.remove('active');
       document.getElementById('btnCards').classList.add('active');
+    } else if(view === 'map'){
+      map.style.display = 'block';
+      document.getElementById('btnMap').classList.add('active');
+      initMap(); // initialize when map tab shown
     }
   }
-  </script>
 
+  // ===== Map =====
+  let mapInitialized = false;
+  function initMap() {
+    if(mapInitialized) return;
+    mapInitialized = true;
+
+    const map = L.map('family-map').setView([20,0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // DivIcon generator for colored round markers (classes defined in style.css)
+    function makeIcon(family) {
+      const className = 'marker-' + (family || 'unknown');
+      return L.divIcon({ className: className, iconSize: [18,18] });
+    }
+
+    // Complete family list (every person from your dataset), with rough coordinates:
+    // If no clear location in the story, coords = [0,0] and story = "?"
+    const familyMarkers = [
+      // Origins & early
+      { id:'immigration', name:'Sicilian branch', family:'unknown', location:[37.6,14.0], story:'Sicily → California' }, // Sicily
+      { id:'hungarian', name:'Hungarian farm family', family:'vaccaro', location:[40.3675,-82.9962], story:'Ohio (Ellis Island arrivals)' }, // Ohio center
+      { id:'nwpassage', name:'NW Passage tale', family:'unknown', location:[0,0], story:'?' },
+
+      // Grandparents
+      { id:'james_vaccaro', name:'James Vaccaro', family:'vaccaro', location:[34.0522,-118.2437], story:'Pennsylvania → Ohio → California' },
+      { id:'rose_kirila', name:'Rose Kirila', family:'kirila', location:[40.3675,-82.9962], story:'Ohio (Hungarian roots)' },
+      { id:'william_patton', name:'William Patton', family:'patton', location:[54.5973,-5.9301], story:'Northern Ireland (Belfast)' },
+      { id:'beatrice_fisher', name:'Beatrice Fisher', family:'patton', location:[0,0], story:'?' },
+
+      // Parents & siblings
+      { id:'lynne', name:'Lynne Patton', family:'patton', location:[0,0], story:'?' },
+      { id:'gary', name:'Gary Patton', family:'patton', location:[54.5973,-5.9301], story:'Born in Belfast; later California' },
+      { id:'deborah', name:'Deborah Patton (née Vaccaro)', family:'vaccaro', location:[34.0522,-118.2437], story:'Ohio → moved west (California)' },
+
+      // Patton younger
+      { id:'daniel', name:'Daniel Patton', family:'patton', location:[34.1683,-118.6059], story:'Woodland Hills, CA' },
+
+      // Kupfer side
+      { id:'robert_kupfer', name:'Robert Kupfer', family:'kupfer', location:[0,0], story:'?' },
+      { id:'patricia_kupfer', name:'Patricia Kupfer', family:'kupfer', location:[0,0], story:'?' },
+      { id:'brian', name:'Brian Kupfer', family:'kupfer', location:[34.2746,-119.2290], story:'Ventura, CA (works in tooling; coached in Ireland)' },
+      { id:'cort', name:'Cort Kupfer', family:'kupfer', location:[0,0], story:'?' },
+      { id:'crystal', name:'Crystal Kupfer', family:'kupfer', location:[0,0], story:'?' },
+      { id:'april', name:'April Kupfer', family:'kupfer', location:[0,0], story:'?' },
+      { id:'everett', name:'Everett Kupfer', family:'kupfer', location:[37.8715,-122.2730], story:'Near Berkeley (Air Force veteran)' },
+      { id:'jonathan', name:'Jonathan Kupfer', family:'kupfer', location:[0,0], story:'?' },
+
+      // You & children
+      { id:'shannen', name:'Shannen Patton', family:'patton', location:[34.2746,-119.2290], story:'Ventura, CA (married Brian)' },
+      { id:'breanna', name:'Breanna Kupfer', family:'patton', location:[34.2746,-119.2290], story:'Born Ventura, CA' },
+      { id:'alexis', name:'Alexis Kupfer', family:'patton', location:[34.2746,-119.2290], story:'Ventura, CA' },
+
+      // Dean side
+      { id:'mario', name:'Mario Dean', family:'dean', location:[0,0], story:'?' },
+      { id:'nannete', name:'Nannete Dean', family:'dean', location:[48.8566,2.3522], story:'Raised partly in France' },
+      { id:'carlo', name:'Carlo Dean', family:'dean', location:[0,0], story:'?' },
+      { id:'renato', name:'Renato Dean', family:'dean', location:[0,0], story:'?' },
+      { id:'demarco', name:'Demarco Victoria', family:'dean', location:[0,0], story:'?' },
+      { id:'gino', name:'Gino Dean', family:'dean', location:[32.7157,-117.1611], story:'San Diego, CA' },
+      { id:'giana', name:'Giana Dean', family:'dean', location:[0,0], story:'?' },
+      { id:'demetri', name:'Demetri Dean', family:'dean', location:[0,0], story:'?' },
+
+      // Extended relatives
+      { id:'eugene', name:'Eugene Edward Kirili', family:'vaccaro', location:[40.3675,-82.9962], story:'Ohio / Pennsylvania' },
+      { id:'ruth_barris', name:'Ruth Adaline Barris', family:'vaccaro', location:[41.3056,-73.2096], story:'Trumbull / West Middlesex' },
+      { id:'fisher_note', name:'Fisher / Crozier / Fischer notes', family:'unknown', location:[0,0], story:'?' }
+    ];
+
+    // Add all markers to map (colored by family)
+    familyMarkers.forEach(p => {
+      const marker = L.marker(p.location, { icon: makeIcon(p.family) }).addTo(map);
+      marker.bindPopup('<b>' + p.name + '</b><br>' + (p.story || '?'));
+    });
+
+    // fit to markers (avoid trying to fit only [0,0] cluster)
+    const valid = familyMarkers.filter(m => !(m.location[0] === 0 && m.location[1] === 0));
+    if(valid.length){
+      const bounds = L.latLngBounds(valid.map(m => m.location));
+      map.fitBounds(bounds.pad(0.25));
+    }
+  } // end initMap
+
+  </script>
 </body>
 </html>
