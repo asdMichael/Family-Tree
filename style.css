@@ -1,3 +1,56 @@
 /* Family Tree — Top-Down Layout (Detailed) */
 :root{ --bg:#f3f6fb; --card:#fff; --accent:#1f6feb; --muted:#6b7280; --line:#cbd5e1; --container-width:1200px; }
 *{box-sizing:border-box} body{ margin:0; font-family: Inter, Roboto, Arial, sans-serif; background:var(--bg); color:#111827; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; } header{ background:linear-gradient(90deg,var(--accent),#174b93); color:white; padding:20px; text-align:center; } header h1{margin:0;font-size:1.5rem} header p{margin:6px 0 0;font-size:0.95rem;opacity:0.95} .tree-container{ padding:20px; max-width:var(--container-width); margin:0 auto 80px; } /* generation title */ .generation h2{ margin:8px 0 10px; color:#0f1724; font-size:1.05rem; } /* Tree UL layout: top-down columns */ .tree { display:flex; gap:20px; justify-content:flex-start; flex-wrap:wrap; list-style:none; padding:12px 18px; margin:0; } /* person box */ .person{ background:var(--card); border-radius:8px; padding:12px; min-width:220px; max-width:260px; box-shadow:0 8px 20px rgba(15,23,42,0.06); border:1px solid rgba(15,23,42,0.04); cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; } .person:hover{ transform:translateY(-6px); box-shadow:0 12px 30px rgba(15,23,42,0.09) } .person .name{font-weight:700; font-size:15px; margin-bottom:6px} .person .meta{font-size:13px;color:var(--muted)} /* couple layout */ .couple{ display:flex; align-items:center; gap:8px; flex-direction:row; justify-content:center; padding:12px; } .couple .name{ background:transparent; color:var(--accent); padding:6px 8px; border-radius:6px; } .and{ font-weight:700; margin:0 8px; color:var(--muted) } .children{ list-style:none; padding:12px; margin-top:12px; display:flex; gap:12px; justify-content:center; width:100% } /* modal */ .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.45); z-index:60; padding:24px; } .modal-card{ background:var(--card); border-radius:12px; padding:20px; max-width:720px; width:100%; box-shadow:0 12px 36px rgba(2,6,23,0.18); position:relative; text-align:left; } .modal-card button#closeModal{ position:absolute; right:14px; top:12px; background:#efefef; border:none; padding:6px 8px; border-radius:8px; cursor:pointer; } .story-photo{ max-width:220px; display:block; margin:10px 0 14px; border-radius:8px } footer{ text-align:center; padding:14px 0; color:var(--muted) } /* responsive */ @media (max-width:980px){ .tree{ flex-direction:column; gap:12px; align-items:center } .person{ min-width:92%; max-width:92% } .children{ flex-direction:row; flex-wrap:wrap; gap:10px } } /* Toggle Button */ .view-toggle .toggle-btn { border:1px solid rgba(15,23,42,0.06); background: white; padding:8px 12px; margin:0 6px; border-radius:8px; cursor:pointer; font-weight:600; } .view-toggle .toggle-btn.active { background: var(--accent); color: #fff; border-color: rgba(255,255,255,0.06); } /* Family tree diagram styling */ .family-tree { width:100%; display:flex; flex-direction:column; gap:18px; align-items:center; } .family-root, .family-generation, .family-leaf, .family-row { list-style:none; display:flex; gap:26px; padding:0; margin:0; justify-content:center; align-items:flex-start; } .family-generation .branch { display:flex; flex-direction:column; gap:10px; align-items:center; min-width:260px; } .node { background:transparent; text-align:center; cursor:pointer; } .node img { width:96px; height:96px; object-fit:cover; border-radius:50%; display:block; margin:0 auto 8px; box-shadow:0 6px 16px rgba(2,6,23,0.12); border:4px solid rgba(255,255,255,0.6); } .node .label { font-weight:600; font-size:13px; color:#0f1724; } /* Couple inline nodes */ .node.couple { display:flex; flex-direction:column; align-items:center; gap:8px; } .node-inline { display:flex; gap:8px; align-items:center; cursor:pointer; } .node-inline img { width:76px; height:76px; } /* children row */ .children { display:flex; gap:14px; margin-top:8px; justify-content:center; flex-wrap:wrap; } /* Simple connector lines using pseudo elements */ .family-generation, .family-leaf { position:relative; } .family-generation::before, .family-leaf::before { content:""; position:absolute; left:6%; right:6%; top:40px; height:2px; background:var(--line); opacity:0.9; } .family-generation li::after, .family-leaf li::after { content:""; display:block; width:2px; height:26px; background:var(--line); margin:0 auto; margin-top:8px; } /* smaller screen adjustments */ @media (max-width:980px){ .node img { width:80px; height:80px; } .node-inline img { width:64px; height:64px; } .family-root, .family-generation, .family-leaf, .family-row { flex-direction:row; flex-wrap:wrap; gap:14px; } }
+
+/* Map marker styles (divIcons) */
+.marker-patton {
+  background: #3b82f6;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.marker-kupfer {
+  background: #22c55e;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.marker-vaccaro {
+  background: #8b5cf6;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.marker-kirila {
+  background: #06b6d4;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.marker-dean {
+  background: #f97316;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.marker-unknown {
+  background: #6b7280;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* ensure Leaflet markers center nicely */
+.leaflet-div-icon { border:none; }
