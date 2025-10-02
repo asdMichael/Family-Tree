@@ -40,98 +40,75 @@ body{ margin:0; font-family:Inter, Roboto, Arial, sans-serif; background:var(--b
 
 /* Tree container */
 .tree-container { padding:20px; max-width:var(--max-width); margin:0 auto 40px; }
-.family-tree-grid { display:flex; flex-direction:column; gap:36px; align-items:stretch; }
+.tree-wrap { display:flex; flex-direction:column; gap:28px; }
 
 /* Row (generation) */
-.row.gen { display:flex; gap:18px; justify-content:flex-start; align-items:flex-start; flex-wrap:wrap; }
+.row { display:flex; gap:20px; align-items:flex-start; justify-content:center; flex-wrap:wrap; padding:8px 6px; position:relative; }
 
-/* Node (person) */
-.node {
-  position:relative;
-  width:180px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+/* person card */
+.person {
+  width:170px;
+  background:var(--card);
+  border-radius:12px;
+  padding:14px 12px 16px;
+  box-shadow:0 12px 30px rgba(15,23,42,0.06);
+  border:2px solid var(--card-border);
   text-align:center;
   cursor:pointer;
+  position:relative;
 }
-.node .avatar {
-  width:84px; height:84px; border-radius:50%;
-  background:linear-gradient(180deg,#f4f6fa,#e9eef8);
-  border:3px solid white; box-shadow:0 6px 20px rgba(15,23,42,0.06);
-  margin-bottom:6px;
-}
-.node .label { font-weight:700; font-size:14px; color:#0f1724; }
-.node .sub { display:block; font-size:12px; color:var(--muted); margin-top:6px; font-weight:500; }
+.person .avatar { width:76px; height:76px; border-radius:50%; margin:-46px auto 8px; background:linear-gradient(180deg,#f4f6fa,#e9eef8); border:3px solid white; box-shadow:0 6px 20px rgba(15,23,42,0.06); display:block; }
+.person .name { font-weight:700; font-size:14px; margin-top:6px; color:#0f1724; }
+.person .meta { font-size:12px; color:var(--muted); margin-top:6px; }
 
-/* couple styling: tiny visual connector between two adjacent partners */
-.row.gen .couple { display:flex; gap:12px; align-items:flex-start; }
+/* Couple block (two side-by-side inside same row) */
+.couple-block { display:flex; gap:12px; align-items:flex-start; justify-content:center; }
 
-/* special classes */
-.node.extended .avatar { background:linear-gradient(180deg,#fff7ed,#fff1db); }
-.node.child .avatar { background:linear-gradient(180deg,#f0fff4,#ecfdf5); }
+/* Parent-block and child cluster to group parents and children */
+.parent-block { display:flex; gap:10px; align-items:flex-start; justify-content:center; }
+.child-cluster { display:flex; gap:12px; align-items:flex-start; justify-content:center; }
 
-/* CONNECTORS */
-/* We'll draw simple vertical lines from a node down using pseudo-elements.
-   To represent "parent couple" connecting to "children", the parent row will have lines down.
-   This is a pragmatic static approach that works for this fixed layout. */
+/* extended styling */
+.parent-block.extended .person { background:linear-gradient(180deg,#fff7ed,#fff1db); }
 
-.row.gen-top .node::after,
-.row.gen-grandparents .node::after,
-.row.gen-parents .node::after {
-  content:'';
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  top:110%;
-  width:2px;
-  height:28px;
-  background:var(--line);
-  border-radius:2px;
-}
+/* child style */
+.person.child { background:linear-gradient(180deg,#f0fff4,#ecfdf5); }
 
-/* To visually connect horizontal couples, add a small bar between the two portraits when the two nodes are adjacent.
-   We'll simulate that by adding a short horizontal bar from the right half of a node for those nodes that are couples.
-   Because HTML is static, the spacing will visually suggest pairing. */
-.row.gen-grandparents .node.couple:nth-child(1)::before,
-.row.gen-top .node.couple:nth-child(1)::before {
-  /* minimal decorative */
-}
- /* children connectors: from children row to parent row we add a pseudo element above the child pointing up */
-.row.gen-children .node::before {
-  content:'';
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:110%;
-  width:2px;
-  height:28px;
-  background:var(--line);
-  border-radius:2px;
-}
+/* connectors container */
+.connectors { position:relative; pointer-events:none; }
 
-/* small responsive tweaks */
+/* Draw simple vertical connectors by absolute positioned lines.
+   We'll place a few decorative lines; because the layout is static, these will visually connect parent rows to child rows. */
+
+/* Generic vertical line style (adjusted for each specific connector inlined) */
+.connector { position:absolute; width:2px; background:var(--line); border-radius:2px; }
+
+/* We'll locate / size these connectors with left/top CSS by target attributes.
+   Because this CSS is static and the HTML layout may vary with window size, the connectors are intentionally approximate and visually communicate relationships.
+   If you prefer fully precise lines, I can add a small JS routine to measure elements and draw SVG lines (I can add that later if you want). */
+
+/* Basic responsive */
 @media (max-width:1100px){
-  .node { width:160px; }
-  .node .avatar { width:72px; height:72px; }
+  .person { width:150px; }
+  .person .avatar { width:64px; height:64px; }
 }
 @media (max-width:700px){
-  .row.gen { justify-content:center; }
-  .node { width:92%; max-width:320px; }
+  .row { flex-direction:column; align-items:center; gap:16px; }
+  .person { width:92%; max-width:360px; }
 }
 
-/* TIMELINE styles */
+/* TIMELINE */
 .timeline-container { padding:18px; max-width:var(--max-width); margin:0 auto 80px; }
 .timeline-header { margin-bottom:8px; text-align:left; }
 .timeline-header h2 { margin:0; font-size:1.2rem; color:#0f1724; }
 .muted { color:var(--muted); }
 
-/* horizontal timeline track */
-.timeline-line-wrap { position:relative; padding:48px 24px 80px; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+/* timeline track */
+.timeline-line-wrap { position:relative; padding:48px 24px 80px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
 .timeline-track { display:flex; gap:4%; align-items:center; min-width:1200px; padding:18px 24px; position:relative; }
 .timeline-track::before { content:""; position:absolute; left:2%; right:2%; top:50%; height:4px; background:linear-gradient(90deg, rgba(47,54,80,0.12), rgba(47,54,80,0.08)); transform:translateY(-50%); border-radius:999px; z-index:1; }
 .timeline-node { position:relative; flex:0 0 auto; width:220px; display:flex; flex-direction:column; align-items:center; z-index:10; outline:none; }
-.timeline-dot { width:18px; height:18px; border-radius:50%; background:#fff; border:4px solid var(--accent); box-shadow:0 8px 20px rgba(2,6,23,0.12); cursor:pointer; position:relative; z-index:12; }
+.timeline-dot { width:18px; height:18px; border-radius:50%; background:#fff; border:4px solid var(--accent); box-shadow:0 8px 20px rgba(2,6,23,0.12); cursor:pointer; }
 .timeline-label { margin-top:10px; font-size:13px; color:var(--muted); }
 .timeline-card { position:absolute; bottom:64px; left:50%; transform:translateX(-50%) translateY(8px); width:320px; background:var(--card); border-radius:10px; padding:12px 14px; box-shadow:0 18px 46px rgba(2,6,23,0.14); border:1px solid rgba(15,23,42,0.06); opacity:0; visibility:hidden; transition:opacity .22s ease, transform .22s ease, visibility .22s; z-index:20; text-align:left; }
 .timeline-node.active .timeline-card { opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
@@ -146,5 +123,5 @@ body{ margin:0; font-family:Inter, Roboto, Arial, sans-serif; background:var(--b
 .modal-card { background:var(--card); border-radius:12px; padding:24px; max-width:900px; width:100%; box-shadow:0 18px 48px rgba(2,6,23,0.18); position:relative; text-align:left; max-height:90vh; overflow:auto; }
 .close-btn { position:absolute; right:12px; top:12px; padding:8px 10px; border-radius:8px; border:none; background:#efefef; cursor:pointer; }
 
-/* focus outlines */
-.node:focus, .timeline-node:focus, .timeline-dot:focus, .card-open:focus { outline:3px solid rgba(31,111,235,0.16); outline-offset:4px; }
+/* focus states */
+.person:focus, .timeline-node:focus, .timeline-dot:focus, .card-open:focus { outline:3px solid rgba(31,111,235,0.16); outline-offset:4px; }
