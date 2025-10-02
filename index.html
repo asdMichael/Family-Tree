@@ -17,6 +17,9 @@
     :root{
       --card-border:#2f3650;
       --connector-color:#2f3650;
+      --accent:#1f6feb;
+      --muted:#6b7280;
+      --card:#fff;
     }
 
     /* make portrait circle look like the example (small circle within card) */
@@ -71,16 +74,17 @@
     }
 
     /* map container style */
-    #birth-map { height:70vh; min-height:480px; border-radius:12px; margin:18px 0; border:2px solid rgba(15,23,42,0.06); }
+    #birth-map { height:72vh; min-height:420px; border-radius:12px; margin:18px 0; border:2px solid rgba(15,23,42,0.06); }
     .map-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
     .small-btn { padding:8px 10px; border-radius:8px; border:none; cursor:pointer; background:#e5e7eb; font-weight:600; }
     .small-btn.primary { background:var(--accent); color:#fff; }
 
-    /* Top tabs override for local page (small inline) */
+    /* Top tabs */
     .top-tabs { display:flex; justify-content:center; gap:6px; padding:12px 8px; background:linear-gradient(90deg,var(--accent),#174b93); }
-    .top-tabs button { background:transparent; border:none; color:white; padding:10px 16px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.9; }
-    .top-tabs button.active { background:rgba(255,255,255,0.12); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
+    .top-tabs button { background:transparent; border:none; color:white; padding:10px 16px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.95; }
+    .top-tabs button.active { background:rgba(255,255,255,0.10); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
     @media (max-width:720px){ .top-tabs { padding:8px; } .top-tabs button{ padding:8px 10px; font-size:14px; } }
+
   </style>
 </head>
 <body>
@@ -98,24 +102,18 @@
   <!-- ====================== FAMILY TREE ====================== -->
   <main id="treePage" class="tree-container tree-view" style="display:block;">
     <section class="family-tree">
-      <!-- The structure below follows top → down: great-grandparents → grandparents → parents → you & siblings.
-           Each <li> is a node; nested <ul> shows children. Portraits use small inline SVG placeholders that you can replace. -->
-
+      <!-- (Your full tree structure — unchanged) -->
       <ul>
-        <!-- LEVEL: Great-grandparents row (left to right across the top) -->
+        <!-- LEFT great-grand pair -->
         <li>
-          <!-- Left-side great-grand couple (Vaccaro branch) -->
           <div class="node">
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-              <!-- James Vaccaro -->
               <div class="node" onclick="openStory('james_vaccaro')" title="James Vaccaro">
-                <!-- placeholder circle image (SVG) -->
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">James Vaccaro</div>
                 <div class="sub">1913–1985</div>
               </div>
 
-              <!-- Rose Louise Kirila -->
               <div class="node" onclick="openStory('rose_kirila')" title="Rose Louise Kirila">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Rose Louise Kirila</div>
@@ -123,20 +121,16 @@
               </div>
             </div>
 
-            <!-- Children of James & Rose -->
             <ul>
               <li>
-                <!-- Deborah (Vaccaro) who married into Patton -->
                 <div class="node" onclick="openStory('deborah')" title="Deborah Patton">
                   <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                   <div class="label">Deborah (Vaccaro)</div>
                   <div class="sub">b. 1959</div>
                 </div>
 
-                <!-- Deborah's partner (Gary) sits under William/Beatrice line later (we mirror branches to look balanced) -->
                 <ul>
                   <li>
-                    <!-- Daniel (child of Gary & Deborah) -->
                     <div class="node" onclick="openStory('daniel')" title="Daniel Patton">
                       <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                       <div class="label">Daniel Patton</div>
@@ -149,7 +143,7 @@
           </div>
         </li>
 
-        <!-- Middle top great-grand pair (left-center in reference) -->
+        <!-- MIDDLE top great-grand pair -->
         <li>
           <div class="node">
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
@@ -166,7 +160,6 @@
               </div>
             </div>
 
-            <!-- William & Beatrice's children row (Lynne, Gary, etc.) -->
             <ul>
               <li>
                 <div class="node" onclick="openStory('lynne')" title="Lynne Patton">
@@ -183,7 +176,6 @@
                   <div class="sub">b. 1956 — Belfast</div>
                 </div>
 
-                <!-- Gary marries Deborah (Vaccaro): show as a couple and then their children -->
                 <ul>
                   <li>
                     <div class="node" style="padding-top:28px;">
@@ -201,7 +193,6 @@
                         </div>
                       </div>
 
-                      <!-- children of Gary & Deborah (Shannen & Daniel) -->
                       <ul>
                         <li>
                           <div class="node" onclick="openStory('shannen')" title="Shannen Patton">
@@ -210,7 +201,6 @@
                             <div class="sub">b. 1987</div>
                           </div>
 
-                          <!-- Shannen & Brian (Kupfer) -->
                           <ul>
                             <li>
                               <div class="node" style="padding-top:28px;">
@@ -228,7 +218,6 @@
                                   </div>
                                 </div>
 
-                                <!-- children: Michael (you), Breanna, Alexis -->
                                 <ul>
                                   <li>
                                     <div class="node" onclick="openStory('michael')" title="Michael Dean">
@@ -237,7 +226,6 @@
                                       <div class="sub">b. Dec 10 / 2008</div>
                                     </div>
 
-                                    <!-- Michael's siblings -->
                                     <ul>
                                       <li>
                                         <div class="node" onclick="openStory('breanna')" title="Breanna Kupfer">
@@ -272,10 +260,9 @@
           </div>
         </li>
 
-        <!-- Right-side top (extra relatives / balancing) -->
+        <!-- RIGHT-side and bottom clusters -->
         <li>
           <div class="node">
-            <!-- This area mirrors other great-grand branches for visual balance -->
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
               <div class="node" onclick="openStory('eugene')">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
@@ -302,7 +289,6 @@
           </div>
         </li>
 
-        <!-- Additional bottom-left cluster: Kupfer root (Robert & Patricia) -->
         <li style="margin-top:18px;">
           <div class="node">
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
@@ -319,7 +305,6 @@
               </div>
             </div>
 
-            <!-- Kupfer children -->
             <ul>
               <li><div class="node" onclick="openStory('cort')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Cort Kupfer</div></div></li>
               <li><div class="node" onclick="openStory('brian')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Brian Kupfer</div></div></li>
@@ -331,7 +316,6 @@
           </div>
         </li>
 
-        <!-- Dean branch cluster (connected to Michael as sibling branch; placed right-of-center) -->
         <li style="margin-top:18px;">
           <div class="node">
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
@@ -379,48 +363,46 @@
     </div>
   </div>
 
-  <!-- ====================== SCRIPTS: stories & modal & map ====================== -->
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-V3D3V0sXH8VYd0q3w6tZ8p0i3WmXgI+qKqZ3E7m1w0k=" crossorigin=""></script>
 
   <script>
-    // stories object (pre-filled with the extended bios you provided earlier)
+    // stories (unchanged)
     const stories = {
-      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look."},
-      "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country."},
-      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head."},
-      "william_patton": {"title":"William Patton","photo":"","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms."},
-      "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","photo":"","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving."},
-      "lynne": {"title":"Lynne Patton","photo":"","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency."},
-      "gary": {"title":"Gary Patton (b. 1956)","photo":"","text":"Gary was born in Belfast into a household where religion and ritual structured daily life. He later moved to California and, like many immigrants, learned to translate old habits into new rhythms. Gary married Deborah in 1984 and built a family that balanced strict expectations with a deep loyalty. He tells stories about Ireland — about fields, stubborn weather, and the odd comfort of a well-steeped cup of tea — and his children remember him as a man who blended sternness with sudden, small acts of generosity: a fixed bike, an unexpected cake, a private grin at a family joke."},
-      "daniel": {"title":"Daniel Patton (b. 1992)","photo":"","text":"Daniel grew up in Woodland Hills and represents a generational shift: more rooted in California life than in the old stories, but still attentive to them. Friends remember him as easygoing, quick with a grin, and practical: the person who can turn a spare part into a working lamp and who still shows up for family dinners when they matter most."},
-      "shannen": {"title":"Shannen Patton (b. 1987)","photo":"","text":"Born in Woodland Hills, Shannen grew up balancing Patton tradition and the pull of California life. She cherishes small rituals: family recipes from Ohio, holiday gatherings, and the habit of calling relatives on birthdays. Married to Brian, she keeps the household running and the family calendar full."},
-      "brian": {"title":"Brian Kupfer (b. 1981)","photo":"","text":"Brian is the kind of practical teacher people remember — patient when explaining a difficult technique, quick to laugh when something goes wrong, and serious when it comes to his responsibilities. He trained people in trades, worked in plastic tooling for Lockheed, and even coached in Ireland for a spell. He married Shannen in 2020 and speaks fondly of ordinary domestic moments: a Saturday project in the garage, late-night pancakes, and quiet conversations about the future. People describe him as reliable and unexpectedly tender."},
-      "breanna": {"title":"Breanna Kupfer (b. 2021)","photo":"","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow."},
-      "alexis": {"title":"Alexis Kupfer (b. 2016)","photo":"","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn."},
-      "robert_kupfer": {"title":"Robert Kupfer","photo":"","text":"Robert is the elder presence of the Kupfer side: a man who kept family links strong through phone calls, weekend gatherings, and quiet support. Workmanlike and direct, he valued steady employment and was proud when his children learned a trade."},
-      "patricia_kupfer": {"title":"Patricia Kupfer","photo":"","text":"Patricia held the family together with small rituals: a shared holiday table, a tidy guest room, a telephone always ready for a check-in. She is remembered for practical kindness."},
-      "cort": {"title":"Cort Kupfer","photo":"","text":"Cort is known in family circles as someone who carries on the humor and directness of his parents. He is practical, quick with a story, and remembers neighborhood details that others forget."},
-      "crystal": {"title":"Crystal Kupfer","photo":"","text":"Crystal is a mother first and foremost; stories about her often center on her son Elijah and small, fiercely protective instincts. She balances warmth with a clear determination to make sure her child has what he needs."},
-      "april": {"title":"April Kupfer","photo":"","text":"April’s life has had its complications — the strain of divorce and raising two children — but she is remembered for her toughness and resourcefulness."},
-      "everett": {"title":"Everett Kupfer","photo":"","text":"Everett served in the Air Force and carried those lessons of discipline and perspective into civilian life. He lives near Berkeley and is remembered for a calm steadiness."},
-      "jonathan": {"title":"Jonathan Kupfer","photo":"","text":"Jonathan is a quieter member of the extended group — a step-uncle who keeps in touch and turns up to help when family plans require extra hands."},
-      "nannete": {"title":"Nannete Dean","photo":"","text":"Nannete was raised partly in France and brought a worldly patience to family life. She is remembered for quiet generosity and for recipes that recall markets and fig trees."},
-      "mario": {"title":"Mario Dean (1985–2014)","photo":"","text":"Mario’s life was short and intense — a figure who appears in family memory as both vulnerable and vivid. He died in 2014 but left behind stories and jokes that still surface at gatherings."},
-      "carlo": {"title":"Carlo Dean","photo":"","text":"Carlo’s story includes both complications and fierce family loyalty. He’s had legal troubles and been in and out of difficult circumstances, but also shows moments of tenderness and care during better times."},
-      "renato": {"title":"Renato Dean","photo":"","text":"Renato served nearly a decade in the military, and that discipline shaped his approach to family and work. He’s described as serious, capable, and private about his struggles."},
-      "demarco": {"title":"Demarco Victoria","photo":"","text":"Demarco and his three children are part of the wider Dean network. Family memory locates them among the many small, ordinary stories of everyday care."},
-      "gino": {"title":"Gino Dean","photo":"","text":"Gino lives in San Diego and is described as friendly and practical. His daughter Taylor is a bright presence and family stories speak of beach days and backyard barbecues."},
-      "giana": {"title":"Giana Dean","photo":"","text":"Giana’s death by suicide is a deep wound in the family. Remembered with tenderness, her life prompts quiet conversations about mental health and care."},
-      "demetri": {"title":"Demetri Dean","photo":"","text":"Possibly a cousin — Demetri appears in family memory as someone who kept to himself but who mattered in small ways."},
-      "eugene": {"title":"Eugene Edward Kirili (1936–1994)","photo":"","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He married Ruth Barris in 1962 and raised a family in small towns."},
-      "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","photo":"","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene raised at least one daughter and kept close to the rhythms of Trumbull and West Middlesex."},
-      "fisher_note": {"title":"Fisher / Crozier / Fischer notes","photo":"","text":"Some family lines use Fisher, some Fischer, and a Crozier appears in marriage records and oral recollections. These name-variants point to likely migrations and the way records sometimes split families across different spellings."},
-      "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10, 2008. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table."}
+      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times..."},
+      "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio..."},
+      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"","text":"Deborah’s childhood was threaded by the rhythms..."},
+      "william_patton": {"title":"William Patton","photo":"","text":"William carried Northern Ireland with him..."},
+      "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","photo":"","text":"Beatrice’s memory is a tapestry of faith..."},
+      "lynne": {"title":"Lynne Patton","photo":"","text":"Lynne is remembered as a steady presence..."},
+      "gary": {"title":"Gary Patton (b. 1956)","photo":"","text":"Gary was born in Belfast into a household..."},
+      "daniel": {"title":"Daniel Patton (b. 1992)","photo":"","text":"Daniel grew up in Woodland Hills..."},
+      "shannen": {"title":"Shannen Patton (b. 1987)","photo":"","text":"Born in Woodland Hills..."},
+      "brian": {"title":"Brian Kupfer (b. 1981)","photo":"","text":"Brian is the kind of practical teacher people remember..."},
+      "breanna": {"title":"Breanna Kupfer (b. 2021)","photo":"","text":"Breanna arrived to a household full of laughter..."},
+      "alexis": {"title":"Alexis Kupfer (b. 2016)","photo":"","text":"Alexis brings an early affection for storytelling..."},
+      "robert_kupfer": {"title":"Robert Kupfer","photo":"","text":"Robert is the elder presence of the Kupfer side..."},
+      "patricia_kupfer": {"title":"Patricia Kupfer","photo":"","text":"Patricia held the family together with small rituals..."},
+      "cort": {"title":"Cort Kupfer","photo":"","text":"Cort is known in family circles as someone who carries on the humor..."},
+      "crystal": {"title":"Crystal Kupfer","photo":"","text":"Crystal is a mother first and foremost..."},
+      "april": {"title":"April Kupfer","photo":"","text":"April’s life has had its complications..."},
+      "everett": {"title":"Everett Kupfer","photo":"","text":"Everett served in the Air Force..."},
+      "jonathan": {"title":"Jonathan Kupfer","photo":"","text":"Jonathan is a quieter member of the extended group..."},
+      "nannete": {"title":"Nannete Dean","photo":"","text":"Nannete was raised partly in France..."},
+      "mario": {"title":"Mario Dean (1985–2014)","photo":"","text":"Mario’s life was short and intense..."},
+      "carlo": {"title":"Carlo Dean","photo":"","text":"Carlo’s story includes both complications..."},
+      "renato": {"title":"Renato Dean","photo":"","text":"Renato served nearly a decade in the military..."},
+      "demarco": {"title":"Demarco Victoria","photo":"","text":"Demarco and his three children are part of the wider Dean network."},
+      "gino": {"title":"Gino Dean","photo":"","text":"Gino lives in San Diego..."},
+      "giana": {"title":"Giana Dean","photo":"","text":"Giana’s death by suicide is a deep wound..."},
+      "demetri": {"title":"Demetri Dean","photo":"","text":"Possibly a cousin — Demetri appears in family memory..."},
+      "eugene": {"title":"Eugene Edward Kirili (1936–1994)","photo":"","text":"Eugene’s life traces a path across Ohio and Pennsylvania..."},
+      "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","photo":"","text":"Ruth’s life is traced through small community ties..."},
+      "fisher_note": {"title":"Fisher / Crozier / Fischer notes","photo":"","text":"Some family lines use Fisher, some Fischer..."},
+      "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10, 2008..."}
     };
 
-    // modal functions
     function openStory(key){
       const s = stories[key];
       if(!s) return;
@@ -433,13 +415,17 @@
     window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
 
     // ------------------------------
-    // Page toggle logic (Tree <-> Map) via top tabs
+    // Page tabs logic
     // ------------------------------
     const tabTree = document.getElementById('tabTree');
     const tabMap = document.getElementById('tabMap');
     const treePage = document.getElementById('treePage');
     const mapPage = document.getElementById('mapPage');
     const btnReturn = document.getElementById('btnReturn');
+
+    tabTree.addEventListener('click', ()=> setActiveTab('tree'));
+    tabMap.addEventListener('click', ()=> setActiveTab('map'));
+    btnReturn && btnReturn.addEventListener('click', ()=> setActiveTab('tree'));
 
     function setActiveTab(active){
       if(active === 'tree'){
@@ -450,82 +436,83 @@
         tabMap.classList.add('active'); tabTree.classList.remove('active');
         treePage.style.display='none'; mapPage.style.display='block';
         tabMap.setAttribute('aria-selected','true'); tabTree.setAttribute('aria-selected','false');
-        // ensure map resizes correctly
-        setTimeout(()=>{ if(window.birthmap) window.birthmap.invalidateSize(); }, 200);
+        // initialize the map the first time the tab is opened
+        if(!window.birthmap) {
+          initMap();
+        } else {
+          // if already initialized, make sure it resizes properly
+          setTimeout(()=>{ window.birthmap.invalidateSize(); }, 220);
+        }
       }
     }
 
-    tabTree.addEventListener('click', ()=> setActiveTab('tree'));
-    tabMap.addEventListener('click', ()=> setActiveTab('map'));
-    btnReturn && btnReturn.addEventListener('click', ()=> setActiveTab('tree'));
-
     // ------------------------------
-    // Map data: markers and coordinates (estimated locations)
+    // Map data (estimated coords) - full-format labels
     // ------------------------------
-    // Coordinates chosen as reasonable central points for the place names you supplied.
     const birthPlaces = [
-      { key:'james_vaccaro', name:'James Vaccaro', place:'Pennsylvania', year:'1913–1985', lat:40.2732, lon:-76.8867 },
-      { key:'rose_kirila', name:'Rose Louise Kirila', place:'Ohio', year:'b. 1929', lat:39.9612, lon:-82.9988 },
-      { key:'deborah', name:'Deborah (Vaccaro) Patton', place:'Ohio', year:'b. 1959', lat:39.9612, lon:-82.9988 },
-      { key:'william_patton', name:'William Patton', place:'Belfast, Northern Ireland', year:'Not specified', lat:54.5973, lon:-5.9301 },
-      { key:'beatrice_fisher', name:'Beatrice Fisher', place:'Dublin, Ireland', year:'Not specified', lat:53.3498, lon:-6.2603 },
-      { key:'lynne', name:'Lynne Patton', place:'Dublin, Ireland', year:'Not specified', lat:53.3498, lon:-6.2603 },
-      { key:'gary', name:'Gary Patton', place:'Belfast, Northern Ireland', year:'b. 1956', lat:54.5973, lon:-5.9301 },
-      { key:'daniel', name:'Daniel Patton', place:'Woodland Hills, CA', year:'b. 1992', lat:34.1683, lon:-118.6057 },
-      { key:'shannen', name:'Shannen Patton', place:'Woodland Hills, CA', year:'b. 1987', lat:34.1683, lon:-118.6057 },
-      { key:'brian', name:'Brian Kupfer', place:'Ojai, CA', year:'b. 1981', lat:34.4486, lon:-119.2429 },
-      { key:'breanna', name:'Breanna Kupfer', place:'Ventura, CA', year:'b. 2021', lat:34.2746, lon:-119.2290 },
-      { key:'alexis', name:'Alexis Kupfer', place:'Ventura, CA', year:'b. 2016', lat:34.2746, lon:-119.2290 },
-      { key:'robert_kupfer', name:'Robert Kupfer', place:'Pennsylvania', year:'unspecified', lat:39.9526, lon:-75.1652 },
-      { key:'patricia_kupfer', name:'Patricia Kupfer', place:'Pennsylvania', year:'Not specified', lat:39.9526, lon:-75.1652 },
-      { key:'cort', name:'Cort Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
-      { key:'crystal', name:'Crystal Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
-      { key:'april', name:'April Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
-      { key:'everett', name:'Everett Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
-      { key:'jonathan', name:'Jonathan Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
-      { key:'nannete', name:'Nannete Dean', place:'Thousand Oaks, CA', year:'Not specified', lat:34.1703, lon:-118.8376 },
-      { key:'mario', name:'Mario Dean', place:'Thousand Oaks, CA', year:'1985–2014', lat:34.1703, lon:-118.8376 },
-      { key:'carlo', name:'Carlo Dean', place:'Thousand Oaks, CA', year:'Not specified', lat:34.1703, lon:-118.8376 },
-      { key:'renato', name:'Renato Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
-      { key:'demarco', name:'Demarco Victoria', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
-      { key:'gino', name:'Gino Dean', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
-      { key:'giana', name:'Giana Dean', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
-      { key:'demetri', name:'Demetri Dean', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
-      { key:'eugene', name:'Eugene Edward Kirili', place:'Missouri', year:'1936–1994', lat:38.5767, lon:-92.1735 },
-      { key:'ruth_barris', name:'Ruth Adaline Barris', place:'Missouri', year:'b. 1939', lat:38.5767, lon:-92.1735 },
-      { key:'michael', name:'Michael Dean', place:'Thousand Oaks, CA', year:'2008', lat:34.1703, lon:-118.8376 }
+      { key:'james_vaccaro', name:'James Vaccaro — Pennsylvania (Born 1913–1985)', lat:40.2732, lon:-76.8867 },
+      { key:'rose_kirila', name:'Rose Louise Kirila — Ohio (Born 1929)', lat:39.9612, lon:-82.9988 },
+      { key:'deborah', name:'Deborah (Vaccaro) Patton — Ohio (Born 1959)', lat:39.9612, lon:-82.9988 },
+      { key:'william_patton', name:'William Patton — Belfast, Northern Ireland (Born unknown)', lat:54.5973, lon:-5.9301 },
+      { key:'beatrice_fisher', name:'Beatrice Fisher — Dublin, Ireland (Born unknown)', lat:53.3498, lon:-6.2603 },
+      { key:'lynne', name:'Lynne Patton — Dublin, Ireland (Born unknown)', lat:53.3498, lon:-6.2603 },
+      { key:'gary', name:'Gary Patton — Belfast, Northern Ireland (Born 1956)', lat:54.5973, lon:-5.9301 },
+      { key:'daniel', name:'Daniel Patton — Woodland Hills, CA (Born 1992)', lat:34.1683, lon:-118.6057 },
+      { key:'shannen', name:'Shannen Patton — Woodland Hills, CA (Born 1987)', lat:34.1683, lon:-118.6057 },
+      { key:'brian', name:'Brian Kupfer — Ojai, CA (Born 1981)', lat:34.4486, lon:-119.2429 },
+      { key:'breanna', name:'Breanna Kupfer — Ventura, CA (Born 2021)', lat:34.2746, lon:-119.2290 },
+      { key:'alexis', name:'Alexis Kupfer — Ventura, CA (Born 2016)', lat:34.2746, lon:-119.2290 },
+      { key:'robert_kupfer', name:'Robert Kupfer — Pennsylvania (Born unknown)', lat:39.9526, lon:-75.1652 },
+      { key:'patricia_kupfer', name:'Patricia Kupfer — Pennsylvania (Born unknown)', lat:39.9526, lon:-75.1652 },
+      { key:'cort', name:'Cort Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
+      { key:'crystal', name:'Crystal Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
+      { key:'april', name:'April Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
+      { key:'everett', name:'Everett Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
+      { key:'jonathan', name:'Jonathan Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
+      { key:'nannete', name:'Nannete Dean — Thousand Oaks, CA (Born unknown)', lat:34.1703, lon:-118.8376 },
+      { key:'mario', name:'Mario Dean — Thousand Oaks, CA (1985–2014)', lat:34.1703, lon:-118.8376 },
+      { key:'carlo', name:'Carlo Dean — Thousand Oaks, CA (Born unknown)', lat:34.1703, lon:-118.8376 },
+      { key:'renato', name:'Renato Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
+      { key:'demarco', name:'Demarco Victoria — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
+      { key:'gino', name:'Gino Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
+      { key:'giana', name:'Giana Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
+      { key:'demetri', name:'Demetri Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
+      { key:'eugene', name:'Eugene Edward Kirili — Missouri (1936–1994)', lat:38.5767, lon:-92.1735 },
+      { key:'ruth_barris', name:'Ruth Adaline Barris — Missouri (Born 1939)', lat:38.5767, lon:-92.1735 },
+      { key:'michael', name:'Michael Dean — Thousand Oaks, CA (Born 2008)', lat:34.1703, lon:-118.8376 }
     ];
 
     // ------------------------------
-    // Initialize map (Leaflet)
+    // Initialize Leaflet map when user opens map tab
     // ------------------------------
     function initMap(){
-      // Only initialize once
-      if(window.birthmap) return;
+      if(window.birthmap) return; // already initialized
 
+      // create map
       const map = L.map('birth-map', { scrollWheelZoom: true }).setView([39.5, -95.35], 4);
       window.birthmap = map;
 
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      // tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      // add markers
-      birthPlaces.forEach(person => {
-        if(!person.lat || !person.lon) return;
-        const marker = L.marker([person.lat, person.lon]).addTo(map);
-        const popupContent = `
-          <div style="min-width:160px">
-            <strong>${person.name}</strong><br/>
-            <span style="font-size:13px;color:#374151">${person.place}</span><br/>
-            <small style="color:#6b7280">${person.year || ''}</small><br/>
-            <a href="#" data-key="${person.key}" class="open-story-link" style="display:inline-block;margin-top:6px;color:#1f6feb;text-decoration:none;font-weight:700">Open story</a>
+      // markers group
+      const markers = L.layerGroup().addTo(map);
+
+      birthPlaces.forEach(p => {
+        if(!p.lat || !p.lon) return;
+        const marker = L.marker([p.lat, p.lon]).addTo(markers);
+        const popup = `
+          <div style="min-width:170px">
+            <strong>${escapeHtml(p.name)}</strong><br/>
+            <a href="#" data-key="${p.key}" class="open-story-link" style="display:inline-block;margin-top:6px;color:#1f6feb;text-decoration:none;font-weight:700">Open story</a>
           </div>`;
-        marker.bindPopup(popupContent);
+        marker.bindPopup(popup);
       });
 
-      // delegate "open story" link clicks
+      // open story link delegation
       document.getElementById('birth-map').addEventListener('click', function(e){
         const a = e.target.closest && e.target.closest('.open-story-link');
         if(a){
@@ -534,14 +521,26 @@
           if(k){ openStory(k); }
         }
       });
+
+      // once map initialized, ensure correct sizing
+      setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} }, 250);
     }
 
-    // initialize map after DOM load
+    // small helper to escape HTML in labels
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+    }
+
+    // keep map from trying to init until user opens the Map tab:
+    // If user reloads while Map tab already active, init on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', function(){
-      initMap();
+      // if user navigated with hash #map, open map immediately
+      if(location.hash === '#map') {
+        setActiveTab('map');
+      }
+      // otherwise keep tree visible; map will init when tab clicked
     });
 
   </script>
-
 </body>
 </html>
