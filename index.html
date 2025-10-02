@@ -16,203 +16,287 @@
 
   <header class="page-header">
     <h1>Michael's Family — Tree & Timeline</h1>
-    <p class="lead">Two views: the connected family tree (horizontal generations) and a horizontal timeline of births. Click any portrait or timeline card to read the full story.</p>
+    <p class="lead">Click any portrait to read a warm family story. Toggle between the connected family tree and the horizontal birth timeline.</p>
   </header>
 
-  <!-- ====================== TREE PAGE ====================== -->
+  <!-- ====================== FAMILY TREE ====================== -->
   <main id="treePage" class="tree-container" style="display:block;">
-    <section class="family-tree-grid">
+    <section class="tree-wrap">
 
-      <!-- GENERATION ROW: Top / Oldest -->
-      <div class="row gen gen-top">
-        <div class="node couple" data-key="james_vaccaro" onclick="openStory('james_vaccaro')">
-          <div class="avatar"></div>
-          <div class="label">James Vaccaro<br><span class="sub">1913–1985</span></div>
+      <!-- ROW 1: Generation 1 (top) - Two couples side-by-side -->
+      <div class="row row-gen row-gen-1">
+        <div class="couple-block couple-top">
+          <div class="person" data-key="james_vaccaro" onclick="openStory('james_vaccaro')">
+            <div class="avatar"></div>
+            <div class="name">James Vaccaro</div>
+            <div class="meta">1913–1985</div>
+          </div>
+          <div class="person" data-key="rose_kirila" onclick="openStory('rose_kirila')">
+            <div class="avatar"></div>
+            <div class="name">Rose Louise Kirila</div>
+            <div class="meta">b. 1929 — Ohio</div>
+          </div>
         </div>
 
-        <div class="node couple" data-key="rose_kirila" onclick="openStory('rose_kirila')">
-          <div class="avatar"></div>
-          <div class="label">Rose Louise Kirila<br><span class="sub">b. 1929 — Ohio</span></div>
-        </div>
-
-        <div class="node couple" data-key="william_patton" onclick="openStory('william_patton')">
-          <div class="avatar"></div>
-          <div class="label">William Patton<br><span class="sub">Northern Ireland</span></div>
-        </div>
-
-        <div class="node couple" data-key="beatrice_fisher" onclick="openStory('beatrice_fisher')">
-          <div class="avatar"></div>
-          <div class="label">Beatrice Fisher<br><span class="sub">Fisher / Crozier</span></div>
-        </div>
-
-        <div class="node couple" data-key="demarco" onclick="openStory('demarco')">
-          <div class="avatar"></div>
-          <div class="label">Demarco Victoria<br><span class="sub">Grandparent</span></div>
-        </div>
-
-        <div class="node couple" data-key="giana" onclick="openStory('giana')">
-          <div class="avatar"></div>
-          <div class="label">Giana Dean<br><span class="sub">Grandparent</span></div>
-        </div>
-
-        <div class="node extended" data-key="eugene" onclick="openStory('eugene')">
-          <div class="avatar"></div>
-          <div class="label">Eugene Kirili<br><span class="sub">1936–1994 (extended)</span></div>
-        </div>
-
-        <div class="node extended" data-key="ruth_barris" onclick="openStory('ruth_barris')">
-          <div class="avatar"></div>
-          <div class="label">Ruth Barris<br><span class="sub">b. 1939 (extended)</span></div>
+        <div class="couple-block couple-top">
+          <div class="person" data-key="william_patton" onclick="openStory('william_patton')">
+            <div class="avatar"></div>
+            <div class="name">William Patton</div>
+            <div class="meta">Northern Ireland</div>
+          </div>
+          <div class="person" data-key="beatrice_fisher" onclick="openStory('beatrice_fisher')">
+            <div class="avatar"></div>
+            <div class="name">Beatrice Fisher</div>
+            <div class="meta">Fisher / Crozier</div>
+          </div>
         </div>
       </div>
 
-      <!-- GENERATION ROW: Grandparent / Parent-of-parents -->
-      <div class="row gen gen-grandparents">
-        <div class="node couple" data-key="deborah" onclick="openStory('deborah')">
-          <div class="avatar"></div>
-          <div class="label">Deborah (Vaccaro)<br><span class="sub">b. 1959</span></div>
+      <!-- ROW 2: Generation 2 -->
+      <div class="row row-gen row-gen-2">
+        <!-- Demarco + Giana (moved to generation 2) -->
+        <div class="parent-block" data-key-group="demarco_giana">
+          <div class="person couple" onclick="openStory('demarco')">
+            <div class="avatar"></div>
+            <div class="name">Demarco Victoria</div>
+            <div class="meta">Grandparent</div>
+          </div>
+          <div class="person couple" onclick="openStory('giana')">
+            <div class="avatar"></div>
+            <div class="name">Giana Dean</div>
+            <div class="meta">Grandparent</div>
+          </div>
         </div>
 
-        <div class="node couple" data-key="gary" onclick="openStory('gary')">
-          <div class="avatar"></div>
-          <div class="label">Gary Patton<br><span class="sub">b. 1956 — Belfast</span></div>
+        <!-- Deborah (child of James+Rose) -->
+        <div class="parent-block" onclick="openStory('deborah')" data-key-group="deborah">
+          <div class="person">
+            <div class="avatar"></div>
+            <div class="name">Deborah (Vaccaro)</div>
+            <div class="meta">b. 1959</div>
+          </div>
         </div>
 
-        <div class="node couple" data-key="lynne" onclick="openStory('lynne')">
-          <div class="avatar"></div>
-          <div class="label">Lynne Patton<br><span class="sub">Aunt</span></div>
+        <!-- Gary & Lynne (children of William+Beatrice) -->
+        <div class="parent-block" data-key-group="gary_lynne">
+          <div class="person" onclick="openStory('gary')">
+            <div class="avatar"></div>
+            <div class="name">Gary Patton</div>
+            <div class="meta">b. 1956 — Belfast</div>
+          </div>
+          <div class="person" onclick="openStory('lynne')">
+            <div class="avatar"></div>
+            <div class="name">Lynne Patton</div>
+            <div class="meta">Aunt</div>
+          </div>
         </div>
 
-        <div class="node couple" data-key="robert_kupfer" onclick="openStory('robert_kupfer')">
-          <div class="avatar"></div>
-          <div class="label">Robert Kupfer<br><span class="sub">Kupfer root</span></div>
+        <!-- Robert & Patricia (Kupfer root) -->
+        <div class="parent-block" data-key-group="robert_patricia">
+          <div class="person" onclick="openStory('robert_kupfer')">
+            <div class="avatar"></div>
+            <div class="name">Robert Kupfer</div>
+            <div class="meta">Kupfer root</div>
+          </div>
+          <div class="person" onclick="openStory('patricia_kupfer')">
+            <div class="avatar"></div>
+            <div class="name">Patricia Kupfer</div>
+            <div class="meta"></div>
+          </div>
         </div>
 
-        <div class="node couple" data-key="patricia_kupfer" onclick="openStory('patricia_kupfer')">
-          <div class="avatar"></div>
-          <div class="label">Patricia Kupfer<br><span class="sub"></span></div>
-        </div>
-      </div>
-
-      <!-- GENERATION ROW: Parents / Aunts & Uncles (your parents' generation) -->
-      <div class="row gen gen-parents">
-        <!-- Dean siblings -->
-        <div class="node" data-key="mario" onclick="openStory('mario')">
-          <div class="avatar"></div>
-          <div class="label">Mario Dean<br><span class="sub">1985–2014</span></div>
+        <!-- Extended relatives (side branch) -->
+        <div class="parent-block extended" onclick="openStory('eugene')">
+          <div class="person">
+            <div class="avatar"></div>
+            <div class="name">Eugene Kirili</div>
+            <div class="meta">1936–1994 (extended)</div>
+          </div>
         </div>
 
-        <div class="node" data-key="carlo" onclick="openStory('carlo')">
-          <div class="avatar"></div>
-          <div class="label">Carlo Dean<br><span class="sub'></span></div>
-        </div>
-
-        <div class="node" data-key="renato" onclick="openStory('renato')">
-          <div class="avatar"></div>
-          <div class="label">Renato Dean<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="gino" onclick="openStory('gino')">
-          <div class="avatar"></div>
-          <div class="label">Gino Dean<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="demetri" onclick="openStory('demetri')">
-          <div class="avatar"></div>
-          <div class="label">Demetri Dean<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="giana_jr" onclick="openStory('giana')">
-          <div class="avatar"></div>
-          <div class="label">Giana Jr.<br><span class="sub"></span></div>
-        </div>
-
-        <!-- Kupfer siblings (Robert & Patricia's children) -->
-        <div class="node" data-key="cort" onclick="openStory('cort')">
-          <div class="avatar"></div>
-          <div class="label">Cort Kupfer<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="crystal" onclick="openStory('crystal')">
-          <div class="avatar"></div>
-          <div class="label">Crystal Kupfer<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="april" onclick="openStory('april')">
-          <div class="avatar"></div>
-          <div class="label">April Kupfer<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="everett" onclick="openStory('everett')">
-          <div class="avatar"></div>
-          <div class="label">Everett Kupfer<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node" data-key="jonathan" onclick="openStory('jonathan')">
-          <div class="avatar"></div>
-          <div class="label">Jonathan Kupfer<br><span class="sub"></span></div>
-        </div>
-
-        <!-- Patton/Kupfer marriage generation -->
-        <div class="node" data-key="shannen" onclick="openStory('shannen')">
-          <div class="avatar"></div>
-          <div class="label">Shannen Patton<br><span class="sub">b. 1987</span></div>
-        </div>
-
-        <div class="node" data-key="brian" onclick="openStory('brian')">
-          <div class="avatar"></div>
-          <div class="label">Brian Kupfer<br><span class="sub">b. 1981</span></div>
-        </div>
-
-        <div class="node" data-key="daniel" onclick="openStory('daniel')">
-          <div class="avatar"></div>
-          <div class="label">Daniel Patton<br><span class="sub">b. 1992</span></div>
+        <div class="parent-block extended" onclick="openStory('ruth_barris')">
+          <div class="person">
+            <div class="avatar"></div>
+            <div class="name">Ruth Barris</div>
+            <div class="meta">b. 1939 (extended)</div>
+          </div>
         </div>
       </div>
 
-      <!-- GENERATION ROW: Children / Youngest -->
-      <div class="row gen gen-children">
-        <div class="node child" data-key="michael" onclick="openStory('michael')">
-          <div class="avatar"></div>
-          <div class="label">Michael Dean<br><span class="sub">b. Dec 10, 2008</span></div>
+      <!-- ROW 3: Generation 3 (all siblings / same horizontal row) -->
+      <div class="row row-gen row-gen-3">
+        <!-- Demarco+Giana's children -->
+        <div class="child-cluster" data-parent="demarco_giana">
+          <div class="person" onclick="openStory('mario')" data-key="mario">
+            <div class="avatar"></div>
+            <div class="name">Mario Dean</div>
+            <div class="meta">1985–2014</div>
+          </div>
+          <div class="person" onclick="openStory('carlo')" data-key="carlo">
+            <div class="avatar"></div>
+            <div class="name">Carlo Dean</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('renato')" data-key="renato">
+            <div class="avatar"></div>
+            <div class="name">Renato Dean</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('gino')" data-key="gino">
+            <div class="avatar"></div>
+            <div class="name">Gino Dean</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('demetri')" data-key="demetri">
+            <div class="avatar"></div>
+            <div class="name">Demetri Dean</div>
+            <div class="meta"></div>
+          </div>
         </div>
 
-        <div class="node child" data-key="breanna" onclick="openStory('breanna')">
-          <div class="avatar"></div>
-          <div class="label">Breanna Kupfer<br><span class="sub">b. 2021</span></div>
+        <!-- Deborah+Gary's children -->
+        <div class="child-cluster" data-parent="deborah">
+          <div class="person" onclick="openStory('shannen')" data-key="shannen">
+            <div class="avatar"></div>
+            <div class="name">Shannen Patton</div>
+            <div class="meta">b. 1987</div>
+          </div>
+          <div class="person" onclick="openStory('daniel')" data-key="daniel">
+            <div class="avatar"></div>
+            <div class="name">Daniel Patton</div>
+            <div class="meta">b. 1992</div>
+          </div>
         </div>
 
-        <div class="node child" data-key="alexis" onclick="openStory('alexis')">
-          <div class="avatar"></div>
-          <div class="label">Alexis Kupfer<br><span class="sub">b. 2016</span></div>
+        <!-- Robert & Patricia's children (Kupfer siblings) -->
+        <div class="child-cluster" data-parent="robert_patricia">
+          <div class="person" onclick="openStory('cort')" data-key="cort">
+            <div class="avatar"></div>
+            <div class="name">Cort Kupfer</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('crystal')" data-key="crystal">
+            <div class="avatar"></div>
+            <div class="name">Crystal Kupfer</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('april')" data-key="april">
+            <div class="avatar"></div>
+            <div class="name">April Kupfer</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('everett')" data-key="everett">
+            <div class="avatar"></div>
+            <div class="name">Everett Kupfer</div>
+            <div class="meta"></div>
+          </div>
+          <div class="person" onclick="openStory('jonathan')" data-key="jonathan">
+            <div class="avatar"></div>
+            <div class="name">Jonathan Kupfer</div>
+            <div class="meta"></div>
+          </div>
         </div>
 
-        <div class="node child" data-key="connor" onclick="openStory('connor')">
-          <div class="avatar"></div>
-          <div class="label">Connor (April's son)<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node child" data-key="eagan" onclick="openStory('eagan')">
-          <div class="avatar"></div>
-          <div class="label">Eagan (April's son)<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node child" data-key="elijah" onclick="openStory('elijah')">
-          <div class="avatar"></div>
-          <div class="label">Elijah (Crystal's son)<br><span class="sub"></span></div>
-        </div>
-
-        <div class="node child" data-key="taylor" onclick="openStory('taylor')">
-          <div class="avatar"></div>
-          <div class="label">Taylor (Gino's daughter)<br><span class="sub"></span></div>
+        <!-- Brian (Kupfer) sits in same gen -->
+        <div class="child-cluster" data-parent="brian">
+          <div class="person" onclick="openStory('brian')" data-key="brian">
+            <div class="avatar"></div>
+            <div class="name">Brian Kupfer</div>
+            <div class="meta">b. 1981</div>
+          </div>
         </div>
       </div>
 
-      <!-- Visual connectors are handled by CSS pseudo-elements based on row & node position -->
+      <!-- ROW 4: Generation 4 (youngest) -->
+      <div class="row row-gen row-gen-4">
+        <!-- Michael (child of Mario + Shannen (past)) -->
+        <div class="person child" onclick="openStory('michael')" data-key="michael">
+          <div class="avatar"></div>
+          <div class="name">Michael Dean</div>
+          <div class="meta">b. Dec 10, 2008</div>
+        </div>
+
+        <!-- Breanna & Alexis (children of Brian + Shannen) -->
+        <div class="person child" onclick="openStory('breanna')" data-key="breanna">
+          <div class="avatar"></div>
+          <div class="name">Breanna Kupfer</div>
+          <div class="meta">b. 2021</div>
+        </div>
+
+        <div class="person child" onclick="openStory('alexis')" data-key="alexis">
+          <div class="avatar"></div>
+          <div class="name">Alexis Kupfer</div>
+          <div class="meta">b. 2016</div>
+        </div>
+
+        <!-- April's kids -->
+        <div class="person child" onclick="openStory('connor')" data-key="connor">
+          <div class="avatar"></div>
+          <div class="name">Connor</div>
+          <div class="meta">April's son</div>
+        </div>
+
+        <div class="person child" onclick="openStory('eagan')" data-key="eagan">
+          <div class="avatar"></div>
+          <div class="name">Eagan</div>
+          <div class="meta">April's son</div>
+        </div>
+
+        <!-- Crystal's son -->
+        <div class="person child" onclick="openStory('elijah')" data-key="elijah">
+          <div class="avatar"></div>
+          <div class="name">Elijah</div>
+          <div class="meta">Crystal's son</div>
+        </div>
+
+        <!-- Gino's daughter -->
+        <div class="person child" onclick="openStory('taylor')" data-key="taylor">
+          <div class="avatar"></div>
+          <div class="name">Taylor</div>
+          <div class="meta">Gino's daughter</div>
+        </div>
+
+      </div>
+
+      <!-- MANUAL CONNECTORS
+           We'll add connector elements that visually tie parents to their children.
+           Position & styling handled in CSS. -->
+      <div class="connectors">
+        <!-- James+Rose -> Deborah -->
+        <div class="connector" data-from="james_vaccaro" data-to="deborah"></div>
+
+        <!-- William+Beatrice -> Gary & Lynne -->
+        <div class="connector" data-from="william_patton" data-to="gary_lynne"></div>
+
+        <!-- Demarco+Giana -> Mario/Carlo/Renato/Gino/Demetri -->
+        <div class="connector" data-from="demarco_giana" data-to="demarco_giana_children"></div>
+
+        <!-- Deborah+Gary -> Shannen & Daniel -->
+        <div class="connector" data-from="deborah" data-to="deborah_children"></div>
+
+        <!-- Robert+Patricia -> Crystal/April/Everett/Jonathan -->
+        <div class="connector" data-from="robert_patricia" data-to="robert_patricia_children"></div>
+
+        <!-- Mario + Shannen (past) -> Michael -->
+        <div class="connector" data-from="mario_shannen" data-to="michael"></div>
+
+        <!-- Brian + Shannen -> Breanna & Alexis -->
+        <div class="connector" data-from="brian_shannen" data-to="breanna_alexis"></div>
+
+        <!-- April -> Connor & Eagan -->
+        <div class="connector" data-from="april" data-to="april_children"></div>
+
+        <!-- Crystal -> Elijah -->
+        <div class="connector" data-from="crystal" data-to="elijah"></div>
+
+        <!-- Gino -> Taylor -->
+        <div class="connector" data-from="gino" data-to="taylor"></div>
+      </div>
+
     </section>
   </main>
 
-  <!-- ====================== TIMELINE PAGE ====================== -->
+  <!-- ====================== TIMELINE (same file) ====================== -->
   <main id="timelinePage" class="timeline-container" style="display:none;">
     <div class="timeline-header">
       <h2>Family Birth Timeline</h2>
@@ -220,7 +304,7 @@
     </div>
 
     <div class="timeline-line-wrap">
-      <div class="timeline-track" id="timelineTrack"></div>
+      <div id="timelineTrack" class="timeline-track"></div>
     </div>
   </main>
 
@@ -232,129 +316,128 @@
     </div>
   </div>
 
-<script>
-/* =========================
-   Full biographies (warm, nostalgic — expanded)
-   Keys must match data-key attributes above
-   ========================= */
-const stories = {
-  "james_vaccaro": {"title":"James Vaccaro (1913–1985)","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look. Growing up, our family would speak his name like a talisman — when things were difficult, someone would say “Do it like James” and we would know to be practical and kind."},
-  "rose_kirila": {"title":"Rose Louise Kirila","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country. Those stories softened into our holidays; decades later we still keep those recipes not because they are fancy but because they are a way to touch Rose across time."},
-  "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head. For me she has always been a quiet compass: the person who remembers who is lonely, who needs a call, who needs a pie."},
-  "william_patton": {"title":"William Patton","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms. I grew up with tales of William’s calm: he gave us permission to be steady in our habits."},
-  "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving. Her hands were never idle; I picture them folding towels, mending hems, and writing notes to remind us of birthdays."},
-  "lynne": {"title":"Lynne Patton","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency. In our stories Lynne is the one who brings the extra chairs and remembers exactly where the gravy boat goes."},
-  "gary": {"title":"Gary Patton (b. 1956)","text":"Gary was born in Belfast into a household where religion and ritual structured daily life. He later moved to California and, like many immigrants, learned to translate old habits into new rhythms. Gary married Deborah and built a family that balanced strict expectations with a deep loyalty. He tells stories about Ireland — about fields, stubborn weather, and the odd comfort of a well-steeped cup of tea — and his children remember him as a man who blended sternness with sudden, small acts of generosity: a fixed bike, an unexpected cake, a private grin at a family joke. To me he is the keeper of a certain quiet dignity."},
-  "daniel": {"title":"Daniel Patton (b. 1992)","text":"Daniel grew up in Woodland Hills and represents a generational shift: more rooted in California life than in the old stories, but still attentive to them. Friends remember him as easygoing, quick with a grin, and practical: the person who can turn a spare part into a working lamp and who still shows up for family dinners when they matter most. There is a calmness about Daniel that the family trusts — the cousin you call to help move a piano and who arrives with snacks."},
-  "shannen": {"title":"Shannen Patton (b. 1987)","text":"Shannen grew up balancing Patton tradition and the pull of California life. She cherishes small rituals: family recipes from Ohio, holiday gatherings, and the habit of calling relatives on birthdays. Shannen's life has threads across branches — a younger life with Mario that produced Michael, and later a life with Brian that created Alexis and Breanna. She keeps the household running and the family calendar full; in my memories she is the one who ties rituals together so the next generation remembers where we came from."},
-  "brian": {"title":"Brian Kupfer (b. 1981)","text":"Brian is the kind of practical teacher people remember — patient when explaining a difficult technique, quick to laugh when something goes wrong, and serious when it comes to his responsibilities. He trained people in trades, worked in plastic tooling, and coached. He married Shannen and his children brought a new chapter of laughter and small rituals. For the family he is a builder not only of projects but of small, steady routines that make a home."},
-  "breanna": {"title":"Breanna Kupfer (b. 2021)","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow. In family photos she is small and serious in a way that feels wise beyond her years, and already she seems to inherit the patient indulgence of the gathered adults."},
-  "alexis": {"title":"Alexis Kupfer (b. 2016)","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn. Watching her is like watching the next chapter of the family — a child who will invent rituals of her own and drag the whole lot of us into new games."},
-  "robert_kupfer": {"title":"Robert Kupfer","text":"Robert is the elder presence of the Kupfer side: a man who kept family links strong through phone calls, weekend gatherings, and quiet support. Workmanlike and direct, he valued steady employment and was proud when his children learned a trade. He taught that dignity often looks like showing up consistently."},
-  "patricia_kupfer": {"title":"Patricia Kupfer","text":"Patricia held the family together with small rituals: a shared holiday table, a tidy guest room, and a telephone always ready for a check-in. She is remembered for practical kindness. She made the house a harbor — clothes folded, a kettle simmering, and a willingness to receive whoever turned up at the door."},
-  "cort": {"title":"Cort Kupfer","text":"Cort is known in family circles as someone who carries on the humor and directness of his parents. He is practical, quick with a story, and remembers neighborhood details that others forget. He keeps the lighter chapters of our story alive with an easy grin."},
-  "crystal": {"title":"Crystal Kupfer","text":"Crystal is a mother first and foremost; stories about her often center on her son Elijah and small, fiercely protective instincts. She balances warmth with a clear determination to make sure her child has what he needs. When family troubles arise she is the one who organizes the logistics and shields the kids — the quiet hero of many nights."},
-  "april": {"title":"April Kupfer","text":"April’s life has had its complications — the strain of divorce and raising two children — but she is remembered for her toughness and resourcefulness. People tell stories of her finding ways through tight times and standing up for the kids; she is an example of grit that gets you through. Her boys, Connor and Eagan, are the center of her world and the cause of a thousand small, ordinary joys."},
-  "everett": {"title":"Everett Kupfer","text":"Everett served in the Air Force and carried those lessons of discipline and perspective into civilian life. He lives near Berkeley and is remembered for a calm steadiness. His military service shaped a steadiness in him that the family admires — a quietly reliable presence in the weather of everyday life."},
-  "jonathan": {"title":"Jonathan Kupfer","text":"Jonathan is a quieter member of the extended group — a step-uncle who keeps in touch and turns up to help when family plans require extra hands. His presence is often understated, but folks notice when he’s not around because he’s the one who quietly made sure something got done."},
-  "nannete": {"title":"Nannete Dean","text":"Nannete was raised partly in France and brought a worldly patience to family life. She is remembered for quiet generosity and for recipes that recall markets and fig trees. Her culinary stories always hinted at wider worlds — the comfort of a good stew and the warmth of a hand-knitted scarf."},
-  "mario": {"title":"Mario Dean (1985–2014)","text":"Mario’s life was short and intense — a figure who appears in family memory as both vulnerable and vivid. He died in 2014 but left behind stories and jokes that still surface at gatherings. People speak of Mario with affection and an ache; he was someone who lived loudly and left behind echoes that remind us to hold one another close. Michael’s connection to Mario is one of pride and tenderness."},
-  "carlo": {"title":"Carlo Dean","text":"Carlo’s story includes both complications and fierce family loyalty. He’s had legal troubles and been in and out of difficult circumstances, but also shows moments of tenderness and care during better times. For our family, Carlo is a reminder that people can be messy and brave at once."},
-  "renato": {"title":"Renato Dean","text":"Renato served nearly a decade in the military, and that discipline shaped his approach to family and work. He’s described as serious, capable, and private about his struggles. The family story about Renato is one of steady, careful competence — someone who takes vows seriously and brings that seriousness home."},
-  "gino": {"title":"Gino Dean","text":"Gino lives in San Diego and is described as friendly and practical. His daughter Taylor is a bright presence and family stories speak of beach days and backyard barbecues. Gino’s life in the sun feels like a lighter chapter in the family book."},
-  "giana_jr": {"title":"Giana Jr.","text":"Giana Jr. carries a name that carries weight in our family — a reminder of the grandmother who held the older generation together. Her life is woven into the family rituals and quiet memory."},
-  "demetri": {"title":"Demetri Dean","text":"Demetri appears in family memory as someone who kept to himself but who mattered in small ways. People remember him for quiet acts: showing up, carrying groceries, being a steady neighbor when it mattered."},
-  "eugene": {"title":"Eugene Edward Kirili (1936–1994)","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He married Ruth Barris and raised a family in small towns. He is a distant great-uncle in our tree — someone who anchors stories of place and memory beyond our immediate line."},
-  "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene kept close to rhythms of small towns and their memory appears as an extended branch in our family story."},
-  "fisher_note": {"title":"Fisher / Crozier / Fischer notes","text":"Name variants — Fisher, Fischer, Crozier — show up across records. They suggest migration and the little spelling changes that make genealogy into a puzzle."},
-  "michael": {"title":"Michael Dean (You)","text":"Michael Dean — born December 10, 2008. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table."},
-  "breanna": {"title":"Breanna Kupfer (b. 2021)","text":"(See Brian & Shannen) — a small bright presence who will shape the next chapter of family stories."},
-  "alexis": {"title":"Alexis Kupfer (b. 2016)","text":"(See Brian & Shannen) — early storyteller, organizer, and mischief-maker in the making."},
-  "connor": {"title":"Connor (April's son)","text":"Connor is one of April’s two boys, a lively child who brings laughter and noise to family gatherings. He is, in everyday terms, what keeps grown-ups on their toes and the family laughing."},
-  "eagan": {"title":"Eagan (April's son)","text":"Eagan is a quieter foil to his brother Connor — curious, observant, and already forming his own little rituals. Together they ground April’s life in a steady, daily love."},
-  "elijah": {"title":"Elijah (Crystal's son)","text":"Elijah is Crystal’s pride — a young, bright child who anchors Crystal’s tenderness and fierce protection. Family stories about Elijah are full of backyard games and quiet bedtime stories."},
-  "taylor": {"title":"Taylor (Gino's daughter)","text":"Taylor is Gino’s daughter and a beach-loving kid who brings a sunlit joy to the family — days at the shore, barbecues, and an easy laugh."}
-};
+  <script>
+    /************************************************************************
+     * Full biographies (warm & nostalgic) — keys must match data-key attributes
+     ************************************************************************/
+    const stories = {
+      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look. Growing up, our family would speak his name like a talisman — when things were difficult, someone would say “Do it like James” and we would know to be practical and kind."},
+      "rose_kirila": {"title":"Rose Louise Kirila","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country. Those stories softened into our holidays; decades later we still keep those recipes not because they are fancy but because they are a way to touch Rose across time."},
+      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head. For me she has always been a quiet compass: the person who remembers who is lonely, who needs a call, who needs a pie."},
+      "william_patton": {"title":"William Patton","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms. I grew up with tales of William’s calm: he gave us permission to be steady in our habits."},
+      "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving. Her hands were never idle; I picture them folding towels, mending hems, and writing notes to remind us of birthdays."},
+      "lynne": {"title":"Lynne Patton","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency. In our stories Lynne is the one who brings the extra chairs and remembers exactly where the gravy boat goes."},
+      "gary": {"title":"Gary Patton (b. 1956)","text":"Gary was born in Belfast into a household where religion and ritual structured daily life. He later moved to California and, like many immigrants, learned to translate old habits into new rhythms. Gary married Deborah and built a family that balanced strict expectations with a deep loyalty. He tells stories about Ireland — about fields, stubborn weather, and the odd comfort of a well-steeped cup of tea — and his children remember him as a man who blended sternness with sudden, small acts of generosity: a fixed bike, an unexpected cake, a private grin at a family joke. To me he is the keeper of a certain quiet dignity."},
+      "daniel": {"title":"Daniel Patton (b. 1992)","text":"Daniel grew up in Woodland Hills and represents a generational shift: more rooted in California life than in the old stories, but still attentive to them. Friends remember him as easygoing, quick with a grin, and practical: the person who can turn a spare part into a working lamp and who still shows up for family dinners when they matter most. There is a calmness about Daniel that the family trusts — the cousin you call to help move a piano and who arrives with snacks."},
+      "shannen": {"title":"Shannen Patton (b. 1987)","text":"Shannen grew up balancing Patton tradition and the pull of California life. She cherishes small rituals: family recipes from Ohio, holiday gatherings, and the habit of calling relatives on birthdays. Shannen's life has threads across branches — a younger life with Mario that produced Michael, and later a life with Brian that created Alexis and Breanna. She keeps the household running and the family calendar full; in my memories she is the one who ties rituals together so the next generation remembers where we came from."},
+      "brian": {"title":"Brian Kupfer (b. 1981)","text":"Brian is the kind of practical teacher people remember — patient when explaining a difficult technique, quick to laugh when something goes wrong, and serious when it comes to his responsibilities. He trained people in trades, worked in plastic tooling, and coached. He married Shannen and his children brought a new chapter of laughter and small rituals. For the family he is a builder not only of projects but of small, steady routines that make a home."},
+      "breanna": {"title":"Breanna Kupfer (b. 2021)","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow. In family photos she is small and serious in a way that feels wise beyond her years, and already she seems to inherit the patient indulgence of the gathered adults."},
+      "alexis": {"title":"Alexis Kupfer (b. 2016)","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn. Watching her is like watching the next chapter of the family — a child who will invent rituals of her own and drag the whole lot of us into new games."},
+      "robert_kupfer": {"title":"Robert Kupfer","text":"Robert is the elder presence of the Kupfer side: a man who kept family links strong through phone calls, weekend gatherings, and quiet support. Workmanlike and direct, he valued steady employment and was proud when his children learned a trade. He taught that dignity often looks like showing up consistently."},
+      "patricia_kupfer": {"title":"Patricia Kupfer","text":"Patricia held the family together with small rituals: a shared holiday table, a tidy guest room, and a telephone always ready for a check-in. She is remembered for practical kindness. She made the house a harbor — clothes folded, a kettle simmering, and a willingness to receive whoever turned up at the door."},
+      "cort": {"title":"Cort Kupfer","text":"Cort is known in family circles as someone who carries on the humor and directness of his parents. He is practical, quick with a story, and remembers neighborhood details that others forget. He keeps the lighter chapters of our story alive with an easy grin."},
+      "crystal": {"title":"Crystal Kupfer","text":"Crystal is a mother first and foremost; stories about her often center on her son Elijah and small, fiercely protective instincts. She balances warmth with a clear determination to make sure her child has what he needs. When family troubles arise she is the one who organizes the logistics and shields the kids — the quiet hero of many nights."},
+      "april": {"title":"April Kupfer","text":"April’s life has had its complications — the strain of divorce and raising two children — but she is remembered for her toughness and resourcefulness. People tell stories of her finding ways through tight times and standing up for the kids; she is an example of grit that gets you through. Her boys, Connor and Eagan, are the center of her world and the cause of a thousand small, ordinary joys."},
+      "everett": {"title":"Everett Kupfer","text":"Everett served in the Air Force and carried those lessons of discipline and perspective into civilian life. He lives near Berkeley and is remembered for a calm steadiness. His military service shaped a steadiness in him that the family admires — a quietly reliable presence in the weather of everyday life."},
+      "jonathan": {"title":"Jonathan Kupfer","text":"Jonathan is a quieter member of the extended group — a step-uncle who keeps in touch and turns up to help when family plans require extra hands. His presence is often understated, but folks notice when he’s not around because he’s the one who quietly made sure something got done."},
+      "nannete": {"title":"Nannete Dean","text":"Nannete was raised partly in France and brought a worldly patience to family life. She is remembered for quiet generosity and for recipes that recall markets and fig trees. Her culinary stories always hinted at wider worlds — the comfort of a good stew and the warmth of a hand-knitted scarf."},
+      "mario": {"title":"Mario Dean (1985–2014)","text":"Mario’s life was short and intense — a figure who appears in family memory as both vulnerable and vivid. He died in 2014 but left behind stories and jokes that still surface at gatherings. People speak of Mario with affection and an ache; he was someone who lived loudly and left behind echoes that remind us to hold one another close. Michael’s connection to Mario is one of pride and tenderness."},
+      "carlo": {"title":"Carlo Dean","text":"Carlo’s story includes both complications and fierce family loyalty. He’s had legal troubles and been in and out of difficult circumstances, but also shows moments of tenderness and care during better times. For our family, Carlo is a reminder that people can be messy and brave at once."},
+      "renato": {"title":"Renato Dean","text":"Renato served nearly a decade in the military, and that discipline shaped his approach to family and work. He’s described as serious, capable, and private about his struggles. The family story about Renato is one of steady, careful competence — someone who takes vows seriously and brings that seriousness home."},
+      "gino": {"title":"Gino Dean","text":"Gino lives in San Diego and is described as friendly and practical. His daughter Taylor is a bright presence and family stories speak of beach days and backyard barbecues. Gino’s life in the sun feels like a lighter chapter in the family book."},
+      "giana": {"title":"Giana Dean","text":"Giana’s death by suicide is a deep wound in the family. Remembered with tenderness, her life prompts quiet conversations about mental health and care. We tell her story so that we might learn to hold one another more gently; her memory has become a quiet, serious plea for awareness and kindness."},
+      "demetri": {"title":"Demetri Dean","text":"Demetri appears in family memory as someone who kept to himself but who mattered in small ways. People remember him for quiet acts: showing up, carrying groceries, being a steady neighbor when it mattered."},
+      "eugene": {"title":"Eugene Edward Kirili (1936–1994)","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He is a distant great-uncle in our tree — someone who anchors stories of place and memory beyond our immediate line."},
+      "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene kept close to rhythms of small towns and their memory appears as an extended branch in our family story."},
+      "fisher_note": {"title":"Fisher / Crozier / Fischer notes","text":"Name variants — Fisher, Fischer, Crozier — show up across records. They suggest migration and the little spelling changes that make genealogy into a puzzle."},
+      "michael": {"title":"Michael Dean (You)","text":"Michael Dean — born December 10, 2008. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table."},
+      "breanna": {"title":"Breanna Kupfer (b. 2021)","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow."},
+      "alexis": {"title":"Alexis Kupfer (b. 2016)","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn."},
+      "connor": {"title":"Connor (April's son)","text":"Connor is one of April’s two boys, a lively child who brings laughter and noise to family gatherings. He is, in everyday terms, what keeps grown-ups on their toes and the family laughing."},
+      "eagan": {"title":"Eagan (April's son)","text":"Eagan is a quieter foil to his brother Connor — curious, observant, and already forming his own little rituals. Together they ground April’s life in a steady, daily love."},
+      "elijah": {"title":"Elijah (Crystal's son)","text":"Elijah is Crystal’s pride — a young, bright child who anchors Crystal’s tenderness and fierce protection. Family stories about Elijah are full of backyard games and quiet bedtime stories."},
+      "taylor": {"title":"Taylor (Gino's daughter)","text":"Taylor is Gino’s daughter and a beach-loving kid who brings a sunlit joy to the family — days at the shore, barbecues, and an easy laugh."}
+    };
 
-/* =========================
-   Timeline data (with approximate years where needed)
-   ========================= */
-const timelineData = [
-  { key: 'james_vaccaro', year: 1913 },
-  { key: 'rose_kirila', year: 1929 },
-  { key: 'eugene', year: 1936 },
-  { key: 'ruth_barris', year: 1939 },
-  { key: 'william_patton', year: 1940 },
-  { key: 'beatrice_fisher', year: 1942 },
-  { key: 'robert_kupfer', year: 1945 },
-  { key: 'patricia_kupfer', year: 1947 },
-  { key: 'lynne', year: 1950 },
-  { key: 'gary', year: 1956 },
-  { key: 'brian', year: 1981 },
-  { key: 'mario', year: 1985 },
-  { key: 'shannen', year: 1987 },
-  { key: 'giana_jr', year: 1989 },
-  { key: 'daniel', year: 1992 },
-  { key: 'michael', year: 2008 },
-  { key: 'alexis', year: 2016 },
-  { key: 'breanna', year: 2021 }
-];
+    /************************************************************************
+     * Timeline data
+     ************************************************************************/
+    const timelineData = [
+      { key: 'james_vaccaro', year: 1913 },
+      { key: 'rose_kirila', year: 1929 },
+      { key: 'eugene', year: 1936 },
+      { key: 'ruth_barris', year: 1939 },
+      { key: 'william_patton', year: 1940 },
+      { key: 'beatrice_fisher', year: 1942 },
+      { key: 'robert_kupfer', year: 1945 },
+      { key: 'patricia_kupfer', year: 1947 },
+      { key: 'lynne', year: 1950 },
+      { key: 'gary', year: 1956 },
+      { key: 'brian', year: 1981 },
+      { key: 'mario', year: 1985 },
+      { key: 'shannen', year: 1987 },
+      { key: 'giana', year: 1989 },
+      { key: 'daniel', year: 1992 },
+      { key: 'michael', year: 2008 },
+      { key: 'alexis', year: 2016 },
+      { key: 'breanna', year: 2021 }
+    ];
 
-const track = document.getElementById('timelineTrack');
-timelineData.forEach(item=>{
-  const s = stories[item.key] || { title: item.key, text: '' };
-  const node = document.createElement('div');
-  node.className = 'timeline-node';
-  node.tabIndex = 0;
-  node.innerHTML = `
-    <div class="timeline-card">
-      <h3>${s.title}</h3>
-      <div class="card-year">${item.year}</div>
-      <p>${s.text.length>220 ? s.text.slice(0,220).trim() + '…' : s.text}</p>
-      <button class="card-open">Read full story</button>
-    </div>
-    <button class="timeline-dot" aria-label="${s.title} ${item.year}"></button>
-    <div class="timeline-label">${item.year}</div>
-  `;
-  track.appendChild(node);
-  node.querySelector('.card-open').addEventListener('click', ()=> openStory(item.key));
-  node.querySelector('.timeline-dot').addEventListener('click', (e)=> { e.stopPropagation(); node.classList.toggle('active'); });
-  node.addEventListener('click', ()=> node.classList.toggle('active'));
-});
+    // build timeline UI
+    const track = document.getElementById('timelineTrack');
+    timelineData.forEach(item=>{
+      const s = stories[item.key] || { title:item.key, text:'' };
+      const node = document.createElement('div');
+      node.className = 'timeline-node';
+      node.tabIndex = 0;
+      node.innerHTML = `
+        <div class="timeline-card">
+          <h3>${s.title}</h3>
+          <div class="card-year">${item.year}</div>
+          <p>${s.text.length>220 ? s.text.slice(0,220).trim() + '…' : s.text}</p>
+          <button class="card-open">Read full story</button>
+        </div>
+        <button class="timeline-dot" aria-label="${s.title} ${item.year}"></button>
+        <div class="timeline-label">${item.year}</div>
+      `;
+      track.appendChild(node);
+      node.querySelector('.card-open').addEventListener('click', ()=> openStory(item.key));
+      node.querySelector('.timeline-dot').addEventListener('click', (e)=> { e.stopPropagation(); node.classList.toggle('active'); });
+      node.addEventListener('click', ()=> node.classList.toggle('active'));
+    });
 
-/* Modal functions */
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
-}
-function openStory(key){
-  const s = stories[key];
-  if(!s) return;
-  const modal = document.getElementById('story-modal');
-  const content = document.getElementById('story-content');
-  content.innerHTML = '<h2>' + escapeHtml(s.title) + '</h2><p>' + escapeHtml(s.text) + '</p>';
-  modal.style.display = 'flex';
-  modal.setAttribute('aria-hidden','false');
-}
-function closeStory(){ const modal = document.getElementById('story-modal'); modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+    // Modal functions
+    function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); }); }
+    function openStory(key){
+      const s = stories[key];
+      if(!s) return;
+      const modal = document.getElementById('story-modal');
+      const content = document.getElementById('story-content');
+      content.innerHTML = '<h2>' + escapeHtml(s.title) + '</h2><p>' + escapeHtml(s.text) + '</p>';
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
+    }
+    function closeStory(){ const modal = document.getElementById('story-modal'); modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
 
-/* Tabs */
-const tabTree = document.getElementById('tabTree');
-const tabTimeline = document.getElementById('tabTimeline');
-const treePage = document.getElementById('treePage');
-const timelinePage = document.getElementById('timelinePage');
-tabTree.addEventListener('click', ()=> {
-  tabTree.classList.add('active'); tabTimeline.classList.remove('active');
-  treePage.style.display='block'; timelinePage.style.display='none';
-});
-tabTimeline.addEventListener('click', ()=> {
-  tabTimeline.classList.add('active'); tabTree.classList.remove('active');
-  treePage.style.display='none'; timelinePage.style.display='block';
-});
+    // Tabs
+    const tabTree = document.getElementById('tabTree');
+    const tabTimeline = document.getElementById('tabTimeline');
+    const treePage = document.getElementById('treePage');
+    const timelinePage = document.getElementById('timelinePage');
+    tabTree.addEventListener('click', ()=> {
+      tabTree.classList.add('active'); tabTimeline.classList.remove('active');
+      treePage.style.display='block'; timelinePage.style.display='none';
+    });
+    tabTimeline.addEventListener('click', ()=> {
+      tabTimeline.classList.add('active'); tabTree.classList.remove('active');
+      treePage.style.display='none'; timelinePage.style.display='block';
+    });
 
-/* Close modal on outside click or ESC */
-window.addEventListener('click', (e)=> { const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
-document.addEventListener('keydown', (e)=> { if(e.key === 'Escape'){ closeStory(); } });
+    // close modal on outside click or ESC
+    window.addEventListener('click', (e)=> { const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
+    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape'){ closeStory(); } });
 
-</script>
+  </script>
+
 </body>
 </html>
