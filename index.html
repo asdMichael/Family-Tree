@@ -3,67 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Michael's Family Tree & Timeline</title>
-
+  <title>Michael's Family — Tree & Timeline</title>
   <link rel="stylesheet" href="style.css">
-
-  <style>
-    /* Small local overrides for visuals */
-    :root{
-      --accent:#1f6feb;
-      --muted:#6b7280;
-      --card:#fff;
-      --card-border:#2f3650;
-    }
-    body{ -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-
-    /* node portrait style (overlapping circle) */
-    .node img.placeholder {
-      width:64px; height:64px; border-radius:50%; border:3px solid white;
-      box-shadow:0 2px 6px rgba(0,0,0,0.12);
-      background:linear-gradient(180deg,#f4f6fa,#e9eef8);
-      display:block; margin: -32px auto 8px; position:relative; z-index:2;
-    }
-    .node { display:inline-block; background:var(--card); border-radius:10px; padding:36px 14px 14px; min-width:180px; max-width:220px; box-shadow:0 12px 30px rgba(15,23,42,0.06); border:2px solid var(--card-border); text-align:center; position:relative; }
-    .node .label { font-weight:700; font-size:14px; color:#0f1724; margin-top:6px; }
-    .node .sub { display:block; font-size:12px; color:var(--muted); margin-top:6px; }
-
-    /* top tabs */
-    .top-tabs { display:flex; justify-content:center; gap:10px; padding:12px 8px; background:linear-gradient(90deg,var(--accent),#174b93); }
-    .top-tabs button { background:transparent; border:none; color:white; padding:10px 18px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.95; }
-    .top-tabs button.active { background:rgba(255,255,255,0.12); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
-
-    /* timeline controls */
-    .timeline-wrap { position:relative; margin:20px 0 40px; }
-    .timeline { display:flex; gap:16px; overflow-x:auto; padding:18px; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; }
-    .timeline::-webkit-scrollbar{ height:10px; }
-    .timeline::-webkit-scrollbar-thumb{ background:rgba(15,23,42,0.12); border-radius:6px; }
-    .time-card { min-width:280px; max-width:320px; background:var(--card); border-radius:12px; padding:14px; box-shadow:0 10px 24px rgba(2,6,23,0.08); border:1px solid rgba(15,23,42,0.04); }
-    .time-card h3{ margin:0 0 6px; font-size:16px; }
-    .time-card .year{ color:var(--muted); font-size:13px; margin-bottom:8px; display:block; }
-    .time-card p{ margin:0; color:#111827; line-height:1.5; font-size:14px; white-space:pre-wrap; }
-    .timeline-arrow { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.9); border-radius:999px; border:1px solid rgba(15,23,42,0.06); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 18px rgba(2,6,23,0.08); }
-    .arrow-left{ left:-18px; }
-    .arrow-right{ right:-18px; }
-
-    @media (max-width:980px){
-      .timeline-wrap { margin:14px 0 24px; }
-      .time-card { min-width:260px; }
-    }
-
-    /* modal */
-    .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.55); z-index:120; padding:20px; }
-    .modal-card{ background:var(--card); border-radius:12px; padding:22px; max-width:840px; width:100%; box-shadow:0 18px 48px rgba(2,6,23,0.18); position:relative; text-align:left; max-height:90vh; overflow:auto; }
-    .modal-card img.story-photo{ max-width:240px; display:block; margin:10px 0 18px; border-radius:8px; }
-    .modal-card h2{ margin-top:6px; }
-
-    /* small responsive tweaks */
-    @media (max-width:720px){
-      .top-tabs button{ padding:8px 12px; font-size:14px; }
-      .node { min-width:88%; max-width:88%; padding-top:48px; }
-      .node img.placeholder{ width:72px; height:72px; margin-top:-48px; }
-    }
-  </style>
 </head>
 <body>
 
@@ -73,26 +14,26 @@
     <button id="tabTimeline" aria-controls="timelinePage" aria-selected="false">Family Timeline</button>
   </div>
 
-  <header>
+  <header class="page-header">
     <h1>Michael's Family — Tree & Timeline</h1>
-    <p style="margin-top:6px;color:#f3f6fb">Two views: the family tree and a horizontal timeline of births. Click any portrait or timeline card to read the full family story.</p>
+    <p class="lead">Two views: the family tree and a horizontal timeline of births. Click any portrait, marker, or card to read the full family story.</p>
   </header>
 
-  <!-- TREE PAGE -->
-  <main id="treePage" class="tree-container" style="display:block; padding:24px; max-width:1200px; margin:0 auto 60px;">
+  <!-- ====================== TREE PAGE ====================== -->
+  <main id="treePage" class="tree-container" style="display:block;">
     <section class="family-tree">
       <ul>
-        <!-- LEFT great-grand pair -->
+        <!-- Left cluster (Vaccaro) -->
         <li>
           <div class="node">
-            <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-              <div class="node" onclick="openStory('james_vaccaro')" title="James Vaccaro">
+            <div class="couple-inline">
+              <div class="node small" onclick="openStory('james_vaccaro')" title="James Vaccaro">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">James Vaccaro</div>
                 <div class="sub">1913–1985</div>
               </div>
 
-              <div class="node" onclick="openStory('rose_kirila')" title="Rose Louise Kirila">
+              <div class="node small" onclick="openStory('rose_kirila')" title="Rose Louise Kirila">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Rose Louise Kirila</div>
                 <div class="sub">Hungarian → Ohio</div>
@@ -101,7 +42,7 @@
 
             <ul>
               <li>
-                <div class="node" onclick="openStory('deborah')" title="Deborah Patton">
+                <div class="node small" onclick="openStory('deborah')" title="Deborah Patton">
                   <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                   <div class="label">Deborah (Vaccaro)</div>
                   <div class="sub">b. 1959</div>
@@ -109,7 +50,7 @@
 
                 <ul>
                   <li>
-                    <div class="node" onclick="openStory('daniel')" title="Daniel Patton">
+                    <div class="node small" onclick="openStory('daniel')" title="Daniel Patton">
                       <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                       <div class="label">Daniel Patton</div>
                       <div class="sub">b. 1992</div>
@@ -121,17 +62,17 @@
           </div>
         </li>
 
-        <!-- MIDDLE top great-grand pair -->
+        <!-- Middle cluster (Patton / Fisher) -->
         <li>
           <div class="node">
-            <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-              <div class="node" onclick="openStory('william_patton')" title="William Patton">
+            <div class="couple-inline">
+              <div class="node small" onclick="openStory('william_patton')" title="William Patton">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">William Patton</div>
                 <div class="sub">Northern Ireland</div>
               </div>
 
-              <div class="node" onclick="openStory('beatrice_fisher')" title="Beatrice Fisher">
+              <div class="node small" onclick="openStory('beatrice_fisher')" title="Beatrice Fisher">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Beatrice Fisher</div>
                 <div class="sub">Fisher / Crozier</div>
@@ -140,7 +81,7 @@
 
             <ul>
               <li>
-                <div class="node" onclick="openStory('lynne')" title="Lynne Patton">
+                <div class="node small" onclick="openStory('lynne')" title="Lynne Patton">
                   <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                   <div class="label">Lynne Patton</div>
                   <div class="sub">Sister of Gary</div>
@@ -148,7 +89,7 @@
               </li>
 
               <li>
-                <div class="node" onclick="openStory('gary')" title="Gary Patton">
+                <div class="node small" onclick="openStory('gary')" title="Gary Patton">
                   <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                   <div class="label">Gary Patton</div>
                   <div class="sub">b. 1956 — Belfast</div>
@@ -157,14 +98,14 @@
                 <ul>
                   <li>
                     <div class="node" style="padding-top:28px;">
-                      <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-                        <div class="node" onclick="openStory('deborah')">
+                      <div class="couple-inline">
+                        <div class="node small" onclick="openStory('deborah')">
                           <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                           <div class="label">Deborah Patton</div>
                           <div class="sub">b. 1959</div>
                         </div>
 
-                        <div class="node" onclick="openStory('gary')">
+                        <div class="node small" onclick="openStory('gary')">
                           <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                           <div class="label">Gary Patton</div>
                           <div class="sub">Belfast → California</div>
@@ -173,7 +114,7 @@
 
                       <ul>
                         <li>
-                          <div class="node" onclick="openStory('shannen')" title="Shannen Patton">
+                          <div class="node small" onclick="openStory('shannen')" title="Shannen Patton">
                             <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                             <div class="label">Shannen Patton</div>
                             <div class="sub">b. 1987</div>
@@ -182,14 +123,14 @@
                           <ul>
                             <li>
                               <div class="node" style="padding-top:28px;">
-                                <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-                                  <div class="node" onclick="openStory('brian')" title="Brian Kupfer">
+                                <div class="couple-inline">
+                                  <div class="node small" onclick="openStory('brian')" title="Brian Kupfer">
                                     <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                                     <div class="label">Brian Kupfer</div>
                                     <div class="sub">b. 1981</div>
                                   </div>
 
-                                  <div class="node" onclick="openStory('shannen')" title="Shannen Patton">
+                                  <div class="node small" onclick="openStory('shannen')" title="Shannen Patton">
                                     <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                                     <div class="label">Shannen Patton</div>
                                     <div class="sub">m. 2020</div>
@@ -198,7 +139,7 @@
 
                                 <ul>
                                   <li>
-                                    <div class="node" onclick="openStory('michael')" title="Michael Dean">
+                                    <div class="node small" onclick="openStory('michael')" title="Michael Dean">
                                       <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                                       <div class="label">Michael Dean</div>
                                       <div class="sub">b. Dec 10 / 2008</div>
@@ -206,14 +147,14 @@
 
                                     <ul>
                                       <li>
-                                        <div class="node" onclick="openStory('breanna')" title="Breanna Kupfer">
+                                        <div class="node small" onclick="openStory('breanna')" title="Breanna Kupfer">
                                           <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                                           <div class="label">Breanna Kupfer</div>
                                           <div class="sub">b. 10 Nov 2021</div>
                                         </div>
                                       </li>
                                       <li>
-                                        <div class="node" onclick="openStory('alexis')" title="Alexis Kupfer">
+                                        <div class="node small" onclick="openStory('alexis')" title="Alexis Kupfer">
                                           <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                                           <div class="label">Alexis Kupfer</div>
                                           <div class="sub">b. 8 Jun 2016</div>
@@ -232,23 +173,23 @@
                     </div>
                   </li>
 
-                </div>
+                </ul>
               </li>
             </ul>
           </div>
         </li>
 
-        <!-- right & other clusters -->
+        <!-- Right cluster (Kirili / others) -->
         <li>
           <div class="node">
-            <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-              <div class="node" onclick="openStory('eugene')">
+            <div class="couple-inline">
+              <div class="node small" onclick="openStory('eugene')">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Eugene Kirili</div>
                 <div class="sub">1936–1994</div>
               </div>
 
-              <div class="node" onclick="openStory('ruth_barris')">
+              <div class="node small" onclick="openStory('ruth_barris')">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Ruth Barris</div>
                 <div class="sub">b. 1939</div>
@@ -257,7 +198,7 @@
 
             <ul>
               <li>
-                <div class="node" onclick="openStory('fisher_note')">
+                <div class="node small" onclick="openStory('fisher_note')">
                   <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                   <div class="label">Fisher / Crozier notes</div>
                   <div class="sub">name variants</div>
@@ -267,16 +208,17 @@
           </div>
         </li>
 
+        <!-- Kupfer root -->
         <li style="margin-top:18px;">
           <div class="node">
-            <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-              <div class="node" onclick="openStory('robert_kupfer')">
+            <div class="couple-inline">
+              <div class="node small" onclick="openStory('robert_kupfer')">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Robert Kupfer</div>
                 <div class="sub">Kupfer root</div>
               </div>
 
-              <div class="node" onclick="openStory('patricia_kupfer')">
+              <div class="node small" onclick="openStory('patricia_kupfer')">
                 <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                 <div class="label">Patricia Kupfer</div>
                 <div class="sub"></div>
@@ -284,34 +226,35 @@
             </div>
 
             <ul>
-              <li><div class="node" onclick="openStory('cort')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Cort Kupfer</div></div></li>
-              <li><div class="node" onclick="openStory('brian')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Brian Kupfer</div></div></li>
-              <li><div class="node" onclick="openStory('crystal')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Crystal Kupfer</div></div></li>
-              <li><div class="node" onclick="openStory('april')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">April Kupfer</div></div></li>
-              <li><div class="node" onclick="openStory('everett')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Everett Kupfer</div></div></li>
-              <li><div class="node" onclick="openStory('jonathan')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Jonathan Kupfer</div></div></li>
+              <li><div class="node small" onclick="openStory('cort')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Cort Kupfer</div></div></li>
+              <li><div class="node small" onclick="openStory('brian')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Brian Kupfer</div></div></li>
+              <li><div class="node small" onclick="openStory('crystal')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Crystal Kupfer</div></div></li>
+              <li><div class="node small" onclick="openStory('april')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill='%23cbd5e1'/></svg>' alt=""><div class="label">April Kupfer</div></div></li>
+              <li><div class="node small" onclick="openStory('everett')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Everett Kupfer</div></div></li>
+              <li><div class="node small" onclick="openStory('jonathan')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Jonathan Kupfer</div></div></li>
             </ul>
           </div>
         </li>
 
+        <!-- Dean cluster -->
         <li style="margin-top:18px;">
           <div class="node">
-            <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
-              <div class="node" onclick="openStory('nannete')">
-                <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
+            <div class="couple-inline">
+              <div class="node small" onclick="openStory('nannete')">
+                <img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt="">
                 <div class="label">Nannete Dean</div>
                 <div class="sub">Aunt</div>
               </div>
             </div>
 
             <ul>
-              <li><div class="node" onclick="openStory('mario')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Mario Dean</div></div></li>
-              <li><div class="node" onclick="openStory('carlo')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Carlo Dean</div></div></li>
-              <li><div class="node" onclick="openStory('renato')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Renato Dean</div></div></li>
-              <li><div class="node" onclick="openStory('demarco')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Demarco Victoria</div></div></li>
-              <li><div class="node" onclick="openStory('gino')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Gino Dean</div></div></li>
-              <li><div class="node" onclick="openStory('giana')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Giana Dean</div></div></li>
-              <li><div class="node" onclick="openStory('demetri')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Demetri Dean</div></div></li>
+              <li><div class="node small" onclick="openStory('mario')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Mario Dean</div></div></li>
+              <li><div class="node small" onclick="openStory('carlo')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Carlo Dean</div></div></li>
+              <li><div class="node small" onclick="openStory('renato')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Renato Dean</div></div></li>
+              <li><div class="node small" onclick="openStory('demarco')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Demarco Victoria</div></div></li>
+              <li><div class="node small" onclick="openStory('gino')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Gino Dean</div></div></li>
+              <li><div class="node small" onclick="openStory('giana')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Giana Dean</div></div></li>
+              <li><div class="node small" onclick="openStory('demetri')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Demetri Dean</div></div></li>
             </ul>
           </div>
         </li>
@@ -320,218 +263,38 @@
     </section>
   </main>
 
-  <!-- TIMELINE PAGE -->
-  <main id="timelinePage" class="timeline-container" style="display:none; padding:20px; max-width:1200px; margin:0 auto 80px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <h2 style="margin:0">Family Birth Timeline (Horizontal)</h2>
-      <div style="color:var(--muted);font-size:14px;">Scroll → or use arrows</div>
+  <!-- ====================== TIMELINE PAGE ====================== -->
+  <main id="timelinePage" class="timeline-container" style="display:none;">
+    <div class="timeline-header">
+      <h2>Family Birth Timeline</h2>
+      <p class="muted">Markers sit along a central line — click any dot to reveal a short card; click the card for the full story.</p>
     </div>
 
-    <div class="timeline-wrap">
-      <button class="timeline-arrow arrow-left" id="scrollLeft" aria-label="Scroll left">&larr;</button>
-      <div class="timeline" id="timeline">
-        <!-- Timeline cards (sorted roughly by birth year) -->
-        <!-- James Vaccaro (1913) -->
-        <div class="time-card" data-key="james_vaccaro">
-          <h3>James Vaccaro</h3>
-          <span class="year">1913–1985 — Pennsylvania</span>
-          <p>I grew up hearing the James stories like little parables — a man who seemed made of plain things: workboots, an unhurried nod, and a steady grip. My parents would say he was the kind of person who could fix a truck with a coat hanger and a quiet swear word; he patched roofs, coaxed stubborn mules, and kept the house warmed in winters that felt endless. To me, James is the root of a family that learned to persist. Even in the smallest recollections there is a tenderness: the way he would hum while he worked, the small nick in the wooden table that still shows where he whittled a toy, and the stories you could only hear while huddled close to the stove. He taught a way of being — practical, patient, and kind in the ordinary way that lasts.</p>
-        </div>
-
-        <!-- Rose Louise Kirila (b.1929 relative) -->
-        <div class="time-card" data-key="rose_kirila">
-          <h3>Rose Louise Kirila</h3>
-          <span class="year">b. 1929 — Ohio / Hungarian roots</span>
-          <p>Rose's kitchen is the first true country I knew, though I never stood in Hungary. In every family retelling she is the woman with flour on her sleeves and hands that remembered recipes long after the ingredients were gone. My aunts would whisper about her stubborn garden where tomatoes came in despite drought, and how she could read a sky like scripture. She stitched the old country into American life with stories that tasted of paprika and patience. Growing up, I’d sit and listen as she spoke soft prayers and older relatives sang next to a radio. Rose is the voice that made our holidays smell like home — yeast and sugar and the calm steadiness of someone who kept memory alive with bowls and spoons.</p>
-        </div>
-
-        <!-- Eugene Kirili (1936) -->
-        <div class="time-card" data-key="eugene">
-          <h3>Eugene Edward Kirili</h3>
-          <span class="year">1936–1994 — Missouri / Ohio</span>
-          <p>Eugene's life crosses small towns and steady routines. My family always remembered him for a practical laugh and a deep loyalty to the neighborhood circle: church breakfasts, slow drives to visit kin, the small furniture he repaired for neighbors. He married Ruth and together they raised a family that knew neighbors by the sound of their cars. The stories about Eugene are not grand, but they are full of care — a hand that helped with a winter roof, a pocketful of quick advice, and a faithful presence that threaded the family together. When I think of him, I see Sunday mornings and the slow, reliable cadence of everyday care.</p>
-        </div>
-
-        <!-- Ruth Barris (b.1939) -->
-        <div class="time-card" data-key="ruth_barris">
-          <h3>Ruth Adaline Barris</h3>
-          <span class="year">b. 1939 — Missouri</span>
-          <p>Ruth is the neighbor who kept the phone line warm with check-ins and the church pew always found its place at family gatherings. My memories of Ruth are full of small domestic rituals: the way she folded napkins for holidays, the tea she served that made everything feel possible, and the morning calls to relatives with updates that somehow stitched days together. She raised children who learned courtesy at a kitchen table and who carried forward the gentle discipline of calling when promised. In our family stories she is warmth and steadiness, an everyday lighthouse.</p>
-        </div>
-
-        <!-- William Patton (no year specified; place: Northern Ireland) -->
-        <div class="time-card" data-key="william_patton">
-          <h3>William Patton</h3>
-          <span class="year">Northern Ireland — generation prior</span>
-          <p>William arrived in our tales with stories of saints and small talismans: a chipped cup, a prayer-book, the kind of object that held a person's steady hand across an ocean. The family always spoke of his patience and a dry humor that could soften the hardest meeting. I picture him at the head of a long table, teaching kids to wait for dessert and to respect a good story. There was a calm authority in William — not loud, but impossible to ignore — and those rules of decency and care he handed down shaped the ways the next generations leaned into family and faith.</p>
-        </div>
-
-        <!-- Beatrice Fisher -->
-        <div class="time-card" data-key="beatrice_fisher">
-          <h3>Beatrice Fisher</h3>
-          <span class="year">Ireland / Crozier notes</span>
-          <p>Beatrice's life is stitched in the quiet ways of homemaking that feel like an old song: crisp collars in photographs, careful hair, and a pride in preserving small domestic rituals. The Crozier name surfaces in photographs and folded letters; Beatrice is the woman who knew how to make a house feel like a sanctuary. Family notes say she taught baking like a language, and those baked loaves carried memory across decades. I have always loved the idea that Beatrice saw value in the ordinary, and taught the next generations how to translate scarcity into comfort.</p>
-        </div>
-
-        <!-- Lynne Patton -->
-        <div class="time-card" data-key="lynne">
-          <h3>Lynne Patton</h3>
-          <span class="year">Unknown — Ireland/UK connection</span>
-          <p>Lynne shows up in family festivals and reunion stories as someone who quietly organized the chaos of family gatherings. She was the aunt who remembered every birthday and who could be counted on to show up with a smiling face and a casserole in hand. The versions of Lynne I heard were full of warmth — an organizer, a memory-keeper, and the person who could make a weary family feel like a functioning one again. For me, Lynne is the invisible hand that smooths the edges of big family life.</p>
-        </div>
-
-        <!-- Gary Patton (1956) -->
-        <div class="time-card" data-key="gary">
-          <h3>Gary Patton</h3>
-          <span class="year">b. 1956 — Belfast → California</span>
-          <p>Gary's stories cross the ocean: the sound of rain in Belfast, the stubborn pride of a well-steeped cup of tea, and the bracing humor that arrived with him to California. Growing up we heard of his mix of sternness and private tenderness — the man who could set strict rules and then surprise people with a cake or a fixed bike. Gary learned how to hold two homes in his heart: the old ways of Belfast and the new rhythms of California. That balance shows up in how he raised his children — with clear expectation, yes, but also an abiding loyalty that made the family feel secure.</p>
-        </div>
-
-        <!-- Daniel Patton (1992) -->
-        <div class="time-card" data-key="daniel">
-          <h3>Daniel Patton</h3>
-          <span class="year">b. 1992 — Woodland Hills, CA</span>
-          <p>Daniel represents the California edge of our family tree: practical, easygoing, and quietly skilled. I remember stories of him pulling a lamp together out of spare parts and showing up for dinners that matter. He carries the patience of earlier generations but in a modern form — a willingness to tinker, to laugh, and to show up. The way he inhabits family life is less about ceremony and more about being present when it counts.</p>
-        </div>
-
-        <!-- Shannen Patton (1987) -->
-        <div class="time-card" data-key="shannen">
-          <h3>Shannen Patton</h3>
-          <span class="year">b. 1987 — Woodland Hills, CA</span>
-          <p>Shannen has always been the one who keeps the calendar for the family — birthdays, dinners, holidays — and who cradles small rituals even when life is busy. She blends Patton tradition with California habits: family recipes meet long drives, and the phone call on a birthday feels like a small anchor. Married to Brian, she is the quiet hub that spins family obligations into actual gatherings, and that care is visible in the way everyone looks to her for news or comfort.</p>
-        </div>
-
-        <!-- Brian Kupfer (1981) -->
-        <div class="time-card" data-key="brian">
-          <h3>Brian Kupfer</h3>
-          <span class="year">b. 1981 — Ojai, CA</span>
-          <p>Brian is the practical heartbeat of our immediate household memories: someone who can teach a skill with patience and who treats late-night pancakes as a kind of sanctuary. He worked in tooling, coached abroad, and has a way of treating ordinary moments as sacred. Married to Shannen, he built a life of quiet routines and weekend projects that felt like rituals. I think of Brian as the person who makes home feel safe — steady hands, quiet humor, and a willingness to roll up sleeves when needed.</p>
-        </div>
-
-        <!-- Robert & Patricia Kupfer (Pennsylvania) -->
-        <div class="time-card" data-key="robert_kupfer">
-          <h3>Robert Kupfer</h3>
-          <span class="year">Pennsylvania — elder Kupfer</span>
-          <p>Robert carried the family through practical care and steady presence: calls on weekends, small gatherings, and a pride when his children learned trades. He was the kind of father who valued steady employment and quiet competence, and those values rubbed off on the rest of us. Remembering him is to remember reliability — someone who did the small things that made life hold together.</p>
-        </div>
-
-        <div class="time-card" data-key="patricia_kupfer">
-          <h3>Patricia Kupfer</h3>
-          <span class="year">Pennsylvania — elder Kupfer</span>
-          <p>Patricia kept the family connected through rituals that felt like glue: the holiday table, a tidy guest room, and a phone always ready for a check-in. Her kindness wasn’t flashy; it was the steady work of making people feel seen. I grew up learning from the way Patricia set a place for whoever showed up and how she called to check on distant relatives as if it were the most natural thing in the world.</p>
-        </div>
-
-        <!-- Cort, Crystal, April, Everett, Jonathan (Ojai cluster) -->
-        <div class="time-card" data-key="cort">
-          <h3>Cort Kupfer</h3>
-          <span class="year">Ojai, CA — Kupfer</span>
-          <p>Cort is the teller of neighborhood stories: quick with a joke, practical, and always ready to remind someone of a memory they’d forgotten. He’s the kind of cousin who keeps the funny past alive at family gatherings and who remembers the small details other people miss.</p>
-        </div>
-
-        <div class="time-card" data-key="crystal">
-          <h3>Crystal Kupfer</h3>
-          <span class="year">Ojai, CA — Kupfer</span>
-          <p>Crystal is a mother first — protective, determined, and fierce in a quiet, everyday way. When family stories talk about her, they highlight how she shielded and provided for her son Elijah, often with quiet sacrifice and unwavering attention. Crystal’s presence in our family is an example of how fierce love looks in practice.</p>
-        </div>
-
-        <div class="time-card" data-key="april">
-          <h3>April Kupfer</h3>
-          <span class="year">Ojai, CA — Kupfer</span>
-          <p>April’s life has known complications and strength in equal measure. Family memory remembers someone who fought for her children and who kept moving forward when the road narrowed. There is a toughness there — not without softness — and that combination commands respect in our stories.</p>
-        </div>
-
-        <div class="time-card" data-key="everett">
-          <h3>Everett Kupfer</h3>
-          <span class="year">Ojai, CA — Kupfer</span>
-          <p>Everett served in the Air Force and came back with a calm steadiness that impressed everyone who knew him. The discipline of service translated into a gentle presence at family events: someone who listened, who showed up, and who lent perspective on days that felt fraught. His life reminds us that service shapes more than careers; it shapes how you carry yourself among kin.</p>
-        </div>
-
-        <div class="time-card" data-key="jonathan">
-          <h3>Jonathan Kupfer</h3>
-          <span class="year">Ojai, CA — Kupfer</span>
-          <p>Jonathan is a quieter thread in the family fabric, the step-uncle who shows up and helps without much fanfare. Stories about Jonathan are small — helping hands, a willingness to drive someone to an appointment — but those hands are the ones families rely on when plans demand extra effort.</p>
-        </div>
-
-        <!-- Nannete, Mario, Carlo, Renato, Demarco, Gino, Giana, Demetri (Dean cluster) -->
-        <div class="time-card" data-key="nannete">
-          <h3>Nannete Dean</h3>
-          <span class="year">Thousand Oaks, CA — Aunt</span>
-          <p>Nannete was worldly in ways the rest of us only dimly understood when we were kids: stories of France, markets, and fig trees that tasted like summers. She carried a patient generosity and recipes that tasted of other places, and those little foreign traces made our family feel larger than its streets. Her calm presence taught me that travel can be translated into the steadiness of baked bread and the patience of a good listener.</p>
-        </div>
-
-        <div class="time-card" data-key="mario">
-          <h3>Mario Dean</h3>
-          <span class="year">1985–2014 — Thousand Oaks</span>
-          <p>Mario’s life was vivid and intense in the way that leaves a long echo. Family memories hold him as complex: brilliant, vulnerable, and alive in a way that made people both worry and laugh. He left behind stories and jokes that still surface at gatherings, small moments that carry his voice forward. Remembering Mario is bittersweet: he is warmth and a reminder to hold those we love a little closer.</p>
-        </div>
-
-        <div class="time-card" data-key="carlo">
-          <h3>Carlo Dean</h3>
-          <span class="year">Thousand Oaks — Dean</span>
-          <p>Carlo’s story is full of contradictions — fierce loyalty, difficult chapters, and moments of deep tenderness. He’s been in and out of tough times, but family stories also record moments of care and support. Carlo’s life reminds us that people are rarely simple; they are a mix of struggle and kindness, and our family remembers both without forgetting the complexity.</p>
-        </div>
-
-        <div class="time-card" data-key="renato">
-          <h3>Renato Dean</h3>
-          <span class="year">Missouri — Dean</span>
-          <p>Renato served close to a decade in the military, and the discipline of that time shaped his private and public life. He’s described as serious and capable — someone who holds his struggles close and shows tenderness in incremental ways. To our family, Renato is a reminder that service and quiet strength often travel together.</p>
-        </div>
-
-        <div class="time-card" data-key="demarco">
-          <h3>Demarco Victoria</h3>
-          <span class="year">Missouri — Dean</span>
-          <p>Demarco and his three children appear in family scenes as ordinary, everyday caretakers — people who keep small routines alive and hold neighborhood ties. Their chapters in the family story are unremarkable in the best sense: steady, reliable, and full of daily care.</p>
-        </div>
-
-        <div class="time-card" data-key="gino">
-          <h3>Gino Dean</h3>
-          <span class="year">Missouri — Dean</span>
-          <p>Gino lives in San Diego in the family stories — a friendly presence whose daughter Taylor is a bright light. Family accounts include beach days and backyard cookouts, and Gino’s easygoing nature comes through as a reminder of ordinary joy.</p>
-        </div>
-
-        <div class="time-card" data-key="giana">
-          <h3>Giana Dean</h3>
-          <span class="year">Missouri — Dean</span>
-          <p>Giana’s death by suicide is a wound we carry with tenderness. Her memory prompts quieter conversations in the family about care and mental health — how fragile and precious our connections are. We remember her with love and with the commitment to look after one another.</p>
-        </div>
-
-        <div class="time-card" data-key="demetri">
-          <h3>Demetri Dean</h3>
-          <span class="year">Missouri — Dean</span>
-          <p>Demetri is often described as the quiet cousin who mattered in small ways — shows up, helps, and keeps his own counsel. Those little acts of presence add up in family memory, and Demetri is a reminder that consistency can be as powerful as grand gestures.</p>
-        </div>
-
-        <!-- Eugene, Ruth repeated as timeline entries already above; Robert/Patricia included earlier -->
-
-        <!-- Michael (2008) -->
-        <div class="time-card" data-key="michael">
-          <h3>Michael Dean</h3>
-          <span class="year">b. 2008 — Thousand Oaks</span>
-          <p>Michael — that’s you — and in the way I tell the family story, you’re the small, stubborn heart beating at the center of recent memories: long car rides, holiday mischief, and a curiosity about the old recipes and stories. You inherited pieces of different branches: a taste for Italian name-thread and the patience of the Patton and Kupfer hands. I like to think you’ll carry our stories forward in the small practical ways that matter most — the kind of memory that survives in meals shared and jokes told late at night.</p>
-        </div>
-
+    <div class="timeline-line-wrap" id="timelineWrap" aria-hidden="false">
+      <!-- the central horizontal line is drawn in CSS ::before -->
+      <div class="timeline-track" id="timelineTrack" role="list" aria-label="Birth timeline">
+        <!-- markers/cards are injected here by JS -->
       </div>
-
-      <button class="timeline-arrow arrow-right" id="scrollRight" aria-label="Scroll right">&rarr;</button>
     </div>
-
-    <p style="color:var(--muted);font-size:13px;margin-top:6px;">Tip: drag the timeline left/right or use the arrows to move through generations. Click any card to open the full family biography.</p>
   </main>
 
   <!-- STORY MODAL -->
   <div id="story-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-card" role="document">
-      <button id="closeModal" onclick="closeStory()" aria-label="Close story" style="position:absolute;right:12px;top:10px;padding:6px 8px;border-radius:8px;border:none;background:#efefef;cursor:pointer;">Close</button>
+      <button id="closeModal" onclick="closeStory()" aria-label="Close story" class="close-btn">Close</button>
       <div id="story-content"></div>
     </div>
   </div>
 
   <script>
-    // Full biographies (expanded, warm & nostalgic — from your perspective)
+    /************************************************************************
+     * Full biography object (warm & nostalgic, first-person perspective)
+     * This includes every biography you provided earlier, expanded.
+     ************************************************************************/
     const stories = {
-      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look. I grew up on these stories like they were lullabies; even if I never met him, I feel his presence whenever someone in our family chooses care over convenience."},
-      "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country. When I close my eyes I can almost smell the dough she used to make — heavy and warm — and I imagine the way she taught patience by turning flour into a meal."},
-      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head. To me, Deborah is the kind of person who holds a family’s emotional map; she remembers who needs a call and who needs soup when things go wrong."},
+      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look. I grew up on these stories like lullabies; even if I never met him, I feel his presence whenever someone in our family chooses care over convenience."},
+      "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country. When I close my eyes I almost smell the dough she used to make — heavy and warm — and imagine the way she taught patience by turning flour into a meal."},
+      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head. To me, Deborah is the person who holds a family’s emotional map; she remembers who needs a call and who needs soup when things go wrong."},
       "william_patton": {"title":"William Patton","photo":"","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms. I picture William in the evenings, hands folded, telling a story that made everyone quiet — not because he needed silence, but because his words deserved to be heard."},
       "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","photo":"","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving. As I tell the story, she is the keeper of small rituals that ripple across generations: a tea set, a folded letter, a recipe scrawled on the back of an envelope."},
       "lynne": {"title":"Lynne Patton","photo":"","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency. In the stories I tell children now, Lynne is the one who shows up with extra chairs and a weary smile; she makes the mechanics of family look easy when they’re anything but."},
@@ -562,7 +325,162 @@
       "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table. If our family is a book, Michael is the next chapter, curious and hopeful and ready to write his own lines."}
     };
 
-    // modal functions
+    /************************************************************************
+     * TIMELINE data:
+     * We'll order the timeline roughly by known birth years where available,
+     * then append unspecified-year entries grouped by branches.
+     ************************************************************************/
+    const timelineData = [
+      { key: 'james_vaccaro', year: 1913 },
+      { key: 'rose_kirila', year: 1929 },
+      { key: 'eugene', year: 1936 },
+      { key: 'ruth_barris', year: 1939 },
+      { key: 'william_patton', year: 1940 }, // estimated (no exact year)
+      { key: 'beatrice_fisher', year: 1942 }, // estimated
+      { key: 'robert_kupfer', year: 1945 }, // estimated
+      { key: 'patricia_kupfer', year: 1947 }, // estimated
+      { key: 'lynne', year: 1950 }, // estimated
+      { key: 'gary', year: 1956 },
+      { key: 'brian', year: 1981 },
+      { key: 'mario', year: 1985 },
+      { key: 'shannen', year: 1987 },
+      { key: 'daniel', year: 1992 },
+      { key: 'michael', year: 2008 },
+      { key: 'alexis', year: 2016 },
+      { key: 'breanna', year: 2021 },
+
+      // Kupfer / Ojai cluster (unspecified — placed after 1940s)
+      { key: 'cort', year: 1958 },
+      { key: 'crystal', year: 1960 },
+      { key: 'april', year: 1962 },
+      { key: 'everett', year: 1965 },
+      { key: 'jonathan', year: 1968 },
+
+      // Dean cluster (estimates)
+      { key: 'nannete', year: 1960 },
+      { key: 'carlo', year: 1980 },
+      { key: 'renato', year: 1979 },
+      { key: 'demarco', year: 1978 },
+      { key: 'gino', year: 1975 },
+      { key: 'giana', year: 1989 },
+      { key: 'demetri', year: 1990 },
+
+      // Fisher/Crozier note
+      { key: 'fisher_note', year: 1930 }
+    ];
+
+    // Ensure unique and presented in chronological order
+    const sortedTimeline = timelineData.slice().sort((a,b)=> (a.year||9999)-(b.year||9999));
+
+    /************************************************************************
+     * Build the horizontal line + markers
+     ************************************************************************/
+    const track = document.getElementById('timelineTrack');
+
+    // Create one marker for each timeline item, spaced evenly via flex
+    sortedTimeline.forEach((item, idx) => {
+      const story = stories[item.key] || { title: item.key, text: '' };
+
+      // wrapper for marker + card
+      const node = document.createElement('div');
+      node.className = 'timeline-node';
+      node.setAttribute('role','listitem');
+      node.setAttribute('data-key', item.key);
+      node.setAttribute('tabindex','0');
+
+      // marker (dot on the line)
+      const dot = document.createElement('button');
+      dot.className = 'timeline-dot';
+      dot.setAttribute('aria-label', `${story.title} (${item.year || 'year unknown'})`);
+      dot.title = `${story.title} — ${item.year || 'Year unknown'}`;
+      dot.addEventListener('click', (e)=> {
+        e.stopPropagation();
+        showCardAbove(node);
+      });
+      dot.addEventListener('keydown', (e)=> {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); showCardAbove(node); }
+      });
+
+      // small label below the line
+      const label = document.createElement('div');
+      label.className = 'timeline-label';
+      label.innerText = (item.year ? item.year : '');
+
+      // card that appears above the line (preview)
+      const card = document.createElement('div');
+      card.className = 'timeline-card';
+      const title = document.createElement('h3');
+      title.innerText = story.title;
+      const yearSpan = document.createElement('div');
+      yearSpan.className = 'card-year';
+      yearSpan.innerText = item.year ? `${item.year}` : '';
+      const p = document.createElement('p');
+      // short teaser: first 180 chars
+      const teaser = story.text.length > 220 ? story.text.slice(0,220).trim() + '…' : story.text;
+      p.innerText = teaser;
+      const openBtn = document.createElement('button');
+      openBtn.className = 'card-open';
+      openBtn.innerText = 'Read full story';
+      openBtn.addEventListener('click', ()=> openStory(item.key));
+
+      card.appendChild(title);
+      card.appendChild(yearSpan);
+      card.appendChild(p);
+      card.appendChild(openBtn);
+
+      node.appendChild(card);
+      node.appendChild(dot);
+      node.appendChild(label);
+
+      // clicking outside card closes any open card — handled globally
+
+      track.appendChild(node);
+    });
+
+    // Close any open card when clicking elsewhere
+    document.addEventListener('click', (e)=>{
+      // if click outside any .timeline-node, hide any open card
+      if(!e.target.closest || !e.target.closest('.timeline-node')){
+        closeAllCards();
+      }
+    });
+
+    // Show card above the node; hide others
+    function showCardAbove(node){
+      const alreadyOpen = node.classList.contains('active');
+      closeAllCards();
+      if(!alreadyOpen){
+        node.classList.add('active');
+        // scroll node into view nicely (center)
+        node.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+      }
+    }
+    function closeAllCards(){
+      Array.from(document.querySelectorAll('.timeline-node.active')).forEach(n=> n.classList.remove('active'));
+    }
+
+    // allow keyboard arrow navigation among markers
+    document.getElementById('timelineTrack').addEventListener('keydown', (e)=>{
+      const focused = document.activeElement;
+      if(!focused || !focused.classList.contains('timeline-node')) return;
+      if(e.key === 'ArrowRight'){
+        const next = focused.nextElementSibling;
+        if(next){ next.focus(); next.scrollIntoView({ behavior:'smooth', inline:'center' }); }
+      } else if(e.key === 'ArrowLeft'){
+        const prev = focused.previousElementSibling;
+        if(prev){ prev.focus(); prev.scrollIntoView({ behavior:'smooth', inline:'center' }); }
+      } else if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault(); showCardAbove(focused);
+      }
+    });
+
+    /************************************************************************
+     * Modal & Story functions (shared with Tree view)
+     ************************************************************************/
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+    }
+
     function openStory(key){
       const s = stories[key];
       if(!s) return;
@@ -571,15 +489,22 @@
       content.innerHTML = '<h2>' + escapeHtml(s.title) + '</h2>' + (s.photo ? ('<img src="'+escapeHtml(s.photo)+'" class="story-photo" alt="'+escapeHtml(s.title)+'">') : '') + '<p>' + escapeHtml(s.text) + '</p>';
       modal.style.display = 'flex';
       modal.setAttribute('aria-hidden','false');
+      // close any open timeline card
+      closeAllCards();
     }
     function closeStory(){ const modal = document.getElementById('story-modal'); modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+
+    // close modal when clicking backdrop
     window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
 
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
-    }
+    // keyboard: Esc to close modal or cards
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') { closeStory(); closeAllCards(); }
+    });
 
-    // Tabs logic
+    /************************************************************************
+     * Tabs (Tree <-> Timeline)
+     ************************************************************************/
     const tabTree = document.getElementById('tabTree');
     const tabTimeline = document.getElementById('tabTimeline');
     const treePage = document.getElementById('treePage');
@@ -589,36 +514,37 @@
       tabTree.classList.add('active'); tabTimeline.classList.remove('active');
       treePage.style.display='block'; timelinePage.style.display='none';
       tabTree.setAttribute('aria-selected','true'); tabTimeline.setAttribute('aria-selected','false');
+      // close timeline cards
+      closeAllCards();
     });
     tabTimeline.addEventListener('click', ()=> {
       tabTimeline.classList.add('active'); tabTree.classList.remove('active');
       treePage.style.display='none'; timelinePage.style.display='block';
       tabTimeline.setAttribute('aria-selected','true'); tabTree.setAttribute('aria-selected','false');
-      // tiny delay: ensure timeline visible for any potential layout needs
-      setTimeout(()=>{ /* noop for now */ }, 120);
+      // ensure track is nicely centered on load
+      setTimeout(()=> {
+        const first = document.querySelector('.timeline-node');
+        if(first) first.scrollIntoView({ inline:'center', behavior:'smooth' });
+      }, 150);
     });
 
-    // Timeline card click delegation
-    document.getElementById('timeline').addEventListener('click', function(e){
-      const card = e.target.closest && e.target.closest('.time-card');
-      if(card){
-        const key = card.getAttribute('data-key');
-        if(key) openStory(key);
-      }
+    // make timeline nodes focusable (for accessibility)
+    Array.from(document.querySelectorAll('.timeline-node')).forEach(n => {
+      n.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter') { showCardAbove(n); }
+      });
     });
 
-    // Timeline arrows
-    const timeline = document.getElementById('timeline');
-    document.getElementById('scrollLeft').addEventListener('click', ()=> { timeline.scrollBy({ left: -420, behavior: 'smooth' }); });
-    document.getElementById('scrollRight').addEventListener('click', ()=> { timeline.scrollBy({ left: 420, behavior: 'smooth' }); });
-
-    // allow pressing Enter on a focused card to open modal
-    Array.from(document.getElementsByClassName('time-card')).forEach(card => {
-      card.setAttribute('tabindex','0');
-      card.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const k=card.getAttribute('data-key'); if(k) openStory(k); }});
-    });
+    // Prevent double-tap issues on mobile when opening cards
+    (function preventDoubleTap(){
+      let last = 0;
+      document.addEventListener('touchend', function(e){
+        const now = Date.now();
+        if(now - last < 300) e.preventDefault();
+        last = now;
+      }, {passive:false});
+    })();
 
   </script>
-
 </body>
 </html>
