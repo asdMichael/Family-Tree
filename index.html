@@ -3,64 +3,86 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Michael's Family Tree</title>
+  <title>Michael's Family Tree & Timeline</title>
 
-  <!-- Leaflet CSS (for map) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+e2H8Y9b3gqk4wF8r2k3m6z9q2VvXKp6f5xYw5qWw=" crossorigin=""/>
-
-  <!-- Main stylesheet -->
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* Local tweaks and map sizing */
-    :root{ --accent:#1f6feb; --muted:#6b7280; --card:#fff; --card-border:#2f3650; --connector-color:#2f3650; }
+    /* Small local overrides for visuals */
+    :root{
+      --accent:#1f6feb;
+      --muted:#6b7280;
+      --card:#fff;
+      --card-border:#2f3650;
+    }
+    body{ -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 
-    body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-
-    /* small local overrides to match the reference visuals */
+    /* node portrait style (overlapping circle) */
     .node img.placeholder {
       width:64px; height:64px; border-radius:50%; border:3px solid white;
       box-shadow:0 2px 6px rgba(0,0,0,0.12);
       background:linear-gradient(180deg,#f4f6fa,#e9eef8);
       display:block; margin: -32px auto 8px; position:relative; z-index:2;
     }
-    .node { display:inline-block; background:var(--card); border-radius:10px; padding:36px 14px 14px; min-width:180px; max-width:210px; box-shadow:0 12px 30px rgba(15,23,42,0.06); border:2px solid var(--card-border); text-align:center; position:relative; }
+    .node { display:inline-block; background:var(--card); border-radius:10px; padding:36px 14px 14px; min-width:180px; max-width:220px; box-shadow:0 12px 30px rgba(15,23,42,0.06); border:2px solid var(--card-border); text-align:center; position:relative; }
     .node .label { font-weight:700; font-size:14px; color:#0f1724; margin-top:6px; }
     .node .sub { display:block; font-size:12px; color:var(--muted); margin-top:6px; }
 
-    /* map container */
-    #birth-map { height:72vh; min-height:420px; border-radius:12px; margin:18px 0; border:2px solid rgba(15,23,42,0.06); }
-    .map-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
-    .small-btn { padding:8px 10px; border-radius:8px; border:none; cursor:pointer; background:#e5e7eb; font-weight:600; }
-    .small-btn.primary { background:var(--accent); color:#fff; }
+    /* top tabs */
+    .top-tabs { display:flex; justify-content:center; gap:10px; padding:12px 8px; background:linear-gradient(90deg,var(--accent),#174b93); }
+    .top-tabs button { background:transparent; border:none; color:white; padding:10px 18px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.95; }
+    .top-tabs button.active { background:rgba(255,255,255,0.12); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
 
-    .top-tabs { display:flex; justify-content:center; gap:6px; padding:12px 8px; background:linear-gradient(90deg,var(--accent),#174b93); }
-    .top-tabs button { background:transparent; border:none; color:white; padding:10px 16px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.95; }
-    .top-tabs button.active { background:rgba(255,255,255,0.10); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
-    @media (max-width:720px){ .top-tabs { padding:8px; } .top-tabs button{ padding:8px 10px; font-size:14px; } }
+    /* timeline controls */
+    .timeline-wrap { position:relative; margin:20px 0 40px; }
+    .timeline { display:flex; gap:16px; overflow-x:auto; padding:18px; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; }
+    .timeline::-webkit-scrollbar{ height:10px; }
+    .timeline::-webkit-scrollbar-thumb{ background:rgba(15,23,42,0.12); border-radius:6px; }
+    .time-card { min-width:280px; max-width:320px; background:var(--card); border-radius:12px; padding:14px; box-shadow:0 10px 24px rgba(2,6,23,0.08); border:1px solid rgba(15,23,42,0.04); }
+    .time-card h3{ margin:0 0 6px; font-size:16px; }
+    .time-card .year{ color:var(--muted); font-size:13px; margin-bottom:8px; display:block; }
+    .time-card p{ margin:0; color:#111827; line-height:1.5; font-size:14px; white-space:pre-wrap; }
+    .timeline-arrow { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.9); border-radius:999px; border:1px solid rgba(15,23,42,0.06); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 18px rgba(2,6,23,0.08); }
+    .arrow-left{ left:-18px; }
+    .arrow-right{ right:-18px; }
 
-    /* modal tweaks so long text reads nicely */
-    .modal-card p { line-height:1.55; color:#111827; font-size:15px; white-space:pre-wrap; }
+    @media (max-width:980px){
+      .timeline-wrap { margin:14px 0 24px; }
+      .time-card { min-width:260px; }
+    }
+
+    /* modal */
+    .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.55); z-index:120; padding:20px; }
+    .modal-card{ background:var(--card); border-radius:12px; padding:22px; max-width:840px; width:100%; box-shadow:0 18px 48px rgba(2,6,23,0.18); position:relative; text-align:left; max-height:90vh; overflow:auto; }
+    .modal-card img.story-photo{ max-width:240px; display:block; margin:10px 0 18px; border-radius:8px; }
+    .modal-card h2{ margin-top:6px; }
+
+    /* small responsive tweaks */
+    @media (max-width:720px){
+      .top-tabs button{ padding:8px 12px; font-size:14px; }
+      .node { min-width:88%; max-width:88%; padding-top:48px; }
+      .node img.placeholder{ width:72px; height:72px; margin-top:-48px; }
+    }
   </style>
 </head>
 <body>
+
   <!-- TOP TABS -->
   <div class="top-tabs" role="tablist" aria-label="View toggle">
-    <button id="tabTree" class="active" aria-controls="treePage" aria-selected="true">Family Tree View</button>
-    <button id="tabMap" aria-controls="mapPage" aria-selected="false">Birth Map View</button>
+    <button id="tabTree" class="active" aria-controls="treePage" aria-selected="true">Family Tree</button>
+    <button id="tabTimeline" aria-controls="timelinePage" aria-selected="false">Family Timeline</button>
   </div>
 
   <header>
-    <h1>Michael's Family Tree</h1>
-    <p>Click any portrait to read their story. In the Birth Map View, click a pin and “Open story” to read the same biography.</p>
+    <h1>Michael's Family — Tree & Timeline</h1>
+    <p style="margin-top:6px;color:#f3f6fb">Two views: the family tree and a horizontal timeline of births. Click any portrait or timeline card to read the full family story.</p>
   </header>
 
-  <!-- ====================== TREE PAGE ====================== -->
-  <main id="treePage" class="tree-container tree-view" style="display:block;">
+  <!-- TREE PAGE -->
+  <main id="treePage" class="tree-container" style="display:block; padding:24px; max-width:1200px; margin:0 auto 60px;">
     <section class="family-tree">
       <ul>
-        <!-- left great-grand couple -->
+        <!-- LEFT great-grand pair -->
         <li>
           <div class="node">
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
@@ -99,7 +121,7 @@
           </div>
         </li>
 
-        <!-- middle top great-grand pair -->
+        <!-- MIDDLE top great-grand pair -->
         <li>
           <div class="node">
             <div class="couple-inline" style="display:flex;align-items:center;justify-content:center;">
@@ -298,186 +320,305 @@
     </section>
   </main>
 
-  <!-- ====================== MAP PAGE ====================== -->
-  <main id="mapPage" class="tree-container map-view" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;">
-      <h2 style="margin:0">Birth Map</h2>
-      <div class="map-actions">
-        <button id="btnReturn" class="small-btn">Return to Tree</button>
-      </div>
+  <!-- TIMELINE PAGE -->
+  <main id="timelinePage" class="timeline-container" style="display:none; padding:20px; max-width:1200px; margin:0 auto 80px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <h2 style="margin:0">Family Birth Timeline (Horizontal)</h2>
+      <div style="color:var(--muted);font-size:14px;">Scroll → or use arrows</div>
     </div>
 
-    <div id="birth-map" aria-label="Birthplace map"></div>
-    <p style="margin-top:10px;font-size:14px;color:var(--muted)">Click a marker to view the person and open their story card.</p>
+    <div class="timeline-wrap">
+      <button class="timeline-arrow arrow-left" id="scrollLeft" aria-label="Scroll left">&larr;</button>
+      <div class="timeline" id="timeline">
+        <!-- Timeline cards (sorted roughly by birth year) -->
+        <!-- James Vaccaro (1913) -->
+        <div class="time-card" data-key="james_vaccaro">
+          <h3>James Vaccaro</h3>
+          <span class="year">1913–1985 — Pennsylvania</span>
+          <p>I grew up hearing the James stories like little parables — a man who seemed made of plain things: workboots, an unhurried nod, and a steady grip. My parents would say he was the kind of person who could fix a truck with a coat hanger and a quiet swear word; he patched roofs, coaxed stubborn mules, and kept the house warmed in winters that felt endless. To me, James is the root of a family that learned to persist. Even in the smallest recollections there is a tenderness: the way he would hum while he worked, the small nick in the wooden table that still shows where he whittled a toy, and the stories you could only hear while huddled close to the stove. He taught a way of being — practical, patient, and kind in the ordinary way that lasts.</p>
+        </div>
+
+        <!-- Rose Louise Kirila (b.1929 relative) -->
+        <div class="time-card" data-key="rose_kirila">
+          <h3>Rose Louise Kirila</h3>
+          <span class="year">b. 1929 — Ohio / Hungarian roots</span>
+          <p>Rose's kitchen is the first true country I knew, though I never stood in Hungary. In every family retelling she is the woman with flour on her sleeves and hands that remembered recipes long after the ingredients were gone. My aunts would whisper about her stubborn garden where tomatoes came in despite drought, and how she could read a sky like scripture. She stitched the old country into American life with stories that tasted of paprika and patience. Growing up, I’d sit and listen as she spoke soft prayers and older relatives sang next to a radio. Rose is the voice that made our holidays smell like home — yeast and sugar and the calm steadiness of someone who kept memory alive with bowls and spoons.</p>
+        </div>
+
+        <!-- Eugene Kirili (1936) -->
+        <div class="time-card" data-key="eugene">
+          <h3>Eugene Edward Kirili</h3>
+          <span class="year">1936–1994 — Missouri / Ohio</span>
+          <p>Eugene's life crosses small towns and steady routines. My family always remembered him for a practical laugh and a deep loyalty to the neighborhood circle: church breakfasts, slow drives to visit kin, the small furniture he repaired for neighbors. He married Ruth and together they raised a family that knew neighbors by the sound of their cars. The stories about Eugene are not grand, but they are full of care — a hand that helped with a winter roof, a pocketful of quick advice, and a faithful presence that threaded the family together. When I think of him, I see Sunday mornings and the slow, reliable cadence of everyday care.</p>
+        </div>
+
+        <!-- Ruth Barris (b.1939) -->
+        <div class="time-card" data-key="ruth_barris">
+          <h3>Ruth Adaline Barris</h3>
+          <span class="year">b. 1939 — Missouri</span>
+          <p>Ruth is the neighbor who kept the phone line warm with check-ins and the church pew always found its place at family gatherings. My memories of Ruth are full of small domestic rituals: the way she folded napkins for holidays, the tea she served that made everything feel possible, and the morning calls to relatives with updates that somehow stitched days together. She raised children who learned courtesy at a kitchen table and who carried forward the gentle discipline of calling when promised. In our family stories she is warmth and steadiness, an everyday lighthouse.</p>
+        </div>
+
+        <!-- William Patton (no year specified; place: Northern Ireland) -->
+        <div class="time-card" data-key="william_patton">
+          <h3>William Patton</h3>
+          <span class="year">Northern Ireland — generation prior</span>
+          <p>William arrived in our tales with stories of saints and small talismans: a chipped cup, a prayer-book, the kind of object that held a person's steady hand across an ocean. The family always spoke of his patience and a dry humor that could soften the hardest meeting. I picture him at the head of a long table, teaching kids to wait for dessert and to respect a good story. There was a calm authority in William — not loud, but impossible to ignore — and those rules of decency and care he handed down shaped the ways the next generations leaned into family and faith.</p>
+        </div>
+
+        <!-- Beatrice Fisher -->
+        <div class="time-card" data-key="beatrice_fisher">
+          <h3>Beatrice Fisher</h3>
+          <span class="year">Ireland / Crozier notes</span>
+          <p>Beatrice's life is stitched in the quiet ways of homemaking that feel like an old song: crisp collars in photographs, careful hair, and a pride in preserving small domestic rituals. The Crozier name surfaces in photographs and folded letters; Beatrice is the woman who knew how to make a house feel like a sanctuary. Family notes say she taught baking like a language, and those baked loaves carried memory across decades. I have always loved the idea that Beatrice saw value in the ordinary, and taught the next generations how to translate scarcity into comfort.</p>
+        </div>
+
+        <!-- Lynne Patton -->
+        <div class="time-card" data-key="lynne">
+          <h3>Lynne Patton</h3>
+          <span class="year">Unknown — Ireland/UK connection</span>
+          <p>Lynne shows up in family festivals and reunion stories as someone who quietly organized the chaos of family gatherings. She was the aunt who remembered every birthday and who could be counted on to show up with a smiling face and a casserole in hand. The versions of Lynne I heard were full of warmth — an organizer, a memory-keeper, and the person who could make a weary family feel like a functioning one again. For me, Lynne is the invisible hand that smooths the edges of big family life.</p>
+        </div>
+
+        <!-- Gary Patton (1956) -->
+        <div class="time-card" data-key="gary">
+          <h3>Gary Patton</h3>
+          <span class="year">b. 1956 — Belfast → California</span>
+          <p>Gary's stories cross the ocean: the sound of rain in Belfast, the stubborn pride of a well-steeped cup of tea, and the bracing humor that arrived with him to California. Growing up we heard of his mix of sternness and private tenderness — the man who could set strict rules and then surprise people with a cake or a fixed bike. Gary learned how to hold two homes in his heart: the old ways of Belfast and the new rhythms of California. That balance shows up in how he raised his children — with clear expectation, yes, but also an abiding loyalty that made the family feel secure.</p>
+        </div>
+
+        <!-- Daniel Patton (1992) -->
+        <div class="time-card" data-key="daniel">
+          <h3>Daniel Patton</h3>
+          <span class="year">b. 1992 — Woodland Hills, CA</span>
+          <p>Daniel represents the California edge of our family tree: practical, easygoing, and quietly skilled. I remember stories of him pulling a lamp together out of spare parts and showing up for dinners that matter. He carries the patience of earlier generations but in a modern form — a willingness to tinker, to laugh, and to show up. The way he inhabits family life is less about ceremony and more about being present when it counts.</p>
+        </div>
+
+        <!-- Shannen Patton (1987) -->
+        <div class="time-card" data-key="shannen">
+          <h3>Shannen Patton</h3>
+          <span class="year">b. 1987 — Woodland Hills, CA</span>
+          <p>Shannen has always been the one who keeps the calendar for the family — birthdays, dinners, holidays — and who cradles small rituals even when life is busy. She blends Patton tradition with California habits: family recipes meet long drives, and the phone call on a birthday feels like a small anchor. Married to Brian, she is the quiet hub that spins family obligations into actual gatherings, and that care is visible in the way everyone looks to her for news or comfort.</p>
+        </div>
+
+        <!-- Brian Kupfer (1981) -->
+        <div class="time-card" data-key="brian">
+          <h3>Brian Kupfer</h3>
+          <span class="year">b. 1981 — Ojai, CA</span>
+          <p>Brian is the practical heartbeat of our immediate household memories: someone who can teach a skill with patience and who treats late-night pancakes as a kind of sanctuary. He worked in tooling, coached abroad, and has a way of treating ordinary moments as sacred. Married to Shannen, he built a life of quiet routines and weekend projects that felt like rituals. I think of Brian as the person who makes home feel safe — steady hands, quiet humor, and a willingness to roll up sleeves when needed.</p>
+        </div>
+
+        <!-- Robert & Patricia Kupfer (Pennsylvania) -->
+        <div class="time-card" data-key="robert_kupfer">
+          <h3>Robert Kupfer</h3>
+          <span class="year">Pennsylvania — elder Kupfer</span>
+          <p>Robert carried the family through practical care and steady presence: calls on weekends, small gatherings, and a pride when his children learned trades. He was the kind of father who valued steady employment and quiet competence, and those values rubbed off on the rest of us. Remembering him is to remember reliability — someone who did the small things that made life hold together.</p>
+        </div>
+
+        <div class="time-card" data-key="patricia_kupfer">
+          <h3>Patricia Kupfer</h3>
+          <span class="year">Pennsylvania — elder Kupfer</span>
+          <p>Patricia kept the family connected through rituals that felt like glue: the holiday table, a tidy guest room, and a phone always ready for a check-in. Her kindness wasn’t flashy; it was the steady work of making people feel seen. I grew up learning from the way Patricia set a place for whoever showed up and how she called to check on distant relatives as if it were the most natural thing in the world.</p>
+        </div>
+
+        <!-- Cort, Crystal, April, Everett, Jonathan (Ojai cluster) -->
+        <div class="time-card" data-key="cort">
+          <h3>Cort Kupfer</h3>
+          <span class="year">Ojai, CA — Kupfer</span>
+          <p>Cort is the teller of neighborhood stories: quick with a joke, practical, and always ready to remind someone of a memory they’d forgotten. He’s the kind of cousin who keeps the funny past alive at family gatherings and who remembers the small details other people miss.</p>
+        </div>
+
+        <div class="time-card" data-key="crystal">
+          <h3>Crystal Kupfer</h3>
+          <span class="year">Ojai, CA — Kupfer</span>
+          <p>Crystal is a mother first — protective, determined, and fierce in a quiet, everyday way. When family stories talk about her, they highlight how she shielded and provided for her son Elijah, often with quiet sacrifice and unwavering attention. Crystal’s presence in our family is an example of how fierce love looks in practice.</p>
+        </div>
+
+        <div class="time-card" data-key="april">
+          <h3>April Kupfer</h3>
+          <span class="year">Ojai, CA — Kupfer</span>
+          <p>April’s life has known complications and strength in equal measure. Family memory remembers someone who fought for her children and who kept moving forward when the road narrowed. There is a toughness there — not without softness — and that combination commands respect in our stories.</p>
+        </div>
+
+        <div class="time-card" data-key="everett">
+          <h3>Everett Kupfer</h3>
+          <span class="year">Ojai, CA — Kupfer</span>
+          <p>Everett served in the Air Force and came back with a calm steadiness that impressed everyone who knew him. The discipline of service translated into a gentle presence at family events: someone who listened, who showed up, and who lent perspective on days that felt fraught. His life reminds us that service shapes more than careers; it shapes how you carry yourself among kin.</p>
+        </div>
+
+        <div class="time-card" data-key="jonathan">
+          <h3>Jonathan Kupfer</h3>
+          <span class="year">Ojai, CA — Kupfer</span>
+          <p>Jonathan is a quieter thread in the family fabric, the step-uncle who shows up and helps without much fanfare. Stories about Jonathan are small — helping hands, a willingness to drive someone to an appointment — but those hands are the ones families rely on when plans demand extra effort.</p>
+        </div>
+
+        <!-- Nannete, Mario, Carlo, Renato, Demarco, Gino, Giana, Demetri (Dean cluster) -->
+        <div class="time-card" data-key="nannete">
+          <h3>Nannete Dean</h3>
+          <span class="year">Thousand Oaks, CA — Aunt</span>
+          <p>Nannete was worldly in ways the rest of us only dimly understood when we were kids: stories of France, markets, and fig trees that tasted like summers. She carried a patient generosity and recipes that tasted of other places, and those little foreign traces made our family feel larger than its streets. Her calm presence taught me that travel can be translated into the steadiness of baked bread and the patience of a good listener.</p>
+        </div>
+
+        <div class="time-card" data-key="mario">
+          <h3>Mario Dean</h3>
+          <span class="year">1985–2014 — Thousand Oaks</span>
+          <p>Mario’s life was vivid and intense in the way that leaves a long echo. Family memories hold him as complex: brilliant, vulnerable, and alive in a way that made people both worry and laugh. He left behind stories and jokes that still surface at gatherings, small moments that carry his voice forward. Remembering Mario is bittersweet: he is warmth and a reminder to hold those we love a little closer.</p>
+        </div>
+
+        <div class="time-card" data-key="carlo">
+          <h3>Carlo Dean</h3>
+          <span class="year">Thousand Oaks — Dean</span>
+          <p>Carlo’s story is full of contradictions — fierce loyalty, difficult chapters, and moments of deep tenderness. He’s been in and out of tough times, but family stories also record moments of care and support. Carlo’s life reminds us that people are rarely simple; they are a mix of struggle and kindness, and our family remembers both without forgetting the complexity.</p>
+        </div>
+
+        <div class="time-card" data-key="renato">
+          <h3>Renato Dean</h3>
+          <span class="year">Missouri — Dean</span>
+          <p>Renato served close to a decade in the military, and the discipline of that time shaped his private and public life. He’s described as serious and capable — someone who holds his struggles close and shows tenderness in incremental ways. To our family, Renato is a reminder that service and quiet strength often travel together.</p>
+        </div>
+
+        <div class="time-card" data-key="demarco">
+          <h3>Demarco Victoria</h3>
+          <span class="year">Missouri — Dean</span>
+          <p>Demarco and his three children appear in family scenes as ordinary, everyday caretakers — people who keep small routines alive and hold neighborhood ties. Their chapters in the family story are unremarkable in the best sense: steady, reliable, and full of daily care.</p>
+        </div>
+
+        <div class="time-card" data-key="gino">
+          <h3>Gino Dean</h3>
+          <span class="year">Missouri — Dean</span>
+          <p>Gino lives in San Diego in the family stories — a friendly presence whose daughter Taylor is a bright light. Family accounts include beach days and backyard cookouts, and Gino’s easygoing nature comes through as a reminder of ordinary joy.</p>
+        </div>
+
+        <div class="time-card" data-key="giana">
+          <h3>Giana Dean</h3>
+          <span class="year">Missouri — Dean</span>
+          <p>Giana’s death by suicide is a wound we carry with tenderness. Her memory prompts quieter conversations in the family about care and mental health — how fragile and precious our connections are. We remember her with love and with the commitment to look after one another.</p>
+        </div>
+
+        <div class="time-card" data-key="demetri">
+          <h3>Demetri Dean</h3>
+          <span class="year">Missouri — Dean</span>
+          <p>Demetri is often described as the quiet cousin who mattered in small ways — shows up, helps, and keeps his own counsel. Those little acts of presence add up in family memory, and Demetri is a reminder that consistency can be as powerful as grand gestures.</p>
+        </div>
+
+        <!-- Eugene, Ruth repeated as timeline entries already above; Robert/Patricia included earlier -->
+
+        <!-- Michael (2008) -->
+        <div class="time-card" data-key="michael">
+          <h3>Michael Dean</h3>
+          <span class="year">b. 2008 — Thousand Oaks</span>
+          <p>Michael — that’s you — and in the way I tell the family story, you’re the small, stubborn heart beating at the center of recent memories: long car rides, holiday mischief, and a curiosity about the old recipes and stories. You inherited pieces of different branches: a taste for Italian name-thread and the patience of the Patton and Kupfer hands. I like to think you’ll carry our stories forward in the small practical ways that matter most — the kind of memory that survives in meals shared and jokes told late at night.</p>
+        </div>
+
+      </div>
+
+      <button class="timeline-arrow arrow-right" id="scrollRight" aria-label="Scroll right">&rarr;</button>
+    </div>
+
+    <p style="color:var(--muted);font-size:13px;margin-top:6px;">Tip: drag the timeline left/right or use the arrows to move through generations. Click any card to open the full family biography.</p>
   </main>
 
   <!-- STORY MODAL -->
-  <div id="story-modal" class="modal" style="display:none;">
-    <div class="modal-card">
-      <button id="closeModal" onclick="closeStory()" style="position:absolute;right:12px;top:10px;padding:6px 8px;border-radius:8px;border:none;background:#efefef;cursor:pointer;">Close</button>
+  <div id="story-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <button id="closeModal" onclick="closeStory()" aria-label="Close story" style="position:absolute;right:12px;top:10px;padding:6px 8px;border-radius:8px;border:none;background:#efefef;cursor:pointer;">Close</button>
       <div id="story-content"></div>
     </div>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-V3D3V0sXH8VYd0q3w6tZ8p0i3WmXgI+qKqZ3E7m1w0k=" crossorigin=""></script>
-
   <script>
-    /* ========== STORIES: full biographies you provided ========== */
+    // Full biographies (expanded, warm & nostalgic — from your perspective)
     const stories = {
-      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look."},
-      "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country."},
-      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head."},
-      "william_patton": {"title":"William Patton","photo":"","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms."},
-      "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","photo":"","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving."},
-      "lynne": {"title":"Lynne Patton","photo":"","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency."},
-      "gary": {"title":"Gary Patton (b. 1956)","photo":"","text":"Gary was born in Belfast into a household where religion and ritual structured daily life. He later moved to California and, like many immigrants, learned to translate old habits into new rhythms. Gary married Deborah in 1984 and built a family that balanced strict expectations with a deep loyalty. He tells stories about Ireland — about fields, stubborn weather, and the odd comfort of a well-steeped cup of tea — and his children remember him as a man who blended sternness with sudden, small acts of generosity: a fixed bike, an unexpected cake, a private grin at a family joke."},
-      "daniel": {"title":"Daniel Patton (b. 1992)","photo":"","text":"Daniel grew up in Woodland Hills and represents a generational shift: more rooted in California life than in the old stories, but still attentive to them. Friends remember him as easygoing, quick with a grin, and practical: the person who can turn a spare part into a working lamp and who still shows up for family dinners when they matter most."},
-      "shannen": {"title":"Shannen Patton (b. 1987)","photo":"","text":"Born in Woodland Hills, Shannen grew up balancing Patton tradition and the pull of California life. She cherishes small rituals: family recipes from Ohio, holiday gatherings, and the habit of calling relatives on birthdays. Married to Brian, she keeps the household running and the family calendar full."},
-      "brian": {"title":"Brian Kupfer (b. 1981)","photo":"","text":"Brian is the kind of practical teacher people remember — patient when explaining a difficult technique, quick to laugh when something goes wrong, and serious when it comes to his responsibilities. He trained people in trades, worked in plastic tooling for Lockheed, and even coached in Ireland for a spell. He married Shannen in 2020 and speaks fondly of ordinary domestic moments: a Saturday project in the garage, late-night pancakes, and quiet conversations about the future. People describe him as reliable and unexpectedly tender."},
-      "breanna": {"title":"Breanna Kupfer (b. 2021)","photo":"","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow."},
-      "alexis": {"title":"Alexis Kupfer (b. 2016)","photo":"","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn."},
-      "robert_kupfer": {"title":"Robert Kupfer","photo":"","text":"Robert is the elder presence of the Kupfer side: a man who kept family links strong through phone calls, weekend gatherings, and quiet support. Workmanlike and direct, he valued steady employment and was proud when his children learned a trade."},
-      "patricia_kupfer": {"title":"Patricia Kupfer","photo":"","text":"Patricia held the family together with small rituals: a shared holiday table, a tidy guest room, a telephone always ready for a check-in. She is remembered for practical kindness."},
-      "cort": {"title":"Cort Kupfer","photo":"","text":"Cort is known in family circles as someone who carries on the humor and directness of his parents. He is practical, quick with a story, and remembers neighborhood details that others forget."},
-      "crystal": {"title":"Crystal Kupfer","photo":"","text":"Crystal is a mother first and foremost; stories about her often center on her son Elijah and small, fiercely protective instincts. She balances warmth with a clear determination to make sure her child has what he needs."},
-      "april": {"title":"April Kupfer","photo":"","text":"April’s life has had its complications — the strain of divorce and raising two children — but she is remembered for her toughness and resourcefulness."},
-      "everett": {"title":"Everett Kupfer","photo":"","text":"Everett served in the Air Force and carried those lessons of discipline and perspective into civilian life. He lives near Berkeley and is remembered for a calm steadiness."},
-      "jonathan": {"title":"Jonathan Kupfer","photo":"","text":"Jonathan is a quieter member of the extended group — a step-uncle who keeps in touch and turns up to help when family plans require extra hands."},
-      "nannete": {"title":"Nannete Dean","photo":"","text":"Nannete was raised partly in France and brought a worldly patience to family life. She is remembered for quiet generosity and for recipes that recall markets and fig trees."},
-      "mario": {"title":"Mario Dean (1985–2014)","photo":"","text":"Mario’s life was short and intense — a figure who appears in family memory as both vulnerable and vivid. He died in 2014 but left behind stories and jokes that still surface at gatherings."},
-      "carlo": {"title":"Carlo Dean","photo":"","text":"Carlo’s story includes both complications and fierce family loyalty. He’s had legal troubles and been in and out of difficult circumstances, but also shows moments of tenderness and care during better times."},
-      "renato": {"title":"Renato Dean","photo":"","text":"Renato served nearly a decade in the military, and that discipline shaped his approach to family and work. He’s described as serious, capable, and private about his struggles."},
-      "demarco": {"title":"Demarco Victoria","photo":"","text":"Demarco and his three children are part of the wider Dean network. Family memory locates them among the many small, ordinary stories of everyday care."},
-      "gino": {"title":"Gino Dean","photo":"","text":"Gino lives in San Diego and is described as friendly and practical. His daughter Taylor is a bright presence and family stories speak of beach days and backyard barbecues."},
-      "giana": {"title":"Giana Dean","photo":"","text":"Giana’s death by suicide is a deep wound in the family. Remembered with tenderness, her life prompts quiet conversations about mental health and care."},
-      "demetri": {"title":"Demetri Dean","photo":"","text":"Possibly a cousin — Demetri appears in family memory as someone who kept to himself but who mattered in small ways."},
-      "eugene": {"title":"Eugene Edward Kirili (1936–1994)","photo":"","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He married Ruth Barris in 1962 and raised a family in small towns."},
-      "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","photo":"","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene raised at least one daughter and kept close to the rhythms of Trumbull and West Middlesex."},
-      "fisher_note": {"title":"Fisher / Crozier / Fischer notes","photo":"","text":"Some family lines use Fisher, some Fischer, and a Crozier appears in marriage records and oral recollections. These name-variants point to likely migrations and the way records sometimes split families across different spellings."},
-      "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table."}
+      "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look. I grew up on these stories like they were lullabies; even if I never met him, I feel his presence whenever someone in our family chooses care over convenience."},
+      "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country. When I close my eyes I can almost smell the dough she used to make — heavy and warm — and I imagine the way she taught patience by turning flour into a meal."},
+      "deborah": {"title":"Deborah (née Vaccaro) Patton (b. 1959)","photo":"","text":"Deborah’s childhood was threaded by the rhythms of Ohio farming life and Hungarian customs. She remembers waking before dawn to help with chores, the feel of cold soil, and neighbors who shared both work and stories. Later she moved west and married Gary, bringing the old recipes and a quiet, organizing strength to a new household. Deborah’s presence is remembered in the small domestic details — a carefully folded napkin, a meal that can soothe, and the way she keeps family birthdays on a calendar in her head. To me, Deborah is the kind of person who holds a family’s emotional map; she remembers who needs a call and who needs soup when things go wrong."},
+      "william_patton": {"title":"William Patton","photo":"","text":"William carried Northern Ireland with him in the way he spoke about saints, the cadence of old sermons, and the quiet manner he brought into noisy American rooms. He raised his children with clear rules and a wry sense of humor that showed up at table. Family lore credits him for teaching patience — the value of waiting and working — and for passing down small talismans, like a worn pocket prayer-book or a chipped china cup, that became family heirlooms. I picture William in the evenings, hands folded, telling a story that made everyone quiet — not because he needed silence, but because his words deserved to be heard."},
+      "beatrice_fisher": {"title":"Beatrice Fisher (Crozier connection)","photo":"","text":"Beatrice’s memory is a tapestry of faith, resilience, and a practical tenderness. The Crozier line shows up in old photographs: crisp collars, careful hair, and that quiet pride in being able to make a home out of scarce things. Beatrice taught younger family members how to keep a house that smelled welcome and how to read a recipe as a kind of language worth preserving. As I tell the story, she is the keeper of small rituals that ripple across generations: a tea set, a folded letter, a recipe scrawled on the back of an envelope."},
+      "lynne": {"title":"Lynne Patton","photo":"","text":"Lynne is remembered as a steady presence in the Patton family — the aunt who attended every school event and who kept long-running joke threads alive at family parties. Though records are thin, the stories that survive paint her as warm, practical, and the kind of person who could organize a reunion with calm efficiency. In the stories I tell children now, Lynne is the one who shows up with extra chairs and a weary smile; she makes the mechanics of family look easy when they’re anything but."},
+      "gary": {"title":"Gary Patton (b. 1956)","photo":"","text":"Gary was born in Belfast into a household where religion and ritual structured daily life. He later moved to California and, like many immigrants, learned to translate old habits into new rhythms. Gary married Deborah in 1984 and built a family that balanced strict expectations with a deep loyalty. He tells stories about Ireland — about fields, stubborn weather, and the odd comfort of a well-steeped cup of tea — and his children remember him as a man who blended sternness with sudden, small acts of generosity: a fixed bike, an unexpected cake, a private grin at a family joke. To us he is both disciplinarian and soft-hearted keeper of tales."},
+      "daniel": {"title":"Daniel Patton (b. 1992)","photo":"","text":"Daniel grew up in Woodland Hills and represents a generational shift: more rooted in California life than in the old stories, but still attentive to them. Friends remember him as easygoing, quick with a grin, and practical: the person who can turn a spare part into a working lamp and who still shows up for family dinners when they matter most. I like telling the younger ones about Daniel as the cousin who can make things work; his calm competence is a kind of inherited gift."},
+      "shannen": {"title":"Shannen Patton (b. 1987)","photo":"","text":"Born in Woodland Hills, Shannen grew up balancing Patton tradition and the pull of California life. She cherishes small rituals: family recipes from Ohio, holiday gatherings, and the habit of calling relatives on birthdays. Married to Brian, she keeps the household running and the family calendar full. In my memory she is the silent engine — the one who remembers the plates, the songs, and the jokes that make us all feel like we belong."},
+      "brian": {"title":"Brian Kupfer (b. 1981)","photo":"","text":"Brian is the kind of practical teacher people remember — patient when explaining a difficult technique, quick to laugh when something goes wrong, and serious when it comes to his responsibilities. He trained people in trades, worked in plastic tooling for Lockheed, and even coached in Ireland for a spell. He married Shannen in 2020 and speaks fondly of ordinary domestic moments: a Saturday project in the garage, late-night pancakes, and quiet conversations about the future. People describe him as reliable and unexpectedly tender. He is the kind of man who builds family not with grand speeches but with steady hands and late-night jokes."},
+      "breanna": {"title":"Breanna Kupfer (b. 2021)","photo":"","text":"Breanna arrived to a household full of laughter and careful routines. Even as a toddler she carried a clear, curious gaze and a willingness to test new textures — a trait that has everyone excited to watch her grow. In family photos she is small and serious in a way that feels wise beyond her years, and already she seems to inherit the patient indulgence of the gathered adults."},
+      "alexis": {"title":"Alexis Kupfer (b. 2016)","photo":"","text":"Alexis brings an early affection for storytelling and small, determined independence. From school projects to backyard games, she’s remembered as the kid who will quietly organize a group and make sure everyone has a turn. Watching her is like watching the next chapter of the family — a kid who will invent rituals of her own."},
+      "robert_kupfer": {"title":"Robert Kupfer","photo":"","text":"Robert is the elder presence of the Kupfer side: a man who kept family links strong through phone calls, weekend gatherings, and quiet support. Workmanlike and direct, he valued steady employment and was proud when his children learned a trade. He taught that dignity is often practical: a steady job, a reliable handshake, and a family calendar that never loses a birthday."},
+      "patricia_kupfer": {"title":"Patricia Kupfer","photo":"","text":"Patricia held the family together with small rituals: a shared holiday table, a tidy guest room, a telephone always ready for a check-in. She is remembered for practical kindness. She made the house a harbor — clothes folded, a kettle simmering, and a willingness to receive whoever turned up at the door."},
+      "cort": {"title":"Cort Kupfer","photo":"","text":"Cort is known in family circles as someone who carries on the humor and directness of his parents. He is practical, quick with a story, and remembers neighborhood details that others forget. He keeps the more lighthearted chapters of our history alive with an easy grin and a ready tale."},
+      "crystal": {"title":"Crystal Kupfer","photo":"","text":"Crystal is a mother first and foremost; stories about her often center on her son Elijah and small, fiercely protective instincts. She balances warmth with a clear determination to make sure her child has what he needs. When family troubles arise she is the one who organizes the logistics and shields the kids — the quiet hero of many nights."},
+      "april": {"title":"April Kupfer","photo":"","text":"April’s life has had its complications — the strain of divorce and raising two children — but she is remembered for her toughness and resourcefulness. People tell stories of her finding ways through tight times and standing up for the kids, and there is respect in those tales. She is an example of grit that gets you through."},
+      "everett": {"title":"Everett Kupfer","photo":"","text":"Everett served in the Air Force and carried those lessons of discipline and perspective into civilian life. He lives near Berkeley and is remembered for a calm steadiness. His military service shaped a steadiness in him that the family admires — a quietly reliable presence in the weather of everyday life."},
+      "jonathan": {"title":"Jonathan Kupfer","photo":"","text":"Jonathan is a quieter member of the extended group — a step-uncle who keeps in touch and turns up to help when family plans require extra hands. His presence is often understated, but folks notice when he’s not around because he’s the one who quietly made sure something got done."},
+      "nannete": {"title":"Nannete Dean","photo":"","text":"Nannete was raised partly in France and brought a worldly patience to family life. She is remembered for quiet generosity and for recipes that recall markets and fig trees. Her culinary stories always hinted at wider worlds — the comfort of a good stew and the warmth of a hand-knitted scarf. I remember thinking she made us feel cosmopolitan without leaving town."},
+      "mario": {"title":"Mario Dean (1985–2014)","photo":"","text":"Mario’s life was short and intense — a figure who appears in family memory as both vulnerable and vivid. He died in 2014 but left behind stories and jokes that still surface at gatherings. People speak of Mario with affection and an ache; he was someone who lived loudly and left behind echoes that remind us to hold one another close."},
+      "carlo": {"title":"Carlo Dean","photo":"","text":"Carlo’s story includes both complications and fierce family loyalty. He’s had legal troubles and been in and out of difficult circumstances, but also shows moments of tenderness and care during better times. For our family, Carlo is a reminder that people can be messy and brave at once."},
+      "renato": {"title":"Renato Dean","photo":"","text":"Renato served nearly a decade in the military, and that discipline shaped his approach to family and work. He’s described as serious, capable, and private about his struggles. The family story about Renato is one of steady, careful competence — someone who takes vows seriously and brings that seriousness home."},
+      "demarco": {"title":"Demarco Victoria","photo":"","text":"Demarco and his three children are part of the wider Dean network. Family memory locates them among the many small, ordinary stories of everyday care: playdates, birthday cakes, and small arguments that resolve over coffee. They anchor a lot of our Saturday afternoons."},
+      "gino": {"title":"Gino Dean","photo":"","text":"Gino lives in San Diego and is described as friendly and practical. His daughter Taylor is a bright presence and family stories speak of beach days and backyard barbecues. Gino’s life in the sun feels like a lighter chapter in the family book."},
+      "giana": {"title":"Giana Dean","photo":"","text":"Giana’s death by suicide is a deep wound in the family. Remembered with tenderness, her life prompts quiet conversations about mental health and care. We tell her story so that we might learn to hold one another more gently; her memory has become a quiet, serious plea for awareness and kindness."},
+      "demetri": {"title":"Demetri Dean","photo":"","text":"Possibly a cousin — Demetri appears in family memory as someone who kept to himself but who mattered in small ways. People remember him for quiet acts: showing up, carrying groceries, being a steady neighbor when it mattered."},
+      "eugene": {"title":"Eugene Edward Kirili (1936–1994)","photo":"","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He married Ruth Barris in 1962 and raised a family in small towns. Family memories of Eugene are the sort that fill a porch: slow jokes, steady work, and a presence that kept community moving forward in small, important ways."},
+      "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","photo":"","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene raised at least one daughter and kept close to the rhythms of Trumbull and West Middlesex. Her manner was kindly and neighborly; she smoothed edges and kept the family in contact."},
+      "fisher_note": {"title":"Fisher / Crozier / Fischer notes","photo":"","text":"Some family lines use Fisher, some Fischer, and a Crozier appears in marriage records and oral recollections. These name-variants point to likely migrations and the way records sometimes split families across different spellings. In practical terms, it means our paper trail sometimes plays tricks on us — but the stories remain steady."},
+      "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table. If our family is a book, Michael is the next chapter, curious and hopeful and ready to write his own lines."}
     };
 
-    /* ========== Modal open/close functions ========== */
+    // modal functions
     function openStory(key){
       const s = stories[key];
       if(!s) return;
       const modal = document.getElementById('story-modal');
       const content = document.getElementById('story-content');
-      // Build content safely (we control the text; still escape)
-      content.innerHTML = '<h2 style="margin-top:0;">' + escapeHtml(s.title) + '</h2>' + (s.photo ? ('<img src="'+escapeHtml(s.photo)+'" class="story-photo" alt="'+escapeHtml(s.title)+'">') : '') + '<p>' + escapeHtml(s.text) + '</p>';
+      content.innerHTML = '<h2>' + escapeHtml(s.title) + '</h2>' + (s.photo ? ('<img src="'+escapeHtml(s.photo)+'" class="story-photo" alt="'+escapeHtml(s.title)+'">') : '') + '<p>' + escapeHtml(s.text) + '</p>';
       modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
     }
-    function closeStory(){ document.getElementById('story-modal').style.display = 'none'; }
+    function closeStory(){ const modal = document.getElementById('story-modal'); modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
     window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
 
     function escapeHtml(str){
       return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
     }
 
-    /* ========== Tabs logic ========== */
+    // Tabs logic
     const tabTree = document.getElementById('tabTree');
-    const tabMap = document.getElementById('tabMap');
+    const tabTimeline = document.getElementById('tabTimeline');
     const treePage = document.getElementById('treePage');
-    const mapPage = document.getElementById('mapPage');
-    const btnReturn = document.getElementById('btnReturn');
+    const timelinePage = document.getElementById('timelinePage');
 
-    tabTree.addEventListener('click', ()=> setActiveTab('tree'));
-    tabMap.addEventListener('click', ()=> setActiveTab('map'));
-    btnReturn && btnReturn.addEventListener('click', ()=> setActiveTab('tree'));
+    tabTree.addEventListener('click', ()=> {
+      tabTree.classList.add('active'); tabTimeline.classList.remove('active');
+      treePage.style.display='block'; timelinePage.style.display='none';
+      tabTree.setAttribute('aria-selected','true'); tabTimeline.setAttribute('aria-selected','false');
+    });
+    tabTimeline.addEventListener('click', ()=> {
+      tabTimeline.classList.add('active'); tabTree.classList.remove('active');
+      treePage.style.display='none'; timelinePage.style.display='block';
+      tabTimeline.setAttribute('aria-selected','true'); tabTree.setAttribute('aria-selected','false');
+      // tiny delay: ensure timeline visible for any potential layout needs
+      setTimeout(()=>{ /* noop for now */ }, 120);
+    });
 
-    function setActiveTab(active){
-      if(active === 'tree'){
-        tabTree.classList.add('active'); tabMap.classList.remove('active');
-        treePage.style.display='block'; mapPage.style.display='none';
-        tabTree.setAttribute('aria-selected','true'); tabMap.setAttribute('aria-selected','false');
-      } else {
-        tabMap.classList.add('active'); tabTree.classList.remove('active');
-        treePage.style.display='none'; mapPage.style.display='block';
-        tabMap.setAttribute('aria-selected','true'); tabTree.setAttribute('aria-selected','false');
-        // init map the first time it's shown
-        if(!window.birthmap) { initMap(); }
-        else { setTimeout(()=>{ try{ window.birthmap.invalidateSize(); }catch(e){} }, 220); }
+    // Timeline card click delegation
+    document.getElementById('timeline').addEventListener('click', function(e){
+      const card = e.target.closest && e.target.closest('.time-card');
+      if(card){
+        const key = card.getAttribute('data-key');
+        if(key) openStory(key);
       }
-    }
+    });
 
-    /* ========== Birthplaces (full-format labels) ==========
-       Estimated coords used for central city points.
-    */
-    const birthPlaces = [
-      { key:'james_vaccaro', name:'James Vaccaro — Pennsylvania (Born 1913–1985)', lat:40.2732, lon:-76.8867 },
-      { key:'rose_kirila', name:'Rose Louise Kirila — Ohio (Born 1929)', lat:39.9612, lon:-82.9988 },
-      { key:'deborah', name:'Deborah (Vaccaro) Patton — Ohio (Born 1959)', lat:39.9612, lon:-82.9988 },
-      { key:'william_patton', name:'William Patton — Belfast, Northern Ireland (Born unknown)', lat:54.5973, lon:-5.9301 },
-      { key:'beatrice_fisher', name:'Beatrice Fisher — Dublin, Ireland (Born unknown)', lat:53.3498, lon:-6.2603 },
-      { key:'lynne', name:'Lynne Patton — Dublin, Ireland (Born unknown)', lat:53.3498, lon:-6.2603 },
-      { key:'gary', name:'Gary Patton — Belfast, Northern Ireland (Born 1956)', lat:54.5973, lon:-5.9301 },
-      { key:'daniel', name:'Daniel Patton — Woodland Hills, CA (Born 1992)', lat:34.1683, lon:-118.6057 },
-      { key:'shannen', name:'Shannen Patton — Woodland Hills, CA (Born 1987)', lat:34.1683, lon:-118.6057 },
-      { key:'brian', name:'Brian Kupfer — Ojai, CA (Born 1981)', lat:34.4486, lon:-119.2429 },
-      { key:'breanna', name:'Breanna Kupfer — Ventura, CA (Born 2021)', lat:34.2746, lon:-119.2290 },
-      { key:'alexis', name:'Alexis Kupfer — Ventura, CA (Born 2016)', lat:34.2746, lon:-119.2290 },
-      { key:'robert_kupfer', name:'Robert Kupfer — Pennsylvania (Born unknown)', lat:39.9526, lon:-75.1652 },
-      { key:'patricia_kupfer', name:'Patricia Kupfer — Pennsylvania (Born unknown)', lat:39.9526, lon:-75.1652 },
-      { key:'cort', name:'Cort Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
-      { key:'crystal', name:'Crystal Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
-      { key:'april', name:'April Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
-      { key:'everett', name:'Everett Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
-      { key:'jonathan', name:'Jonathan Kupfer — Ojai, CA (Born unknown)', lat:34.4486, lon:-119.2429 },
-      { key:'nannete', name:'Nannete Dean — Thousand Oaks, CA (Born unknown)', lat:34.1703, lon:-118.8376 },
-      { key:'mario', name:'Mario Dean — Thousand Oaks, CA (1985–2014)', lat:34.1703, lon:-118.8376 },
-      { key:'carlo', name:'Carlo Dean — Thousand Oaks, CA (Born unknown)', lat:34.1703, lon:-118.8376 },
-      { key:'renato', name:'Renato Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
-      { key:'demarco', name:'Demarco Victoria — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
-      { key:'gino', name:'Gino Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
-      { key:'giana', name:'Giana Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
-      { key:'demetri', name:'Demetri Dean — Missouri (Born unknown)', lat:38.5767, lon:-92.1735 },
-      { key:'eugene', name:'Eugene Edward Kirili — Missouri (1936–1994)', lat:38.5767, lon:-92.1735 },
-      { key:'ruth_barris', name:'Ruth Adaline Barris — Missouri (Born 1939)', lat:38.5767, lon:-92.1735 },
-      { key:'michael', name:'Michael Dean — Thousand Oaks, CA (Born 2008)', lat:34.1703, lon:-118.8376 }
-    ];
+    // Timeline arrows
+    const timeline = document.getElementById('timeline');
+    document.getElementById('scrollLeft').addEventListener('click', ()=> { timeline.scrollBy({ left: -420, behavior: 'smooth' }); });
+    document.getElementById('scrollRight').addEventListener('click', ()=> { timeline.scrollBy({ left: 420, behavior: 'smooth' }); });
 
-    /* ========== Initialize Leaflet map only when needed ========== */
-    function initMap(){
-      if(window.birthmap) return;
-      const map = L.map('birth-map', { scrollWheelZoom: true }).setView([39.5, -95.35], 4);
-      window.birthmap = map;
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
-
-      const markers = L.layerGroup().addTo(map);
-
-      birthPlaces.forEach(p => {
-        if(!p.lat || !p.lon) return;
-        const marker = L.marker([p.lat, p.lon]).addTo(markers);
-        const popup = `
-          <div style="min-width:200px">
-            <strong>${escapeHtml(p.name)}</strong><br/>
-            <a href="#" data-key="${p.key}" class="open-story-link" style="display:inline-block;margin-top:6px;color:#1f6feb;text-decoration:none;font-weight:700">Open story</a>
-          </div>`;
-        marker.bindPopup(popup);
-      });
-
-      // delegate popup link clicks
-      document.getElementById('birth-map').addEventListener('click', function(e){
-        const a = e.target.closest && e.target.closest('.open-story-link');
-        if(a){ e.preventDefault(); const k = a.getAttribute('data-key'); if(k) openStory(k); }
-      });
-
-      // ensure tiles render correctly
-      setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} }, 300);
-    }
-
-    // initialize map if URL hash says so
-    document.addEventListener('DOMContentLoaded', function(){
-      if(location.hash === '#map'){ setActiveTab('map'); }
-      // otherwise wait until user clicks Map tab
+    // allow pressing Enter on a focused card to open modal
+    Array.from(document.getElementsByClassName('time-card')).forEach(card => {
+      card.setAttribute('tabindex','0');
+      card.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const k=card.getAttribute('data-key'); if(k) openStory(k); }});
     });
 
   </script>
+
 </body>
 </html>
