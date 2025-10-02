@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Family Tree — Full + Birth Map</title>
+  <title>Michaels Family tree</title>
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -75,17 +75,24 @@
     .map-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
     .small-btn { padding:8px 10px; border-radius:8px; border:none; cursor:pointer; background:#e5e7eb; font-weight:600; }
     .small-btn.primary { background:var(--accent); color:#fff; }
+
+    /* Top tabs override for local page (small inline) */
+    .top-tabs { display:flex; justify-content:center; gap:6px; padding:12px 8px; background:linear-gradient(90deg,var(--accent),#174b93); }
+    .top-tabs button { background:transparent; border:none; color:white; padding:10px 16px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.9; }
+    .top-tabs button.active { background:rgba(255,255,255,0.12); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
+    @media (max-width:720px){ .top-tabs { padding:8px; } .top-tabs button{ padding:8px 10px; font-size:14px; } }
   </style>
 </head>
 <body>
+  <!-- === TOP TABS (top of everything) === -->
+  <div class="top-tabs" role="tablist" aria-label="View toggle">
+    <button id="tabTree" class="active" aria-controls="treePage" aria-selected="true">Family Tree View</button>
+    <button id="tabMap" aria-controls="mapPage" aria-selected="false">Birth Map View</button>
+  </div>
+
   <header>
     <h1>Family Tree — Full (Top → Down)</h1>
     <p>Click any portrait to read their story. Use the map to see birthplaces.</p>
-
-    <div style="margin-top:12px;">
-      <button id="btnTree" class="toggle-btn active small-btn">Tree View</button>
-      <button id="btnMap" class="toggle-btn small-btn">View Birth Map</button>
-    </div>
   </header>
 
   <!-- ====================== FAMILY TREE ====================== -->
@@ -426,33 +433,34 @@
     window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
 
     // ------------------------------
-    // Page toggle logic (Tree <-> Map)
+    // Page toggle logic (Tree <-> Map) via top tabs
     // ------------------------------
-    const btnTree = document.getElementById('btnTree');
-    const btnMap = document.getElementById('btnMap');
-    const btnReturn = document.getElementById('btnReturn');
+    const tabTree = document.getElementById('tabTree');
+    const tabMap = document.getElementById('tabMap');
     const treePage = document.getElementById('treePage');
     const mapPage = document.getElementById('mapPage');
+    const btnReturn = document.getElementById('btnReturn');
 
-    function showTree() {
-      treePage.style.display = 'block';
-      mapPage.style.display = 'none';
-      btnTree.classList.add('active');
-      btnMap.classList.remove('active');
+    function setActiveTab(active){
+      if(active === 'tree'){
+        tabTree.classList.add('active'); tabMap.classList.remove('active');
+        treePage.style.display='block'; mapPage.style.display='none';
+        tabTree.setAttribute('aria-selected','true'); tabMap.setAttribute('aria-selected','false');
+      } else {
+        tabMap.classList.add('active'); tabTree.classList.remove('active');
+        treePage.style.display='none'; mapPage.style.display='block';
+        tabMap.setAttribute('aria-selected','true'); tabTree.setAttribute('aria-selected','false');
+        // ensure map resizes correctly
+        setTimeout(()=>{ if(window.birthmap) window.birthmap.invalidateSize(); }, 200);
+      }
     }
-    function showMap() {
-      treePage.style.display = 'none';
-      mapPage.style.display = 'block';
-      btnTree.classList.remove('active');
-      btnMap.classList.add('active');
-      setTimeout(()=>{ if(window.birthmap) window.birthmap.invalidateSize(); }, 200);
-    }
-    btnTree.addEventListener('click', showTree);
-    btnMap.addEventListener('click', showMap);
-    btnReturn && btnReturn.addEventListener('click', showTree);
+
+    tabTree.addEventListener('click', ()=> setActiveTab('tree'));
+    tabMap.addEventListener('click', ()=> setActiveTab('map'));
+    btnReturn && btnReturn.addEventListener('click', ()=> setActiveTab('tree'));
 
     // ------------------------------
-    // Map data: markers and coordinates
+    // Map data: markers and coordinates (estimated locations)
     // ------------------------------
     // Coordinates chosen as reasonable central points for the place names you supplied.
     const birthPlaces = [
@@ -479,30 +487,31 @@
       { key:'mario', name:'Mario Dean', place:'Thousand Oaks, CA', year:'1985–2014', lat:34.1703, lon:-118.8376 },
       { key:'carlo', name:'Carlo Dean', place:'Thousand Oaks, CA', year:'Not specified', lat:34.1703, lon:-118.8376 },
       { key:'renato', name:'Renato Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
-      { key:'demarco', name:'Demarco Victoria', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
-      { key:'gino', name:'Gino Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
-      { key:'giana', name:'Giana Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
-      { key:'demetri', name:'Demetri Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
+      { key:'demarco', name:'Demarco Victoria', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
+      { key:'gino', name:'Gino Dean', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
+      { key:'giana', name:'Giana Dean', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
+      { key:'demetri', name:'Demetri Dean', place:'Missouri', year:'Not Specified', lat:38.5767, lon:-92.1735 },
       { key:'eugene', name:'Eugene Edward Kirili', place:'Missouri', year:'1936–1994', lat:38.5767, lon:-92.1735 },
       { key:'ruth_barris', name:'Ruth Adaline Barris', place:'Missouri', year:'b. 1939', lat:38.5767, lon:-92.1735 },
       { key:'michael', name:'Michael Dean', place:'Thousand Oaks, CA', year:'2008', lat:34.1703, lon:-118.8376 }
     ];
 
     // ------------------------------
-    // Initialize map
+    // Initialize map (Leaflet)
     // ------------------------------
     function initMap(){
-      // Center map roughly over continental US/Atlantic for best initial view
+      // Only initialize once
+      if(window.birthmap) return;
+
       const map = L.map('birth-map', { scrollWheelZoom: true }).setView([39.5, -95.35], 4);
       window.birthmap = map;
 
-      // Add OpenStreetMap tile layer
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      // Add markers
+      // add markers
       birthPlaces.forEach(person => {
         if(!person.lat || !person.lon) return;
         const marker = L.marker([person.lat, person.lon]).addTo(map);
@@ -516,7 +525,7 @@
         marker.bindPopup(popupContent);
       });
 
-      // Delegate click for "Open story" links inside popups
+      // delegate "open story" link clicks
       document.getElementById('birth-map').addEventListener('click', function(e){
         const a = e.target.closest && e.target.closest('.open-story-link');
         if(a){
@@ -527,7 +536,7 @@
       });
     }
 
-    // Wait for DOM then init map
+    // initialize map after DOM load
     document.addEventListener('DOMContentLoaded', function(){
       initMap();
     });
