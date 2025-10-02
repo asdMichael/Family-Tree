@@ -85,7 +85,7 @@ header p{margin:6px 0 0;font-size:0.95rem;opacity:0.95}
 /* map */
 #family-map { height:600px; border-radius:12px; }
 
-/* marker dot styles for Leaflet divIcons */
+/* marker dot styles for Leaflet divIcons (kept for future enhancement) */
 .marker-patton, .marker-kupfer, .marker-vaccaro, .marker-kirila, .marker-dean, .marker-unknown {
   display:block;
   border-radius:50%;
