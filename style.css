@@ -1,111 +1,229 @@
-/* Family Tree — Top-Down Layout (Detailed) */
-:root{ --bg:#f3f6fb; --card:#fff; --accent:#1f6feb; --muted:#6b7280; --line:#cbd5e1; --container-width:1200px; }
+/* -----------------------
+   Global / Page shell
+   ----------------------- */
+:root{
+  --bg:#f3f6fb;
+  --card:#fff;
+  --accent:#1f6feb;
+  --muted:#6b7280;
+  --card-border:#2f3650;
+  --line:#cbd5e1;
+  --max-width:1200px;
+}
 *{box-sizing:border-box}
-body{ margin:0; font-family: Inter, Roboto, Arial, sans-serif; background:var(--bg); color:#111827; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-header{ background:linear-gradient(90deg,var(--accent),#174b93); color:white; padding:20px; text-align:center; }
-header h1{margin:0;font-size:1.5rem}
-header p{margin:6px 0 0;font-size:0.95rem;opacity:0.95}
-.tree-container{ padding:20px; max-width:var(--container-width); margin:0 auto 80px; }
+body{
+  margin:0;
+  font-family:Inter, Roboto, Arial, sans-serif;
+  background:var(--bg);
+  color:#0f1724;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a { color:var(--accent); }
 
-/* generation title */
-.generation h2{ margin:8px 0 10px; color:#0f1724; font-size:1.05rem; }
+/* Top tabs */
+.top-tabs {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:12px 8px;
+  background:linear-gradient(90deg,var(--accent),#174b93);
+}
+.top-tabs button {
+  background:transparent;
+  border:none;
+  color:white;
+  padding:10px 18px;
+  font-weight:700;
+  border-radius:8px;
+  cursor:pointer;
+  opacity:0.95;
+}
+.top-tabs button.active {
+  background:rgba(255,255,255,0.12);
+  box-shadow:0 6px 18px rgba(2,6,23,0.18);
+}
 
-/* CARDS VIEW styles (kept for compatibility) */
-.tree { display:flex; gap:20px; justify-content:flex-start; flex-wrap:wrap; list-style:none; padding:12px 18px; margin:0; }
-.person{ background:var(--card); border-radius:8px; padding:12px; min-width:220px; max-width:260px; box-shadow:0 8px 20px rgba(15,23,42,0.06); border:1px solid rgba(15,23,42,0.04); cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; }
-.person:hover{ transform:translateY(-6px); box-shadow:0 12px 30px rgba(15,23,42,0.09) }
-.person .name{font-weight:700; font-size:15px; margin-bottom:6px}
-.person .meta{font-size:13px;color:var(--muted)}
-.person-card { background:var(--card); border-radius:8px; padding:12px; width:220px; box-shadow:0 8px 20px rgba(15,23,42,0.06); text-align:center; cursor:pointer; border:1px solid rgba(15,23,42,0.04); }
-.person-card img { width:100%; height:140px; object-fit:cover; border-radius:6px; }
+/* Header */
+.page-header {
+  text-align:center;
+  padding:18px 10px;
+  color:#0b1220;
+  max-width:var(--max-width);
+  margin:0 auto 18px;
+}
+.page-header h1 { margin:0; font-size:1.5rem; color:#0f1724; }
+.lead { margin-top:8px; color: rgba(15,23,36,0.7); }
 
-/* couple layout */
-.couple{ display:flex; align-items:center; gap:8px; flex-direction:row; justify-content:center; padding:12px; }
-.couple .name{ background:transparent; color:var(--accent); padding:6px 8px; border-radius:6px; }
-.and{ font-weight:700; margin:0 8px; color:var(--muted) }
-.children{ list-style:none; padding:12px; margin-top:12px; display:flex; gap:12px; justify-content:center; width:100% }
-
-/* TOGGLE */
-.view-toggle { text-align:center; margin:14px 0; }
-.toggle-btn { background:#e5e7eb; border:none; padding:8px 14px; margin:0 4px; border-radius:6px; cursor:pointer; font-weight:600; }
-.toggle-btn.active { background:var(--accent); color:white; }
-
-/* TREE VIEW (single connected nested tree) */
+/* -----------------------
+   Family Tree styles (kept similar to prior)
+   ----------------------- */
+.tree-container {
+  padding:20px;
+  max-width:var(--max-width);
+  margin:0 auto 40px;
+}
 .family-tree { width:100%; display:flex; justify-content:center; padding:18px 6px; }
 .family-tree ul { list-style:none; margin:0; padding-left:0; display:block; }
 .family-tree li { margin:0; padding:0 0 12px 0; position:relative; text-align:center; }
 
-/* connectors */
-.family-tree li::before, .family-tree li::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-}
-.family-tree li::before {
-  border-left: 2px solid var(--line);
-  top: -12px;
-  height: 12px;
-  transform: translateX(-50%);
-}
-.family-tree li::after {
-  content: '';
-}
-.family-tree ul ul::before {
-  content: '';
-  display: block;
-  width: 2px;
-  height: 12px;
-  background: var(--line);
-  margin: 0 auto;
-}
+/* node base */
+.node { display:inline-block; background:var(--card); border-radius:10px; padding:18px 12px; min-width:160px; max-width:260px; box-shadow:0 12px 30px rgba(15,23,42,0.06); border:2px solid var(--card-border); text-align:center; position:relative; }
+.node.small { padding:14px; min-width:140px; max-width:190px; }
+.node img.placeholder { width:64px; height:64px; border-radius:50%; border:3px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.12); background:linear-gradient(180deg,#f4f6fa,#e9eef8); display:block; margin:-32px auto 8px; position:relative; z-index:2; }
+.node .label { font-weight:700; font-size:14px; color:#0f1724; margin-top:6px; }
+.node .sub { display:block; font-size:12px; color:var(--muted); margin-top:6px; }
 
-/* node box */
-.node { display:inline-block; background:var(--card); border-radius:8px; padding:8px 10px; box-shadow:0 8px 20px rgba(15,23,42,0.06); border:1px solid rgba(15,23,42,0.04); cursor:pointer; position:relative; }
-.node img { width:84px; height:84px; object-fit:cover; border-radius:8px; display:block; margin:0 auto 8px;}
-.node .label { font-weight:700; font-size:14px; color:#0f1724; }
-.node .sub { font-size:12px; color:var(--muted); margin-top:4px; }
+/* couple inline */
+.couple-inline { display:flex; align-items:center; gap:14px; justify-content:center; background:transparent; padding:0; margin-bottom:8px; }
 
-/* couple inline styling */
-.node .couple-inline { display:flex; align-items:center; gap:8px; justify-content:center; background:transparent; box-shadow:none; border:none; padding:0; }
-.node .couple-inline .node { width:auto; padding:8px; }
+/* -----------------------
+   Timeline: central horizontal line with floating cards above
+   ----------------------- */
+.timeline-container {
+  padding:18px;
+  max-width:var(--max-width);
+  margin:0 auto 80px;
+}
+.timeline-header { margin-bottom:8px; text-align:left; }
+.timeline-header h2 { margin:0; font-size:1.2rem; color:#0f1724; }
+.muted { color:var(--muted); }
 
-/* modal */
-.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.45); z-index:60; padding:24px; }
-.modal-card{ background:var(--card); border-radius:12px; padding:20px; max-width:720px; width:100%; box-shadow:0 12px 36px rgba(2,6,23,0.18); position:relative; text-align:left; max-height:90vh; overflow:auto; }
-.modal-card img.story-photo{ max-width:220px; display:block; margin:10px 0 14px; border-radius:8px; }
-
-/* responsive */
-@media (max-width:980px){
-  .tree{ flex-direction:column; gap:12px; align-items:center }
-  .person{ min-width:92%; max-width:92% }
-  .children{ flex-direction:row; flex-wrap:wrap; gap:10px }
-  .node img{ width:72px; height:72px; }
+.timeline-line-wrap {
+  position:relative;
+  padding:48px 24px 80px; /* room for cards above */
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
-/* map */
-#family-map { height:600px; border-radius:12px; }
+/* The long track that holds evenly spaced nodes. We'll use flexbox to distribute nodes across line */
+.timeline-track {
+  display:flex;
+  gap:4%;
+  align-items:center;
+  min-width:1200px;
+  padding:18px 24px;
+  position:relative;
+}
 
-/* marker dot styles for Leaflet divIcons (kept for future enhancement) */
-.marker-patton, .marker-kupfer, .marker-vaccaro, .marker-kirila, .marker-dean, .marker-unknown {
-  display:block;
-  border-radius:50%;
+/* central horizontal line drawn under nodes via pseudo-element */
+.timeline-track::before {
+  content:"";
+  position:absolute;
+  left:2%;
+  right:2%;
+  top:50%;
+  height:4px;
+  background:linear-gradient(90deg, rgba(47,54,80,0.12), rgba(47,54,80,0.08));
+  transform:translateY(-50%);
+  border-radius:999px;
+  z-index:1;
+}
+
+/* Node wrapper (each marker + label + hidden card) */
+.timeline-node {
+  position:relative;
+  flex:0 0 auto;
+  width:180px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  z-index:10;
+  outline:none;
+}
+
+/* dot on the line */
+.timeline-dot {
   width:18px;
   height:18px;
-  border:2px solid #fff;
-  box-shadow:0 2px 6px rgba(0,0,0,0.25);
+  border-radius:50%;
+  background:#fff;
+  border:4px solid var(--accent);
+  box-shadow:0 8px 20px rgba(2,6,23,0.12);
+  cursor:pointer;
+  position:relative;
+  z-index:12;
 }
-.marker-patton{ background:#3b82f6; }
-.marker-kupfer{ background:#22c55e; }
-.marker-vaccaro{ background:#8b5cf6; }
-.marker-kirila{ background:#06b6d4; }
-.marker-dean{ background:#f97316; }
-.marker-unknown{ background:#6b7280; }
+/* label below dot */
+.timeline-label {
+  margin-top:10px;
+  font-size:13px;
+  color:var(--muted);
+}
 
-/* ensure leaflet div icons ignore default border */
-.leaflet-div-icon{ background:transparent; border:none !important; }
+/* the floating card above the line (hidden unless node.active) */
+.timeline-card {
+  position:absolute;
+  bottom:64px; /* distance above the line */
+  left:50%;
+  transform:translateX(-50%) translateY(8px);
+  width:320px;
+  max-width:320px;
+  background:var(--card);
+  border-radius:10px;
+  padding:12px 14px;
+  box-shadow:0 18px 46px rgba(2,6,23,0.14);
+  border:1px solid rgba(15,23,42,0.06);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .22s ease, transform .22s ease, visibility .22s;
+  z-index:20;
+  text-align:left;
+}
+.timeline-node.active .timeline-card {
+  opacity:1;
+  visibility:visible;
+  transform:translateX(-50%) translateY(0);
+}
+.timeline-card h3 { margin:0 0 6px; font-size:15px; color:#0f1724; }
+.timeline-card .card-year { font-size:12px; color:var(--muted); margin-bottom:8px; }
+.timeline-card p { margin:0 0 10px; color:#111827; line-height:1.45; font-size:14px; max-height:6.4em; overflow:hidden; }
+.timeline-card .card-open {
+  display:inline-block;
+  padding:8px 10px;
+  border-radius:8px;
+  background:var(--accent);
+  color:white;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+}
 
-/* Top tabs (global style) */
-.top-tabs { display:flex; justify-content:center; gap:6px; padding:12px 8px; background:linear-gradient(90deg,var(--accent),#174b93); }
-.top-tabs button { background:transparent; border:none; color:white; padding:10px 16px; font-weight:700; border-radius:8px; cursor:pointer; opacity:0.9; }
-.top-tabs button.active { background:rgba(255,255,255,0.12); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
-@media (max-width:720px){ .top-tabs { padding:8px; } .top-tabs button{ padding:8px 10px; font-size:14px; } }
+/* small caret pointing to dot */
+.timeline-card::after {
+  content:'';
+  position:absolute;
+  bottom:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:12px solid var(--card);
+  z-index:19;
+}
+
+/* Responsive adjustments */
+@media (max-width:980px){
+  .timeline-track { gap:8%; min-width:900px; }
+  .timeline-node { width:260px; }
+  .timeline-card { width:260px; max-width:260px; }
+  .timeline-line-wrap { padding:60px 12px 100px; }
+  .timeline-track::before { left:1%; right:1%; }
+}
+
+/* Modal */
+.modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.55); z-index:120; padding:24px; }
+.modal-card { background:var(--card); border-radius:12px; padding:24px; max-width:900px; width:100%; box-shadow:0 18px 48px rgba(2,6,23,0.18); position:relative; text-align:left; max-height:90vh; overflow:auto; }
+.story-photo { max-width:240px; display:block; margin:10px 0 18px; border-radius:8px; }
+.modal-card h2 { margin:0 0 8px; }
+.close-btn { position:absolute; right:12px; top:12px; padding:8px 10px; border-radius:8px; border:none; background:#efefef; cursor:pointer; }
+
+/* Small accessibility focus outlines */
+.timeline-node:focus, .timeline-dot:focus, .timeline-card .card-open:focus, .node:focus {
+  outline:3px solid rgba(31,111,235,0.16);
+  outline-offset:4px;
+}
+
+/* small print */
+.muted { color:var(--muted); font-size:13px; }
