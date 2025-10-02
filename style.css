@@ -1,6 +1,3 @@
-/* ===========================
-   Global / Page shell
-   =========================== */
 :root{
   --bg:#f3f6fb;
   --card:#fff;
@@ -11,15 +8,7 @@
   --max-width:1200px;
 }
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter, Roboto, Arial, sans-serif;
-  background:var(--bg);
-  color:#0f1724;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-a { color:var(--accent); }
+body{ margin:0; font-family:Inter, Roboto, Arial, sans-serif; background:var(--bg); color:#0f1724; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 
 /* Top tabs */
 .top-tabs {
@@ -42,242 +31,120 @@ a { color:var(--accent); }
   cursor:pointer;
   opacity:0.95;
 }
-.top-tabs button.active {
-  background:rgba(255,255,255,0.12);
-  box-shadow:0 6px 18px rgba(2,6,23,0.18);
-}
+.top-tabs button.active { background:rgba(255,255,255,0.12); box-shadow:0 6px 18px rgba(2,6,23,0.18); }
 
 /* Header */
-.page-header {
-  text-align:center;
-  padding:18px 10px;
-  color:#0b1220;
-  max-width:var(--max-width);
-  margin:0 auto 18px;
-}
+.page-header { text-align:center; padding:18px 10px; color:#0b1220; max-width:var(--max-width); margin:0 auto 18px; }
 .page-header h1 { margin:0; font-size:1.5rem; color:#0f1724; }
 .lead { margin-top:8px; color: rgba(15,23,36,0.75); }
 
-/* ===========================
-   Family Tree (connected layout)
-   =========================== */
-.tree-container {
-  padding:20px;
-  max-width:var(--max-width);
-  margin:0 auto 40px;
-}
-.family-tree {
-  display:grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap:18px;
-  align-items:start;
-}
+/* Tree container */
+.tree-container { padding:20px; max-width:var(--max-width); margin:0 auto 40px; }
+.family-tree-grid { display:flex; flex-direction:column; gap:36px; align-items:stretch; }
 
-/* generation rows spacing */
-.generation { display:contents; }
+/* Row (generation) */
+.row.gen { display:flex; gap:18px; justify-content:flex-start; align-items:flex-start; flex-wrap:wrap; }
 
-/* person/couple blocks */
-.person {
-  background:transparent;
+/* Node (person) */
+.node {
+  position:relative;
+  width:180px;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:8px;
-  position:relative;
-}
-
-/* portrait card */
-.portrait {
-  width:180px;
-  background:var(--card);
-  border-radius:12px;
-  padding:14px 12px 18px;
-  box-shadow:0 12px 30px rgba(15,23,42,0.06);
-  border:2px solid var(--card-border);
   text-align:center;
   cursor:pointer;
 }
-.portrait img { width:72px; height:72px; border-radius:50%; display:block; margin:-42px auto 8px; border:3px solid white; background:linear-gradient(180deg,#f4f6fa,#e9eef8); }
-.portrait .name { font-weight:700; font-size:15px; margin-top:6px; color:#0f1724; }
-.portrait .meta { font-size:12px; color:var(--muted); margin-top:6px; }
-
-/* couple style (two portraits grouped) */
-.couple { display:flex; gap:14px; justify-content:center; align-items:flex-start; }
-
-/* positioning helpers for grid columns when needed */
-.person[style*="grid-column:5/7"] { grid-column: 5 / 7; }
-.person[style*="grid-column:6/9"] { grid-column: 6 / 9; }
-.person[style*="grid-column:1/3"] { grid-column: 1 / 3; }
-
-/* connectors: we'll draw vertical and horizontal lines using pseudo elements */
-/* each generation row is conceptually above the next — we'll add 'connectors' using absolute positioned lines */
-.family-tree .person::after {
-  /* default no line; specific connectors will use additional classes if needed */
-  content:'';
-  position:absolute;
-  display:block;
+.node .avatar {
+  width:84px; height:84px; border-radius:50%;
+  background:linear-gradient(180deg,#f4f6fa,#e9eef8);
+  border:3px solid white; box-shadow:0 6px 20px rgba(15,23,42,0.06);
+  margin-bottom:6px;
 }
+.node .label { font-weight:700; font-size:14px; color:#0f1724; }
+.node .sub { display:block; font-size:12px; color:var(--muted); margin-top:6px; font-weight:500; }
 
-/* For a simple visual connection, add vertical rules under parent portraits */
-.generation.gen-1 .person .portrait::after,
-.generation.gen-2 .person .portrait::after {
+/* couple styling: tiny visual connector between two adjacent partners */
+.row.gen .couple { display:flex; gap:12px; align-items:flex-start; }
+
+/* special classes */
+.node.extended .avatar { background:linear-gradient(180deg,#fff7ed,#fff1db); }
+.node.child .avatar { background:linear-gradient(180deg,#f0fff4,#ecfdf5); }
+
+/* CONNECTORS */
+/* We'll draw simple vertical lines from a node down using pseudo-elements.
+   To represent "parent couple" connecting to "children", the parent row will have lines down.
+   This is a pragmatic static approach that works for this fixed layout. */
+
+.row.gen-top .node::after,
+.row.gen-grandparents .node::after,
+.row.gen-parents .node::after {
   content:'';
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  top:100%;
+  top:110%;
   width:2px;
-  height:24px;
+  height:28px;
   background:var(--line);
+  border-radius:2px;
 }
 
-/* horizontal connection bars on generation 2 (between parents/children) */
-.generation.gen-2 { /* between gen-2 and gen-3 there will be horizontal connectors visually suggested by borders on gen-2 container */ }
+/* To visually connect horizontal couples, add a small bar between the two portraits when the two nodes are adjacent.
+   We'll simulate that by adding a short horizontal bar from the right half of a node for those nodes that are couples.
+   Because HTML is static, the spacing will visually suggest pairing. */
+.row.gen-grandparents .node.couple:nth-child(1)::before,
+.row.gen-top .node.couple:nth-child(1)::before {
+  /* minimal decorative */
+}
+ /* children connectors: from children row to parent row we add a pseudo element above the child pointing up */
+.row.gen-children .node::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  width:2px;
+  height:28px;
+  background:var(--line);
+  border-radius:2px;
+}
 
-/* subtle responsive */
+/* small responsive tweaks */
 @media (max-width:1100px){
-  .family-tree { grid-template-columns: repeat(4, 1fr); }
-  .portrait { width:95%; }
+  .node { width:160px; }
+  .node .avatar { width:72px; height:72px; }
 }
 @media (max-width:700px){
-  .family-tree { grid-template-columns: repeat(2, 1fr); gap:12px; padding:8px; }
-  .portrait { width:100%; }
+  .row.gen { justify-content:center; }
+  .node { width:92%; max-width:320px; }
 }
 
-/* ===========================
-   Timeline (horizontal) — unchanged from approved layout
-   =========================== */
-.timeline-container {
-  padding:18px;
-  max-width:var(--max-width);
-  margin:0 auto 80px;
-}
+/* TIMELINE styles */
+.timeline-container { padding:18px; max-width:var(--max-width); margin:0 auto 80px; }
 .timeline-header { margin-bottom:8px; text-align:left; }
 .timeline-header h2 { margin:0; font-size:1.2rem; color:#0f1724; }
 .muted { color:var(--muted); }
 
-.timeline-line-wrap {
-  position:relative;
-  padding:48px 24px 80px;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-.timeline-track {
-  display:flex;
-  gap:4%;
-  align-items:center;
-  min-width:1200px;
-  padding:18px 24px;
-  position:relative;
-}
-.timeline-track::before {
-  content:"";
-  position:absolute;
-  left:2%;
-  right:2%;
-  top:50%;
-  height:4px;
-  background:linear-gradient(90deg, rgba(47,54,80,0.12), rgba(47,54,80,0.08));
-  transform:translateY(-50%);
-  border-radius:999px;
-  z-index:1;
-}
-.timeline-node {
-  position:relative;
-  flex:0 0 auto;
-  width:180px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  z-index:10;
-  outline:none;
-}
-.timeline-dot {
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:#fff;
-  border:4px solid var(--accent);
-  box-shadow:0 8px 20px rgba(2,6,23,0.12);
-  cursor:pointer;
-  position:relative;
-  z-index:12;
-}
-.timeline-label {
-  margin-top:10px;
-  font-size:13px;
-  color:var(--muted);
-}
-.timeline-card {
-  position:absolute;
-  bottom:64px;
-  left:50%;
-  transform:translateX(-50%) translateY(8px);
-  width:320px;
-  max-width:320px;
-  background:var(--card);
-  border-radius:10px;
-  padding:12px 14px;
-  box-shadow:0 18px 46px rgba(2,6,23,0.14);
-  border:1px solid rgba(15,23,42,0.06);
-  opacity:0;
-  visibility:hidden;
-  transition:opacity .22s ease, transform .22s ease, visibility .22s;
-  z-index:20;
-  text-align:left;
-}
-.timeline-node.active .timeline-card {
-  opacity:1;
-  visibility:visible;
-  transform:translateX(-50%) translateY(0);
-}
+/* horizontal timeline track */
+.timeline-line-wrap { position:relative; padding:48px 24px 80px; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.timeline-track { display:flex; gap:4%; align-items:center; min-width:1200px; padding:18px 24px; position:relative; }
+.timeline-track::before { content:""; position:absolute; left:2%; right:2%; top:50%; height:4px; background:linear-gradient(90deg, rgba(47,54,80,0.12), rgba(47,54,80,0.08)); transform:translateY(-50%); border-radius:999px; z-index:1; }
+.timeline-node { position:relative; flex:0 0 auto; width:220px; display:flex; flex-direction:column; align-items:center; z-index:10; outline:none; }
+.timeline-dot { width:18px; height:18px; border-radius:50%; background:#fff; border:4px solid var(--accent); box-shadow:0 8px 20px rgba(2,6,23,0.12); cursor:pointer; position:relative; z-index:12; }
+.timeline-label { margin-top:10px; font-size:13px; color:var(--muted); }
+.timeline-card { position:absolute; bottom:64px; left:50%; transform:translateX(-50%) translateY(8px); width:320px; background:var(--card); border-radius:10px; padding:12px 14px; box-shadow:0 18px 46px rgba(2,6,23,0.14); border:1px solid rgba(15,23,42,0.06); opacity:0; visibility:hidden; transition:opacity .22s ease, transform .22s ease, visibility .22s; z-index:20; text-align:left; }
+.timeline-node.active .timeline-card { opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
 .timeline-card h3 { margin:0 0 6px; font-size:15px; color:#0f1724; }
 .timeline-card .card-year { font-size:12px; color:var(--muted); margin-bottom:8px; }
 .timeline-card p { margin:0 0 10px; color:#111827; line-height:1.45; font-size:14px; max-height:6.4em; overflow:hidden; }
-.timeline-card .card-open {
-  display:inline-block;
-  padding:8px 10px;
-  border-radius:8px;
-  background:var(--accent);
-  color:white;
-  border:none;
-  cursor:pointer;
-  font-weight:700;
-}
-.timeline-card::after {
-  content:'';
-  position:absolute;
-  bottom:-12px;
-  left:50%;
-  transform:translateX(-50%);
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:12px solid var(--card);
-  z-index:19;
-}
-@media (max-width:980px){
-  .timeline-track { gap:8%; min-width:900px; }
-  .timeline-node { width:260px; }
-  .timeline-card { width:260px; max-width:260px; }
-  .timeline-line-wrap { padding:60px 12px 100px; }
-  .timeline-track::before { left:1%; right:1%; }
-}
+.timeline-card .card-open { display:inline-block; padding:8px 10px; border-radius:8px; background:var(--accent); color:white; border:none; cursor:pointer; font-weight:700; }
+.timeline-card::after { content:''; position:absolute; bottom:-12px; left:50%; transform:translateX(-50%); border-left:10px solid transparent; border-right:10px solid transparent; border-top:12px solid var(--card); z-index:19; }
 
-/* ===========================
-   Modal
-   =========================== */
+/* Modal */
 .modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.55); z-index:120; padding:24px; }
 .modal-card { background:var(--card); border-radius:12px; padding:24px; max-width:900px; width:100%; box-shadow:0 18px 48px rgba(2,6,23,0.18); position:relative; text-align:left; max-height:90vh; overflow:auto; }
-.story-photo { max-width:240px; display:block; margin:10px 0 18px; border-radius:8px; }
-.modal-card h2 { margin:0 0 8px; }
 .close-btn { position:absolute; right:12px; top:12px; padding:8px 10px; border-radius:8px; border:none; background:#efefef; cursor:pointer; }
 
-/* Focus outlines for accessibility */
-.timeline-node:focus, .timeline-dot:focus, .timeline-card .card-open:focus, .portrait:focus {
-  outline:3px solid rgba(31,111,235,0.16);
-  outline-offset:4px;
-}
-
-/* small print */
-.muted { color:var(--muted); font-size:13px; }
+/* focus outlines */
+.node:focus, .timeline-node:focus, .timeline-dot:focus, .card-open:focus { outline:3px solid rgba(31,111,235,0.16); outline-offset:4px; }
