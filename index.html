@@ -3,8 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Family Tree — Full</title>
+  <title>Family Tree — Full + Birth Map</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+e2H8Y9b3gqk4wF8r2k3m6z9q2VvXKp6f5xYw5qWw=" crossorigin=""/>
+
+  <!-- Your main stylesheet -->
   <link rel="stylesheet" href="style.css">
+
   <style>
     /* Small local overrides to ensure tree visuals match the reference image */
     :root{
@@ -62,20 +69,27 @@
       .node { min-width:92%; max-width:92%; padding-top:48px; }
       .node img.placeholder { width:72px; height:72px; margin-top:-48px; }
     }
+
+    /* map container style */
+    #birth-map { height:70vh; min-height:480px; border-radius:12px; margin:18px 0; border:2px solid rgba(15,23,42,0.06); }
+    .map-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
+    .small-btn { padding:8px 10px; border-radius:8px; border:none; cursor:pointer; background:#e5e7eb; font-weight:600; }
+    .small-btn.primary { background:var(--accent); color:#fff; }
   </style>
 </head>
 <body>
   <header>
     <h1>Family Tree — Full (Top → Down)</h1>
-    <p>Click any portrait to read their story.</p>
+    <p>Click any portrait to read their story. Use the map to see birthplaces.</p>
+
+    <div style="margin-top:12px;">
+      <button id="btnTree" class="toggle-btn active small-btn">Tree View</button>
+      <button id="btnMap" class="toggle-btn small-btn">View Birth Map</button>
+    </div>
   </header>
 
-  <div class="view-toggle" style="margin-top:10px;">
-    <button id="btnTree" class="toggle-btn active">Tree View</button>
-  </div>
-
   <!-- ====================== FAMILY TREE ====================== -->
-  <main class="tree-container tree-view" style="display:block;">
+  <main id="treePage" class="tree-container tree-view" style="display:block;">
     <section class="family-tree">
       <!-- The structure below follows top → down: great-grandparents → grandparents → parents → you & siblings.
            Each <li> is a node; nested <ul> shows children. Portraits use small inline SVG placeholders that you can replace. -->
@@ -213,7 +227,7 @@
                                     <div class="node" onclick="openStory('michael')" title="Michael Dean">
                                       <img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt="">
                                       <div class="label">Michael Dean</div>
-                                      <div class="sub">b. Dec 10</div>
+                                      <div class="sub">b. Dec 10 / 2008</div>
                                     </div>
 
                                     <!-- Michael's siblings -->
@@ -326,15 +340,28 @@
               <li><div class="node" onclick="openStory('carlo')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Carlo Dean</div></div></li>
               <li><div class="node" onclick="openStory('renato')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Renato Dean</div></div></li>
               <li><div class="node" onclick="openStory('demarco')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Demarco Victoria</div></div></li>
-              <li><div class="node" onclick="openStory('gino')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Gino Dean</div></div></li>
-              <li><div class="node" onclick="openStory('giana')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Giana Dean</div></div></li>
-              <li><div class="node" onclick="openStory('demetri')"><img class="placeholder" src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Demetri Dean</div></div></li>
+              <li><div class="node" onclick="openStory('gino')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23f3f6fb"/><circle cx="64" cy="64" r="56" fill="%23cbd5e1"/></svg>' alt=""><div class="label">Gino Dean</div></div></li>
+              <li><div class="node" onclick="openStory('giana')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Giana Dean</div></div></li>
+              <li><div class="node" onclick="openStory('demetri')"><img class="placeholder' src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill='%23f3f6fb'/><circle cx='64' cy='64' r='56' fill='%23cbd5e1'/></svg>' alt=""><div class="label">Demetri Dean</div></div></li>
             </ul>
           </div>
         </li>
 
       </ul>
     </section>
+  </main>
+
+  <!-- ====================== MAP PAGE (same file) ====================== -->
+  <main id="mapPage" class="tree-container map-view" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;">
+      <h2 style="margin:0">Birth Map</h2>
+      <div class="map-actions">
+        <button id="btnReturn" class="small-btn">Return to Tree</button>
+      </div>
+    </div>
+
+    <div id="birth-map" aria-label="Birthplace map"></div>
+    <p style="margin-top:10px;font-size:14px;color:var(--muted)">Click a marker to view the person and open their story card.</p>
   </main>
 
   <!-- ====================== STORY MODAL ====================== -->
@@ -345,9 +372,13 @@
     </div>
   </div>
 
-  <!-- ====================== SCRIPTS: stories & modal ====================== -->
+  <!-- ====================== SCRIPTS: stories & modal & map ====================== -->
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-V3D3V0sXH8VYd0q3w6tZ8p0i3WmXgI+qKqZ3E7m1w0k=" crossorigin=""></script>
+
   <script>
-    // stories object (pre-filled with the extended bios we created earlier)
+    // stories object (pre-filled with the extended bios you provided earlier)
     const stories = {
       "james_vaccaro": {"title":"James Vaccaro (1913–1985)","photo":"","text":"James was born in Pennsylvania and grew up during hard times. He moved around, worked with his hands, and kept the family steady through war-time shortages and the slow rebuild afterward. In Ohio he became known for a steady work ethic — tending property, showing up early, and never shirking a responsibility. Later he moved west and lived out his years in California. Family stories remember him as quiet but strong: the person who fixed a broken truck at midnight or who could coax a stubborn mule with a look."},
       "rose_kirila": {"title":"Rose Louise Kirila","photo":"","text":"Rose was the bridge between Hungary and Ohio. She kept household rituals alive: festival foods, particular prayers, and a stubborn garden that fed a family through tight seasons. She could read the weather in the sky and the teeth of a plow. Everyone remembers her kitchen as the place where stories became recipes and where children learned to sit quietly while she kneaded dough and told a story about the old country."},
@@ -379,8 +410,7 @@
       "eugene": {"title":"Eugene Edward Kirili (1936–1994)","photo":"","text":"Eugene’s life traces a path across Ohio and Pennsylvania. He married Ruth Barris in 1962 and raised a family in small towns."},
       "ruth_barris": {"title":"Ruth Adaline Barris (b. 1939)","photo":"","text":"Ruth’s life is traced through small community ties — church groups, midday phone calls, and neighborly breakfasts. She and Eugene raised at least one daughter and kept close to the rhythms of Trumbull and West Middlesex."},
       "fisher_note": {"title":"Fisher / Crozier / Fischer notes","photo":"","text":"Some family lines use Fisher, some Fischer, and a Crozier appears in marriage records and oral recollections. These name-variants point to likely migrations and the way records sometimes split families across different spellings."},
-      // placeholder for Michael's entry
-      "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table."}
+      "michael": {"title":"Michael Dean (You)","photo":"","text":"Michael Dean — born December 10, 2008. The only one in the family with an Italian thread in name and story, Michael carries family traditions forward while making his own path. He remembers holidays, small pranks, and long car rides; he’s curious about family history and keeps a soft spot for the old recipes and the stories that are told around the table."}
     };
 
     // modal functions
@@ -394,6 +424,115 @@
     }
     function closeStory(){ document.getElementById('story-modal').style.display = 'none'; }
     window.addEventListener('click', function(e){ const modal = document.getElementById('story-modal'); if(e.target === modal) closeStory(); });
+
+    // ------------------------------
+    // Page toggle logic (Tree <-> Map)
+    // ------------------------------
+    const btnTree = document.getElementById('btnTree');
+    const btnMap = document.getElementById('btnMap');
+    const btnReturn = document.getElementById('btnReturn');
+    const treePage = document.getElementById('treePage');
+    const mapPage = document.getElementById('mapPage');
+
+    function showTree() {
+      treePage.style.display = 'block';
+      mapPage.style.display = 'none';
+      btnTree.classList.add('active');
+      btnMap.classList.remove('active');
+    }
+    function showMap() {
+      treePage.style.display = 'none';
+      mapPage.style.display = 'block';
+      btnTree.classList.remove('active');
+      btnMap.classList.add('active');
+      setTimeout(()=>{ if(window.birthmap) window.birthmap.invalidateSize(); }, 200);
+    }
+    btnTree.addEventListener('click', showTree);
+    btnMap.addEventListener('click', showMap);
+    btnReturn && btnReturn.addEventListener('click', showTree);
+
+    // ------------------------------
+    // Map data: markers and coordinates
+    // ------------------------------
+    // Coordinates chosen as reasonable central points for the place names you supplied.
+    const birthPlaces = [
+      { key:'james_vaccaro', name:'James Vaccaro', place:'Pennsylvania', year:'1913–1985', lat:40.2732, lon:-76.8867 },
+      { key:'rose_kirila', name:'Rose Louise Kirila', place:'Ohio', year:'b. 1929', lat:39.9612, lon:-82.9988 },
+      { key:'deborah', name:'Deborah (Vaccaro) Patton', place:'Ohio', year:'b. 1959', lat:39.9612, lon:-82.9988 },
+      { key:'william_patton', name:'William Patton', place:'Belfast, Northern Ireland', year:'Not specified', lat:54.5973, lon:-5.9301 },
+      { key:'beatrice_fisher', name:'Beatrice Fisher', place:'Dublin, Ireland', year:'Not specified', lat:53.3498, lon:-6.2603 },
+      { key:'lynne', name:'Lynne Patton', place:'Dublin, Ireland', year:'Not specified', lat:53.3498, lon:-6.2603 },
+      { key:'gary', name:'Gary Patton', place:'Belfast, Northern Ireland', year:'b. 1956', lat:54.5973, lon:-5.9301 },
+      { key:'daniel', name:'Daniel Patton', place:'Woodland Hills, CA', year:'b. 1992', lat:34.1683, lon:-118.6057 },
+      { key:'shannen', name:'Shannen Patton', place:'Woodland Hills, CA', year:'b. 1987', lat:34.1683, lon:-118.6057 },
+      { key:'brian', name:'Brian Kupfer', place:'Ojai, CA', year:'b. 1981', lat:34.4486, lon:-119.2429 },
+      { key:'breanna', name:'Breanna Kupfer', place:'Ventura, CA', year:'b. 2021', lat:34.2746, lon:-119.2290 },
+      { key:'alexis', name:'Alexis Kupfer', place:'Ventura, CA', year:'b. 2016', lat:34.2746, lon:-119.2290 },
+      { key:'robert_kupfer', name:'Robert Kupfer', place:'Pennsylvania', year:'unspecified', lat:39.9526, lon:-75.1652 },
+      { key:'patricia_kupfer', name:'Patricia Kupfer', place:'Pennsylvania', year:'Not specified', lat:39.9526, lon:-75.1652 },
+      { key:'cort', name:'Cort Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
+      { key:'crystal', name:'Crystal Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
+      { key:'april', name:'April Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
+      { key:'everett', name:'Everett Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
+      { key:'jonathan', name:'Jonathan Kupfer', place:'Ojai, CA', year:'unspecified', lat:34.4486, lon:-119.2429 },
+      { key:'nannete', name:'Nannete Dean', place:'Thousand Oaks, CA', year:'Not specified', lat:34.1703, lon:-118.8376 },
+      { key:'mario', name:'Mario Dean', place:'Thousand Oaks, CA', year:'1985–2014', lat:34.1703, lon:-118.8376 },
+      { key:'carlo', name:'Carlo Dean', place:'Thousand Oaks, CA', year:'Not specified', lat:34.1703, lon:-118.8376 },
+      { key:'renato', name:'Renato Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
+      { key:'demarco', name:'Demarco Victoria', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
+      { key:'gino', name:'Gino Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
+      { key:'giana', name:'Giana Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
+      { key:'demetri', name:'Demetri Dean', place:'Missouri', year:'Not specified', lat:38.5767, lon:-92.1735 },
+      { key:'eugene', name:'Eugene Edward Kirili', place:'Missouri', year:'1936–1994', lat:38.5767, lon:-92.1735 },
+      { key:'ruth_barris', name:'Ruth Adaline Barris', place:'Missouri', year:'b. 1939', lat:38.5767, lon:-92.1735 },
+      { key:'michael', name:'Michael Dean', place:'Thousand Oaks, CA', year:'2008', lat:34.1703, lon:-118.8376 }
+    ];
+
+    // ------------------------------
+    // Initialize map
+    // ------------------------------
+    function initMap(){
+      // Center map roughly over continental US/Atlantic for best initial view
+      const map = L.map('birth-map', { scrollWheelZoom: true }).setView([39.5, -95.35], 4);
+      window.birthmap = map;
+
+      // Add OpenStreetMap tile layer
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add markers
+      birthPlaces.forEach(person => {
+        if(!person.lat || !person.lon) return;
+        const marker = L.marker([person.lat, person.lon]).addTo(map);
+        const popupContent = `
+          <div style="min-width:160px">
+            <strong>${person.name}</strong><br/>
+            <span style="font-size:13px;color:#374151">${person.place}</span><br/>
+            <small style="color:#6b7280">${person.year || ''}</small><br/>
+            <a href="#" data-key="${person.key}" class="open-story-link" style="display:inline-block;margin-top:6px;color:#1f6feb;text-decoration:none;font-weight:700">Open story</a>
+          </div>`;
+        marker.bindPopup(popupContent);
+      });
+
+      // Delegate click for "Open story" links inside popups
+      document.getElementById('birth-map').addEventListener('click', function(e){
+        const a = e.target.closest && e.target.closest('.open-story-link');
+        if(a){
+          e.preventDefault();
+          const k = a.getAttribute('data-key');
+          if(k){ openStory(k); }
+        }
+      });
+    }
+
+    // Wait for DOM then init map
+    document.addEventListener('DOMContentLoaded', function(){
+      initMap();
+    });
+
   </script>
+
 </body>
 </html>
